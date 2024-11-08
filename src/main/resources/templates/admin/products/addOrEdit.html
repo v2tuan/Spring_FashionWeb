@@ -87,6 +87,22 @@
                                             <input type="text" placeholder="%" class="form-control"
                                                    id="tax-rate">
                                         </div>
+
+                                        <!-- Phần thêm size ################################################################################################################## -->
+                                        <div id="" class="mb-3">
+                                            <label class="mb-4 fs-13px ls-1 fw-bold text-uppercase" for="tax-rate">
+                                                Add size and quantity
+                                            </label>
+                                            <span
+                                                    class="text-primary ms-3 size-btn"
+                                                    style="cursor: pointer; font-weight: bold"
+                                                    onclick="addSize()">
+                                                            + Size
+                                                        </span>
+                                            <div class="form-text">Nhấn "+ Size" để thêm size và số lượng</div>
+                                            <div id="sizesContainer" class="mb-3 size-row"></div>
+                                        </div>
+
                                         <label class="form-check mb-5" for="make-template">
                                             <input class="form-check-input" type="checkbox" value=""
                                                    id="make-template">
@@ -145,11 +161,19 @@
                                 </div>
                                 <div class="card-body p-7">
                                     <div class="input-upload">
+                                        <h6>(<span id="imageCount">0</span>/5)</h6>
                                         <div class="mb-7">
-                                            <img src="../assets/images/dashboard/upload.svg" width="102"
-                                                 class="d-block mx-auto" alt="">
+                                            <!-- ################################################################################################################ -->
+                                            <div id="alertMessage" class="alert alert-danger" role="alert">
+                                                You can upload a maximum of 5 images.
+                                            </div>
+                                            <img src="/assets/images/dashboard/upload.svg" width="102"
+                                                 class="d-block mx-auto" alt="" id="image-upload-default">
+                                            <!-- ########################################################################################################################## -->
+                                            <div class="image-container" id="imageContainer"></div>
                                         </div>
-                                        <input class="form-control" type="file">
+                                        <input class="form-control" type="file" id="imageInput"
+                                               accept="image/*" multiple>
                                     </div>
                                 </div>
                             </div>

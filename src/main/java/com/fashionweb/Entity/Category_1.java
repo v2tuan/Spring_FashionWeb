@@ -12,7 +12,7 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Category {
+public class Category_1 {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int categoryId;
@@ -20,5 +20,5 @@ public class Category {
     private String cateDesc;
 
     @OneToMany(mappedBy = "category")
-    private List<Products> products;
+    private List<Products_1> products;
 }

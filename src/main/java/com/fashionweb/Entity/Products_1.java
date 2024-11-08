@@ -12,7 +12,7 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Products {
+public class Products_1 {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "proId")
@@ -35,12 +35,12 @@ public class Products {
 
     @ManyToOne
     @JoinColumn(name = "brandId")
-    private Brand brand;
+    private Brand_1 brand;
 
     @ManyToOne
     @JoinColumn(name = "categoryId")
-    private Category category;
+    private Category_1 category;
 
     @OneToMany(mappedBy = "products")
-    private List<ProdImages> images;
+    private List<ProdImages_1> images;
 }

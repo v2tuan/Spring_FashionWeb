@@ -3,7 +3,6 @@ package com.fashionweb.Entity;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.Generated;
 import lombok.NoArgsConstructor;
 
 @Entity
@@ -11,7 +10,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class ProdImages {
+public class ProdImages_1 {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int imageId;
@@ -20,6 +19,6 @@ public class ProdImages {
 
     @ManyToOne
     @JoinColumn(name="prodId")
-    private Products products;
+    private Products_1 products;
 
 }

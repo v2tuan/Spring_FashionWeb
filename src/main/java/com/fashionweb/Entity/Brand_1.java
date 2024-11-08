@@ -12,7 +12,7 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Brand {
+public class Brand_1 {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int brandId;
@@ -20,5 +20,5 @@ public class Brand {
     private String brandName;
 
     @OneToMany(mappedBy = "brand")
-    private List<Products> products;
+    private List<Products_1> products;
 }
