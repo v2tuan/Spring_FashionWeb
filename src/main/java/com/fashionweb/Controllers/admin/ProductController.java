@@ -6,12 +6,17 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
-@RequestMapping("/admin/products")
+@RequestMapping("/admin/")
 public class ProductController {
 
-    @GetMapping("add")
-    String add(){
+    @GetMapping("addproduct")
+    String addproduct(){
         return "admin/products/addOrEdit";
        //return "admin/test";
+    }
+
+    @GetMapping("productlist")
+    String add(){
+        return "admin/product_list";
     }
 }
