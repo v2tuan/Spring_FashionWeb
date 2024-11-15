@@ -5,20 +5,19 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.List;
-
-@Entity
-@Table(name = "Brands")
 @Data
-@NoArgsConstructor
 @AllArgsConstructor
-public class Brand_1 {
+@NoArgsConstructor
+@Entity
+@Table(name = "ProdImages")
+public class ProdImage {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int brandId;
+    private Long imageId;
 
-    private String brandName;
+    private String imageURL;
 
-    @OneToMany(mappedBy = "brand")
-    private List<Products_1> products;
+    @ManyToOne
+    @JoinColumn(name = "prodId")
+    private Product product;
 }

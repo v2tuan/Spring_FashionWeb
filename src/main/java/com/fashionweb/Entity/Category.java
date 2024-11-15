@@ -7,18 +7,20 @@ import lombok.NoArgsConstructor;
 
 import java.util.List;
 
+
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
 @Entity
 @Table(name = "Categories")
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
-public class Category_1 {
+public class Category {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int categoryId;
+    private Long categoryId;
+
     private String cateName;
-    private String cateDesc;
+    private String description;
 
     @OneToMany(mappedBy = "category")
-    private List<Products_1> products;
+    private List<Product> products;
 }
