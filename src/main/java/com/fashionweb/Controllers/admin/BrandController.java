@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 @RequestMapping("/admin/brands")
 public class BrandController {
-    @GetMapping("add")
+    @GetMapping("/add")
     String add(){
         return "admin/brands/addOrEdit";
     }
