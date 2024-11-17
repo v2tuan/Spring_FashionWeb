@@ -1,6 +1,7 @@
 package com.fashionweb.Controllers;
 
 import com.fashionweb.Entity.Account;
+import com.fashionweb.Model.Response;
 import com.fashionweb.service.Impl.AccountService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,37 +21,24 @@ public class AccountController {
     private AccountService accountService;
 
     @GetMapping
-    List<Account> getAllAccount(){
-        return accountService.getAllAccounts();
+    ResponseEntity<?> getAllAccount(){
+        return new ResponseEntity<Response>(new Response(true, "Thành công", accountService.getAllAccounts()), HttpStatus.OK);
     }
 
     @PostMapping
     Account createAccount(@RequestBody @Valid Account account){
-        return accountService.save(account);
+        return accountService.createAccount(account);
     }
 
-    @PutMapping("/{id}")
-    ResponseEntity<?> updateAccount(@PathVariable long id, @RequestBody @Valid Account account){
-        Optional<Account> optionalAccount = accountService.getAccounts(id);
-        if(optionalAccount.isPresent()){
-            Account updatedAccount = optionalAccount.get();
-            // Chỉ sao chép các thuộc tính không bao gồm 'id'
-            updatedAccount.setEmail(account.getEmail());
-            updatedAccount.setPassword(account.getPassword());
-            updatedAccount.setProfilePic(account.getProfilePic());
-            updatedAccount.setRole(account.getRole());
-            updatedAccount.setStatus(account.getStatus());
-            accountService.save(updatedAccount);
-            return new ResponseEntity<String>("Update thanh cong",HttpStatus.OK);
-        }
-        else{
-            return new ResponseEntity<String>("Id khong ton tai",HttpStatus.FOUND);
-        }
+    @PutMapping
+    ResponseEntity<?> updateAccount(@RequestBody @Valid Account account){
+        accountService.updateAccount(account);
+        return new ResponseEntity<Response>(new Response(true, "Thành công", "Update thanh cong"), HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
-    String deleteAccount(@PathVariable long id){
+    ResponseEntity<?> deleteAccount(@PathVariable long id){
         accountService.deleteAccount(id);
-        return "Xoa thanh cong";
+        return new ResponseEntity<Response>(new Response(true, "Thành công", "Xoa thanh cong"), HttpStatus.OK);
     }
 }

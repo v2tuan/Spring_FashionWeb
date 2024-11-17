@@ -8,6 +8,7 @@ import java.util.Optional;
 public interface IAccountService {
     List<Account>  getAllAccounts();
     Optional<Account> getAccounts(Long accountId);
-    <S extends Account> S save(S account);
+    <S extends Account> S createAccount(S account);
+    <S extends Account> S updateAccount(S account);
     void deleteAccount(long accountId);
 }
