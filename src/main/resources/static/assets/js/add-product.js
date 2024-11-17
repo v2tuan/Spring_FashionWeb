@@ -6,6 +6,9 @@ $(document).ready(function () {
     $("#imageContainer").sortable({
         update: updateOrder
     }).disableSelection();
+    console.log(typeof $.ui); // Kết quả nên là "object" nếu jQuery UI được tải thành công.
+    console.log(typeof $().sortable); // Kết quả nên là "function" nếu `.sortable()` khả dụng.
+
 });
 
 function handleFileSelect(event) {

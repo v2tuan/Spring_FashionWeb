@@ -1,0 +1,21 @@
+spring:
+  application:
+    name: Springboot_FashionWeb
+
+  datasource:
+    url: jdbc:mysql://fashionista.clcm6y6k0f9i.ap-southeast-2.rds.amazonaws.com:3306/fashionista?useSSL=false&serverTimezone=UTC
+    username: admin
+    password: 987654321
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate.dialect: org.hibernate.dialect.MySQLDialect
+
+  thymeleaf:
+    cache: false
+
+server:
+  port: 8091
