@@ -19,6 +19,8 @@ public class Size {
 
     private String size;
 
+    private Integer quantity;
+
     @ManyToOne
     @JoinColumn(name = "prodId")
     private Product product;
