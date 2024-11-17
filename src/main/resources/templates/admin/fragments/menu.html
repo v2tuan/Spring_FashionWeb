@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 
+<script src="/assets/vendors/bootstrap/js/bootstrap.bundle.js"></script>
 
 <div th:fragment="menu">
     <aside class="navbar navbar-expand-xl navbar-light d-block px-0 header-sticky dashboard-nav py-0">
@@ -115,12 +116,11 @@
                         <a href="#product"
                            class="text-heading text-decoration-none lh-1 d-flex sidebar-link align-items-center py-5 px-6 position-relative"
                            data-bs-toggle="collapse" aria-expanded="false" title="Products">
-										<span class="sidebar-item-icon d-inline-block w-40px text-muted">
-											<i class="fas fa-shopping-bag"></i>
-										</span>
+                            <span class="sidebar-item-icon d-inline-block w-40px text-muted">
+                                <i class="fas fa-shopping-bag"></i>
+                            </span>
                             <span class="sidebar-item-text fs-14px fw-semibold">Products</span>
-                            <span class="position-absolute top-50 end-5 translate-middle-y"><i
-                                    class="far fa-angle-down"></i></span>
+                            <span class="position-absolute top-50 end-5 translate-middle-y"><i class="far fa-angle-down"></i></span>
                         </a>
                         <div class="collapse menu-collapse" id="product">
                             <ul class="sub-menu list-unstyled">
@@ -132,11 +132,11 @@
                                     <a class="sidebar-link pe-5 ps-8 py-5 lh-1 text-decoration-none fs-14px fw-semibold"
                                        href="product-grid.html" title="Product Grid">Product Grid</a>
                                 </li>
-                                <li class="sidebar-item">
+                                <!--<li class="sidebar-item">
                                     <a class="sidebar-link pe-5 ps-8 py-5 lh-1 text-decoration-none fs-14px fw-semibold"
                                        href="product-grid-02.html" title="Product Grid 2">Product Grid
                                         2</a>
-                                </li>
+                                </li>-->
                                 <li class="sidebar-item">
                                     <a class="sidebar-link pe-5 ps-8 py-5 lh-1 text-decoration-none fs-14px fw-semibold"
                                        href="product-categories.html" title="Categoried">Categoried</a>
@@ -161,12 +161,12 @@
                             <ul class="sub-menu list-unstyled">
                                 <li class="sidebar-item">
                                     <a class="sidebar-link pe-5 ps-8 py-5 lh-1 text-decoration-none fs-14px fw-semibold"
-                                       href="order-list.html" title="Order List 1">Order List 1</a>
+                                       href="order-list.html" title="Order List 1">Order List</a>
                                 </li>
-                                <li class="sidebar-item">
+                               <!-- <li class="sidebar-item">
                                     <a class="sidebar-link pe-5 ps-8 py-5 lh-1 text-decoration-none fs-14px fw-semibold"
                                        href="order-list-2.html" title="Order List 2">Order List 2</a>
-                                </li>
+                                </li>-->
                                 <li class="sidebar-item">
                                     <a class="sidebar-link pe-5 ps-8 py-5 lh-1 text-decoration-none fs-14px fw-semibold"
                                        href="order-detail.html" title="Order detail">Order detail</a>
@@ -215,10 +215,10 @@
 											<i class="fas fa-plus-square"></i>
 										</span>
                             <span class="sidebar-item-text fs-14px fw-semibold">Add Product</span>
-                            <span class="position-absolute top-50 end-5 translate-middle-y"><i
-                                    class="far fa-angle-down"></i></span>
+                            <!--<span class="position-absolute top-50 end-5 translate-middle-y"><i
+                                    class="far fa-angle-down"></i></span>-->
                         </a>
-                        <div class="collapse menu-collapse" id="add_product">
+                        <!--<div class="collapse menu-collapse" id="add_product">
                             <ul class="sub-menu list-unstyled">
                                 <li class="sidebar-item">
                                     <a class="sidebar-link pe-5 ps-8 py-5 lh-1 text-decoration-none fs-14px fw-semibold"
@@ -237,7 +237,7 @@
                                        href="add-product-4.html" title="Add Product 4">Add Product 4</a>
                                 </li>
                             </ul>
-                        </div>
+                        </div>-->
                     </li>
 
 
@@ -254,13 +254,13 @@
                         </a>
                         <div class="collapse menu-collapse" id="transaction">
                             <ul class="sub-menu list-unstyled">
-                                <li class="sidebar-item">
+                                <!--<li class="sidebar-item">
                                     <a class="sidebar-link pe-5 ps-8 py-5 lh-1 text-decoration-none fs-14px fw-semibold"
                                        href="transactions-1.html" title="Transactions 1">Transactions 1</a>
-                                </li>
+                                </li>-->
                                 <li class="sidebar-item">
                                     <a class="sidebar-link pe-5 ps-8 py-5 lh-1 text-decoration-none fs-14px fw-semibold"
-                                       href="transactions-2.html" title="Transactions 2">Transactions 2</a>
+                                       href="transactions-2.html" title="Transactions 2">Transactions</a>
                                 </li>
                             </ul>
                         </div>
