@@ -11,7 +11,7 @@ public class ProductController {
     @GetMapping("/addproduct")
     String addproduct(){
         return "admin/addOrEditProduct";
-       //return "admin/test";
+//       return "admin/test";
     }
 
     @GetMapping("/productlist")

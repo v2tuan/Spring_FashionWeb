@@ -42,12 +42,12 @@
     <div class="d-flex flex-wrap flex-xl-nowrap">
         <div class="db-sidebar bg-body">
             <!-- menu -->
-            <div th:replace="/admin/fragments/menu :: menu"></div>
+            <div th:replace="~{/admin/fragments/menu :: menu}"></div>
 
         </div>
         <div class="page-content">
             <!-- header -->
-            <div th:replace="/admin/fragments/header :: header"></div>
+            <div th:replace="~{/admin/fragments/header :: header}"></div>
 
             <!-- main content -->
             <div th:insert="~{::content}"></div>
@@ -78,9 +78,8 @@
 <script src="/assets/js/dashboard.min.js"></script>
 
 
-
 <!--<script src="/code.jquery.com/jquery-3.6.0.min.js"></script>-->
-<script src="/cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+<!--<script src="/cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>-->
 <script src="/cdnjs.cloudflare.com/ajax/libs/jqueryui.1.12.1/jquery-ui.min.js"></script>
 <script src="/assets/js/add-product.js"></script>
 
