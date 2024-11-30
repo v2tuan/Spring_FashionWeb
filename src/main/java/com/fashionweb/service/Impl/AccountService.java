@@ -41,20 +41,18 @@ public class AccountService implements IAccountService {
     }
 
     @Override
-    public Account updateAccount(AccountDTO accountDTO) {
+    public Account updateAccount(Long accountId, AccountDTO accountDTO) {
+        Account account = iAccountRepository.findById(accountId)
+                .orElseThrow(() -> new RuntimeException("User not found"));
 
-        Account account = accountMapper.toAccount(accountDTO);
         // Kiểm tra xem email của tài khoản có bị trùng với tài khoản khác hay không
-        List<Account> accounts = iAccountRepository.findByEmail(account.getEmail());
-        for (Account existingAccount : accounts) {
-            if (existingAccount.getAccountId().equals(account.getAccountId())) {
-                continue;
-            }
-            else{
-                throw new RuntimeException("Email đã tồn tại trên một tài khoản khác.");
-            }
+        List<Account> accounts = iAccountRepository.findByEmail(accountDTO.getEmail());
+
+        if (accounts.size() > 1 || (accounts.size() == 1 && !accounts.get(0).getAccountId().equals(account.getAccountId()))) {
+            throw new RuntimeException("Email đã tồn tại trên một tài khoản khác...");
         }
 
+        accountMapper.updateAccount(account, accountDTO);
         return iAccountRepository.save(account);
     }
 

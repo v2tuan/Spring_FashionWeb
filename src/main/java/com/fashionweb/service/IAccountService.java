@@ -10,6 +10,6 @@ public interface IAccountService {
     List<Account>  getAllAccounts();
     Optional<Account> getAccounts(Long accountId);
     <S extends Account> S createAccount(AccountDTO accountDTO);
-    <S extends Account> S updateAccount(AccountDTO accountDTO);
+    <S extends Account> S updateAccount(Long accountId, AccountDTO accountDTO);
     void deleteAccount(long accountId);
 }

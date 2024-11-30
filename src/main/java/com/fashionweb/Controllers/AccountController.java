@@ -26,9 +26,9 @@ public class AccountController {
         return accountService.createAccount(accountDTO);
     }
 
-    @PutMapping
-    ResponseEntity<?> updateAccount(@RequestBody @Valid AccountDTO accountDTO){
-        accountService.updateAccount(accountDTO);
+    @PutMapping("/{id}")
+    ResponseEntity<?> updateAccount(@PathVariable long id, @RequestBody @Valid AccountDTO accountDTO){
+        accountService.updateAccount(id, accountDTO);
         return new ResponseEntity<Response>(new Response(true, "Thành công", "Update thanh cong"), HttpStatus.OK);
     }
 
