@@ -36,4 +36,10 @@ public class WebController {
     String shoppingCart() {
         return "web/shop/shopping_cart";
     }
+
+    @GetMapping("/reviews")
+    String reviews() { return "web/shop/reviews"; }
+
+    @GetMapping("/profile-settings")
+    String profileSettings() { return "web/shop/profile_settings"; }
 }
