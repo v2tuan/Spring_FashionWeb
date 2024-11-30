@@ -1,11 +1,11 @@
 package com.fashionweb.service.Impl;
 
 import com.fashionweb.Entity.Account;
+import com.fashionweb.dto.accounts.AccountDTO;
+import com.fashionweb.mapper.IAccountMapper;
 import com.fashionweb.repository.IAccountRepository;
 import com.fashionweb.service.IAccountService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -15,6 +15,8 @@ import java.util.Optional;
 public class AccountService implements IAccountService {
     @Autowired
     private IAccountRepository iAccountRepository;
+    @Autowired
+    private IAccountMapper accountMapper;
 
     @Override
     public List<Account> getAllAccounts() {
@@ -29,16 +31,19 @@ public class AccountService implements IAccountService {
     }
 
     @Override
-    public <S extends Account> S createAccount(S account) {
+    public Account createAccount(AccountDTO accountDTO) {
         // Kiểm tra xem email của tài khoản đã tồn tại trong hệ thống chưa
-        if(iAccountRepository.existsByEmail(account.getEmail())) {
+        if(iAccountRepository.existsByEmail(accountDTO.getEmail())) {
             throw new RuntimeException("Email đã tồn tại trên một tài khoản khác.");
         }
+        Account account = accountMapper.toAccount(accountDTO);
         return iAccountRepository.save(account);
     }
 
     @Override
-    public <S extends Account> S updateAccount(S account) {
+    public Account updateAccount(AccountDTO accountDTO) {
+
+        Account account = accountMapper.toAccount(accountDTO);
         // Kiểm tra xem email của tài khoản có bị trùng với tài khoản khác hay không
         List<Account> accounts = iAccountRepository.findByEmail(account.getEmail());
         for (Account existingAccount : accounts) {

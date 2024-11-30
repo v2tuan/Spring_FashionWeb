@@ -2,17 +2,13 @@ package com.fashionweb.Controllers;
 
 import com.fashionweb.Entity.Account;
 import com.fashionweb.Model.Response;
+import com.fashionweb.dto.accounts.AccountDTO;
 import com.fashionweb.service.Impl.AccountService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-
-
-import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/account")
@@ -26,13 +22,13 @@ public class AccountController {
     }
 
     @PostMapping
-    Account createAccount(@RequestBody @Valid Account account){
-        return accountService.createAccount(account);
+    Account createAccount(@RequestBody @Valid AccountDTO accountDTO){
+        return accountService.createAccount(accountDTO);
     }
 
     @PutMapping
-    ResponseEntity<?> updateAccount(@RequestBody @Valid Account account){
-        accountService.updateAccount(account);
+    ResponseEntity<?> updateAccount(@RequestBody @Valid AccountDTO accountDTO){
+        accountService.updateAccount(accountDTO);
         return new ResponseEntity<Response>(new Response(true, "Thành công", "Update thanh cong"), HttpStatus.OK);
     }
 
