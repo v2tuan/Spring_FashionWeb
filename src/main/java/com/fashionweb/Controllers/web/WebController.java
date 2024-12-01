@@ -7,10 +7,17 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 @RequestMapping("/home")
 public class WebController {
+
     @GetMapping
     String home() {
         return "web/home";
     }
+
+    @GetMapping("/user-register")
+    String userRegister() { return "web/user-register"; }
+
+    @GetMapping("/user-login")
+    String userLogin() { return "web/user-login"; }
 
     @GetMapping("/shop")
     String shop() {
