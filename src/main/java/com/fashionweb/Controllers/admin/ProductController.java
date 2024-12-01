@@ -23,4 +23,15 @@ public class ProductController {
     String order_list(){
         return "admin/order_list";
     }
+
+    @GetMapping("/reviews")
+    String reviews() { return "admin/reviews"; }
+
+    @GetMapping("/profile-settings")
+    String profileSettings() { return "admin/profile_settings"; }
+
+    @GetMapping("/order-detail")
+    String orderDetail() {
+        return "admin/order_detail";
+    }
 }
