@@ -26,6 +26,13 @@ public class Customer {
     @JoinColumn(name = "accountId")
     private Account account;
 
+    @PrePersist
+    public void setDefaultRole() {
+        if (this.account != null && this.account.getRole() == null) {
+            this.account.setRole("user");
+        }
+    }
+
     @OneToMany(mappedBy = "customer")
     private List<Order> orders;
 

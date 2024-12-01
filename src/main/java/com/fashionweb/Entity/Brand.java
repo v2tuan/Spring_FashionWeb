@@ -19,6 +19,10 @@ public class Brand {
     private Long brandId;
 
     private String brandName;
+    private String description;
+    private String address;
+    private String phone;
+    private String email;
     private String images;
 
     @OneToMany(mappedBy = "brand")

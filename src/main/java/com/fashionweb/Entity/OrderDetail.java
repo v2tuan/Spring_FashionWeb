@@ -14,19 +14,25 @@ import lombok.NoArgsConstructor;
 @Table(name = "OrderDetails")
 
 public class OrderDetail {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long orderDetailId;
-
-    @ManyToOne
-    @JoinColumn(name = "orderId")
-    private Order order;
-
-    @ManyToOne
-    @JoinColumn(name = "size")
-    private Size size;
+    @EmbeddedId
+    private OrderDetailsId id;
 
     private Double price;
     private Integer quantity;
+
+    @ManyToOne
+    @MapsId("orderId")
+    @JoinColumn(name = "orderId", nullable = false)
+    private Order order;
+
+    @ManyToOne
+    @MapsId("prodId")
+    @JoinColumn(name = "prodId", nullable = false)
+    private Product product;
+
+    @ManyToOne
+    @MapsId("size")
+    @JoinColumn(name = "size", nullable = false)
+    private Size size;
 
 }

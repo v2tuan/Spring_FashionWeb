@@ -20,24 +20,28 @@ public class Product {
 
     private String prodName;
     private String description;
-    private BigDecimal regular;
-    private BigDecimal promo;
-    private Integer quantityInStock;
+    private Double regular;
+    private Double promo;
+    private String status;
+    private Integer totalQuantity;
 
     @ManyToOne
-    @JoinColumn(name = "brandId")
+    @JoinColumn(name = "brandId", nullable = false)
     private Brand brand;
 
     @ManyToOne
-    @JoinColumn(name = "categoryId")
-    private Category category;
-
-    @OneToMany(mappedBy = "product")
-    private List<ProdImage> productImages;
+    @JoinColumn(name = "subCatId", nullable = false)
+    private Subcategory subcategory;
 
     @OneToMany(mappedBy = "product")
     private List<Size> sizes;
 
     @OneToMany(mappedBy = "product")
-    private List<ProdReview> reviews;
+    private List<CartDetail> cartDetails;
+
+    @OneToMany(mappedBy = "product")
+    private List<OrderDetail> orderDetails;
+
+    @OneToMany(mappedBy = "product")
+    private List<ProdReview> productReviews;
 }

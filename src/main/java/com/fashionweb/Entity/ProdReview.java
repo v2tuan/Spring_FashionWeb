@@ -23,10 +23,14 @@ public class ProdReview {
     private Date reviewDate;
 
     @ManyToOne
-    @JoinColumn(name = "custId")
+    @JoinColumn(name = "custId", nullable = false)
     private Customer customer;
 
     @ManyToOne
-    @JoinColumn(name = "prodId")
+    @JoinColumn(name = "prodId", nullable = false)
     private Product product;
+
+    @ManyToOne
+    @JoinColumn(name = "sizeId")
+    private Size size;
 }

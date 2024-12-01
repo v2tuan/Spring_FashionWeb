@@ -17,18 +17,17 @@ public class Size {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long sizeId;
 
-    private String size;
-
+    private String description;
     private Integer quantity;
 
     @ManyToOne
-    @JoinColumn(name = "prodId")
+    @JoinColumn(name = "prodId", nullable = false)
     private Product product;
 
     @OneToMany(mappedBy = "size")
-    private List<OrderDetail> orderDetails;
+    private List<CartDetail> cartDetails;
 
     @OneToMany(mappedBy = "size")
-    private List<CartDetail> cartDetails;
+    private List<OrderDetail> orderDetails;
 }
 

@@ -29,7 +29,7 @@ public class Order {
     private Customer customer;
 
     @ManyToOne
-    @JoinColumn(name = "discountId")
+    @JoinColumn(name = "discountId", nullable = true)
     private Discount discount;
 
     @OneToMany(mappedBy = "order")
