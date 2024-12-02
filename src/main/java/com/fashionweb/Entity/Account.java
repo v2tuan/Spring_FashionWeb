@@ -6,6 +6,7 @@ import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import java.time.LocalDateTime;
 
@@ -32,6 +33,26 @@ public class Account {
     private LocalDateTime verificationCodeExpiresAt;
     private boolean enabled;
 
-    @OneToOne(mappedBy = "account")
+    @PrePersist
+    public void setDefaultValues() {
+        // Đảm bảo role mặc định là "user" nếu không có giá trị
+        if (this.role == null || this.role.isEmpty()) {
+            this.role = "user"; // Gán giá trị mặc định là "user"
+        }
+        // Mã hóa mật khẩu
+        if (this.password != null) {
+            BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+            this.password = encoder.encode(this.password);
+        }
+    }
+
+    // Kiểm tra mật khẩu khi người dùng đăng nhập
+    public boolean checkPassword(String rawPassword) {
+        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+        return encoder.matches(rawPassword, this.password); // So sánh mật khẩu nhập vào với mật khẩu đã mã hóa
+    }
+
+    @OneToOne(mappedBy = "account", cascade = CascadeType.ALL, orphanRemoval = true)
     private Customer customer;
+
 }

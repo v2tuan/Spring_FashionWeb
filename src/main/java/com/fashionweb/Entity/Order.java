@@ -8,7 +8,6 @@ import lombok.NoArgsConstructor;
 import java.util.Date;
 import java.util.List;
 
-
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -29,9 +28,10 @@ public class Order {
     private Customer customer;
 
     @ManyToOne
-    @JoinColumn(name = "discountId")
+    @JoinColumn(name = "discountId", nullable = true)
     private Discount discount;
 
-    @OneToMany(mappedBy = "order")
+    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<OrderDetail> orderDetails;
+
 }

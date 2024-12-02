@@ -17,18 +17,16 @@ public class Size {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long sizeId;
 
-    private String size;
-
+    private String description;
     private Integer quantity;
 
     @ManyToOne
-    @JoinColumn(name = "prodId")
+    @JoinColumn(name = "prodId", nullable = true)  // Cho phép null khi xóa Product
     private Product product;
 
-    @OneToMany(mappedBy = "size")
-    private List<OrderDetail> orderDetails;
-
-    @OneToMany(mappedBy = "size")
+    @OneToMany(mappedBy = "size", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<CartDetail> cartDetails;
-}
 
+    @OneToMany(mappedBy = "size", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<OrderDetail> orderDetails;
+}
