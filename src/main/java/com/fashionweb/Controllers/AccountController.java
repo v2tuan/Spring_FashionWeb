@@ -2,7 +2,12 @@ package com.fashionweb.Controllers;
 
 import com.fashionweb.Entity.Account;
 import com.fashionweb.Model.Response;
-import com.fashionweb.dto.accounts.AccountDTO;
+import com.fashionweb.dto.request.AuthenticationRequestDTO;
+import com.fashionweb.dto.request.VerifyAccountDTO;
+import com.fashionweb.dto.request.accounts.AccountDTO;
+import com.fashionweb.dto.request.accounts.RegisterAccountDTO;
+import com.fashionweb.dto.response.AuthenticationResponse;
+import com.fashionweb.service.AuthenticationService;
 import com.fashionweb.service.Impl.AccountService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +20,37 @@ import org.springframework.web.bind.annotation.*;
 public class AccountController {
     @Autowired
     private AccountService accountService;
+    @Autowired
+    private AuthenticationService authenticationService;
+
+    @PostMapping("/signup")
+    public ResponseEntity<Account> register(@RequestBody RegisterAccountDTO registerAccountDTO) {
+        Account account = authenticationService.signup(registerAccountDTO);
+        return ResponseEntity.ok(account);
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity<AuthenticationResponse> authenticate(@RequestBody AuthenticationRequestDTO authenticationRequestDTO){
+        AuthenticationResponse authenticationResponse = authenticationService.authenticate(authenticationRequestDTO);
+        return ResponseEntity.ok(authenticationResponse);
+    }
+
+    @PostMapping("/verify")
+    public ResponseEntity<?> verifyUser(@RequestBody VerifyAccountDTO verifyAccountDTO) {
+
+            authenticationService.verifyUser(verifyAccountDTO);
+            return ResponseEntity.ok("Account verified successfully");
+    }
+
+    @PostMapping("/resend")
+    public ResponseEntity<?> resendVerificationCode(@RequestParam String email) {
+        try {
+            authenticationService.resendVerificationCode(email);
+            return ResponseEntity.ok("Verification code sent");
+        } catch (RuntimeException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
 
     @GetMapping
     ResponseEntity<?> getAllAccount(){

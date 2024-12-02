@@ -707,39 +707,8 @@ th:fragment="header">
                             </svg>
                         </a>
                     </div>
-                    <div class="px-5 d-none d-xl-inline-block">
-                        <a class="lh-1 color-inherit text-decoration-none" href="#" data-bs-toggle="modal"
-                           data-bs-target="#signInModal">
-                            <svg class="icon icon-user-light">
-                                <use xlink:href="#icon-user-light"></use>
-                            </svg>
-                        </a>
-                    </div>
-                    <div class="px-5 d-none d-xl-inline-block">
-                        <a class="position-relative lh-1 color-inherit text-decoration-none"
-                           href="wishlist.html">
-                            <svg class="icon icon-star-light">
-                                <use xlink:href="#icon-star-light"></use>
-                            </svg>
-                            <span
-                                    class="badge bg-dark text-white position-absolute top-0 start-100 translate-middle mt-4 rounded-circle fs-13px p-0 square"
-                                    style="--square-size: 18px">3</span>
-                        </a>
-                    </div>
-                    <div class="px-5 d-none d-xl-inline-block">
-                        <a class="position-relative lh-1 color-inherit text-decoration-none" href="#"
-                           data-bs-toggle="offcanvas" data-bs-target="#shoppingCart" aria-controls="shoppingCart"
-                           aria-expanded="false">
-                            <svg class="icon icon-star-light">
-                                <use xlink:href="#icon-shopping-bag-open-light"></use>
-                            </svg>
-                            <span
-                                    class="badge bg-dark text-white position-absolute top-0 start-100 translate-middle mt-4 rounded-circle fs-13px p-0 square"
-                                    style="--square-size: 18px">3</span>
-                        </a>
-                    </div>
 
-                    <div class="color-modes position-relative ps-5">
+                    <div class="color-modes position-relative ps-5 px-5 d-none d-xl-inline-block">
                         <a class="bd-theme btn btn-link nav-link dropdown-toggle d-inline-flex align-items-center justify-content-center text-primary p-0 position-relative rounded-circle"
                            href="#" aria-expanded="true" data-bs-toggle="dropdown" data-bs-display="static"
                            aria-label="Toggle theme (light)">
@@ -785,6 +754,100 @@ th:fragment="header">
                                 </button>
                             </li>
                         </ul>
+                    </div>
+
+                    <div class="px-5 d-none d-xl-inline-block">
+                        <a class="position-relative lh-1 color-inherit text-decoration-none"
+                           href="wishlist.html">
+                            <svg class="icon icon-star-light">
+                                <use xlink:href="#icon-star-light"></use>
+                            </svg>
+                            <span
+                                    class="badge bg-dark text-white position-absolute top-0 start-100 translate-middle mt-4 rounded-circle fs-13px p-0 square"
+                                    style="--square-size: 18px">3</span>
+                        </a>
+                    </div>
+                    <div class="px-5 d-none d-xl-inline-block">
+                        <a class="position-relative lh-1 color-inherit text-decoration-none" href="#"
+                           data-bs-toggle="offcanvas" data-bs-target="#shoppingCart" aria-controls="shoppingCart"
+                           aria-expanded="false">
+                            <svg class="icon icon-star-light">
+                                <use xlink:href="#icon-shopping-bag-open-light"></use>
+                            </svg>
+                            <span
+                                    class="badge bg-dark text-white position-absolute top-0 start-100 translate-middle mt-4 rounded-circle fs-13px p-0 square"
+                                    style="--square-size: 18px">3</span>
+                        </a>
+                    </div>
+
+<!--                    <div class="color-modes position-relative ps-5">-->
+<!--                        <a class="bd-theme btn btn-link nav-link dropdown-toggle d-inline-flex align-items-center justify-content-center text-primary p-0 position-relative rounded-circle"-->
+<!--                           href="#" aria-expanded="true" data-bs-toggle="dropdown" data-bs-display="static"-->
+<!--                           aria-label="Toggle theme (light)">-->
+<!--                            <svg class="bi my-1 theme-icon-active">-->
+<!--                                <use href="#sun-fill"></use>-->
+<!--                            </svg>-->
+<!--                        </a>-->
+<!--                        <ul class="dropdown-menu dropdown-menu-end fs-14px" data-bs-popper="static">-->
+<!--                            <li>-->
+<!--                                <button type="button" class="dropdown-item d-flex align-items-center active"-->
+<!--                                        data-bs-theme-value="light" aria-pressed="true">-->
+<!--                                    <svg class="bi me-4 opacity-50 theme-icon">-->
+<!--                                        <use href="#sun-fill"></use>-->
+<!--                                    </svg>-->
+<!--                                    Light-->
+<!--                                    <svg class="bi ms-auto d-none">-->
+<!--                                        <use href="#check2"></use>-->
+<!--                                    </svg>-->
+<!--                                </button>-->
+<!--                            </li>-->
+<!--                            <li>-->
+<!--                                <button type="button" class="dropdown-item d-flex align-items-center"-->
+<!--                                        data-bs-theme-value="dark" aria-pressed="false">-->
+<!--                                    <svg class="bi me-4 opacity-50 theme-icon">-->
+<!--                                        <use href="#moon-stars-fill"></use>-->
+<!--                                    </svg>-->
+<!--                                    Dark-->
+<!--                                    <svg class="bi ms-auto d-none">-->
+<!--                                        <use href="#check2"></use>-->
+<!--                                    </svg>-->
+<!--                                </button>-->
+<!--                            </li>-->
+<!--                            <li>-->
+<!--                                <button type="button" class="dropdown-item d-flex align-items-center"-->
+<!--                                        data-bs-theme-value="auto" aria-pressed="false">-->
+<!--                                    <svg class="bi me-4 opacity-50 theme-icon">-->
+<!--                                        <use href="#circle-half"></use>-->
+<!--                                    </svg>-->
+<!--                                    Auto-->
+<!--                                    <svg class="bi ms-auto d-none">-->
+<!--                                        <use href="#check2"></use>-->
+<!--                                    </svg>-->
+<!--                                </button>-->
+<!--                            </li>-->
+<!--                        </ul>-->
+<!--                    </div>-->
+
+                    <div class="px-5 d-none d-xl-inline-block" id="button-login">
+                        <a class="lh-1 color-inherit text-decoration-none" href="#" data-bs-toggle="modal"
+                           data-bs-target="#signInModal">
+                            <svg class="icon icon-user-light">
+                                <use xlink:href="#icon-user-light"></use>
+                            </svg>
+                        </a>
+                    </div>
+
+                    <div class="dropdown d-none d-xl-inline-block" id="button-profile">
+                        <a href="#"
+                           class="dropdown-toggle text-heading pr-3 pr-sm-6 d-flex align-items-center justify-content-end dropdown px-5 d-none d-xl-inline-block"
+                           data-bs-toggle="dropdown">
+                            <img src="/assets/images/dashboard/avatar-2.png" alt="Ronald Hunter"
+                                 class="rounded-circle" width="35">
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-end w-100">
+                            <a class="dropdown-item" href="#">My Profile</a>
+                            <a class="dropdown-item" href="#">Logout</a>
+                        </div>
                     </div>
                 </div>
             </div>

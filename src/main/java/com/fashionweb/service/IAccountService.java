@@ -1,7 +1,7 @@
 package com.fashionweb.service;
 
 import com.fashionweb.Entity.Account;
-import com.fashionweb.dto.accounts.AccountDTO;
+import com.fashionweb.dto.request.accounts.AccountDTO;
 
 import java.util.List;
 import java.util.Optional;

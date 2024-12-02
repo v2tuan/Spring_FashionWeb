@@ -1,11 +1,13 @@
 package com.fashionweb.service.Impl;
 
 import com.fashionweb.Entity.Account;
-import com.fashionweb.dto.accounts.AccountDTO;
+import com.fashionweb.dto.request.accounts.AccountDTO;
 import com.fashionweb.mapper.IAccountMapper;
 import com.fashionweb.repository.IAccountRepository;
 import com.fashionweb.service.IAccountService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -37,6 +39,8 @@ public class AccountService implements IAccountService {
             throw new RuntimeException("Email đã tồn tại trên một tài khoản khác.");
         }
         Account account = accountMapper.toAccount(accountDTO);
+        PasswordEncoder passwordEncoder = new BCryptPasswordEncoder(10);
+        account.setPassword(passwordEncoder.encode(account.getPassword()));
         return iAccountRepository.save(account);
     }
 
@@ -51,7 +55,6 @@ public class AccountService implements IAccountService {
         if (accounts.size() > 1 || (accounts.size() == 1 && !accounts.get(0).getAccountId().equals(account.getAccountId()))) {
             throw new RuntimeException("Email đã tồn tại trên một tài khoản khác...");
         }
-
         accountMapper.updateAccount(account, accountDTO);
         return iAccountRepository.save(account);
     }

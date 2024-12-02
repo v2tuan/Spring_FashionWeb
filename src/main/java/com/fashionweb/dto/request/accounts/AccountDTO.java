@@ -1,4 +1,4 @@
-package com.fashionweb.dto.accounts;
+package com.fashionweb.dto.request.accounts;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.Size;

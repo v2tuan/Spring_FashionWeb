@@ -1,6 +1,10 @@
 spring:
   application:
     name: Springboot_FashionWeb
+  security:
+    user: # tạo user mặc định phục vụ phart triển
+      name: user
+      password: # Để trống để Spring Boot tự tạo mật khẩu ngẫu nhiên
 
   datasource:
     url: jdbc:mysql://fashionista.clcm6y6k0f9i.ap-southeast-2.rds.amazonaws.com:3306/fashionista?useSSL=false&serverTimezone=UTC
@@ -17,5 +21,18 @@ spring:
   thymeleaf:
     cache: false
 
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: laptrinhh2208@gmail.com
+    password: bewq lkvf saii sasu
+    properties.mail:
+      smtp:
+        auth: true
+        starttls.enable: true
+
 server:
   port: 8091
+
+jwt:
+  signerKey: "1TjXchw5FloESb63Kc+DFhTARvpWL4jUGCwfGWxuG5SIf/1y/LgJxHnMqaF6A/ij"
