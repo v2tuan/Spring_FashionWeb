@@ -37,9 +37,6 @@ public class Account {
 
     private String role;
 
-    @Column(nullable = false)
-    private Boolean status = false;
-
     @Column(name = "verification_code")
     private String verificationCode;
     @Column(name = "verification_expiration")
@@ -52,17 +49,6 @@ public class Account {
         if (this.role == null || this.role.isEmpty()) {
             this.role = "user"; // Gán giá trị mặc định là "user"
         }
-        // Mã hóa mật khẩu
-        if (this.password != null) {
-            BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
-            this.password = encoder.encode(this.password);
-        }
-    }
-
-    // Kiểm tra mật khẩu khi người dùng đăng nhập
-    public boolean checkPassword(String rawPassword) {
-        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
-        return encoder.matches(rawPassword, this.password); // So sánh mật khẩu nhập vào với mật khẩu đã mã hóa
     }
 
     @OneToMany(mappedBy = "account", cascade = CascadeType.ALL, orphanRemoval = true)
