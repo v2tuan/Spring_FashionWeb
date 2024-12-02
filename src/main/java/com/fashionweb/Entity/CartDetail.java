@@ -30,5 +30,5 @@ public class CartDetail {
     @ManyToOne
     @MapsId("cartId")
     @JoinColumn(name = "cartId", nullable = false)
-    private Customer customer;  // Liên kết với Customer qua cartId
+    private Account account;
 }

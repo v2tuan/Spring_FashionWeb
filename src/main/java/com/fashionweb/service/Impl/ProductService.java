@@ -60,7 +60,7 @@ public class ProductService implements IProductService {
     @Override
     public List<Product> getProductsBySubcategory(Long subCatId) {
         // Tìm sản phẩm theo subcategoryId
-        return iProductRepository.findBySubcategorySubCatId(subCatId);
+        return iProductRepository.findBySubcategorySubCateId(subCatId);
     }
 
     @Override

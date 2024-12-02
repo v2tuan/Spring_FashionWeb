@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Data
 @AllArgsConstructor
@@ -18,15 +19,27 @@ import java.time.LocalDateTime;
 public class Account {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long accountId;
+    private Long accId;
 
     @Email
     private String email;
+
     @Size(min = 8, message = "Password must be at least 8 characters")
     private String password;
-    private String profilePic;
+
+    private String avatar;
+    private String fullname;
+    private String address;
+    private String phone;
+
+    @Column(nullable = false, unique = true)
+    private Long cartId;
+
     private String role;
-    private String status;
+
+    @Column(nullable = false)
+    private Boolean status = false;
+
     @Column(name = "verification_code")
     private String verificationCode;
     @Column(name = "verification_expiration")
@@ -52,7 +65,9 @@ public class Account {
         return encoder.matches(rawPassword, this.password); // So sánh mật khẩu nhập vào với mật khẩu đã mã hóa
     }
 
-    @OneToOne(mappedBy = "account", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Customer customer;
+    @OneToMany(mappedBy = "account", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Order> orders;
 
+    @OneToMany(mappedBy = "account", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<ProdReview> reviews;
 }

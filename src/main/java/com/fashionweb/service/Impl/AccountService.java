@@ -52,7 +52,7 @@ public class AccountService implements IAccountService {
         // Kiểm tra xem email của tài khoản có bị trùng với tài khoản khác hay không
         List<Account> accounts = iAccountRepository.findByEmail(accountDTO.getEmail());
 
-        if (accounts.size() > 1 || (accounts.size() == 1 && !accounts.get(0).getAccountId().equals(account.getAccountId()))) {
+        if (accounts.size() > 1 || (accounts.size() == 1 && !accounts.get(0).getAccId().equals(account.getAccId()))) {
             throw new RuntimeException("Email đã tồn tại trên một tài khoản khác...");
         }
         accountMapper.updateAccount(account, accountDTO);

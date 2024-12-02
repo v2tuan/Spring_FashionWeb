@@ -16,7 +16,7 @@ public class OrderDetailsId implements Serializable {
 
     private Long orderId;
     private Long prodId;
-    private String size;
+    private Long size;
 
     @Override
     public boolean equals(Object o) {

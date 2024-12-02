@@ -13,7 +13,7 @@ import java.util.Objects;
 @NoArgsConstructor
 @AllArgsConstructor
 public class CartDetailsId implements Serializable {
-    private String size;
+    private Long size;
     private Long prodId;
     private Long cartId;
 

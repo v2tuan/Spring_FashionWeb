@@ -9,7 +9,7 @@ import java.util.List;
 @Repository
 public interface IProductRepository extends JpaRepository<Product, Long> {
     List<Product> findByBrandBrandId(Long brandId); // Tìm sản phẩm theo brandId
-    List<Product> findBySubcategorySubCatId(Long subCatId); // Tìm sản phẩm theo subcategoryId
+    List<Product> findBySubcategorySubCateId(Long subCatId); // Tìm sản phẩm theo subcategoryId
     List<Product> findByStatus(String status); // Tìm sản phẩm theo trạng thái (ví dụ: "active")
 
     List<Product> findAllByBrandBrandId(Long id);

@@ -30,7 +30,7 @@ public class Product {
     private Brand brand;
 
     @ManyToOne
-    @JoinColumn(name = "subCatId", nullable = false)
+    @JoinColumn(name = "subCateId", nullable = false)
     private Subcategory subcategory;
 
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)

@@ -13,7 +13,4 @@ public interface IProdReviewService {
     void deleteProdReview(Long reviewId);
 
     List<ProdReview> getReviewsByProduct(Long prodId);
-
-    List<ProdReview> getReviewsByCustomer(Long custId);
-
     List<ProdReview> findByProductProdIdAndSizeSizeId(Long prodId, Long sizeId);}

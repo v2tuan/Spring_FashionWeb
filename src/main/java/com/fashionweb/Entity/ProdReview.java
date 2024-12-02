@@ -22,8 +22,8 @@ public class ProdReview {
     private Date reviewDate;
 
     @ManyToOne
-    @JoinColumn(name = "custId", nullable = false)
-    private Customer customer;
+    @JoinColumn(name = "accId", nullable = false)
+    private Account account;
 
     @ManyToOne
     @JoinColumn(name = "prodId", nullable = true)  // Cho phép null khi xóa Product

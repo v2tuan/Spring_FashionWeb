@@ -30,7 +30,7 @@ public class ProdReviewService implements IProdReviewService {
     @Override
     public <S extends ProdReview> S createProdReview(S prodReview) {
         // Kiểm tra tính hợp lệ của thông tin sản phẩm và khách hàng trước khi lưu
-        if (prodReview.getProduct() == null || prodReview.getCustomer() == null) {
+        if (prodReview.getProduct() == null ) {
             throw new RuntimeException("Thông tin sản phẩm hoặc khách hàng không hợp lệ.");
         }
         return iProdReviewRepository.save(prodReview);
@@ -39,7 +39,7 @@ public class ProdReviewService implements IProdReviewService {
     @Override
     public <S extends ProdReview> S updateProdReview(S prodReview) {
         // Kiểm tra tính hợp lệ của thông tin trước khi cập nhật
-        if (prodReview.getProduct() == null || prodReview.getCustomer() == null) {
+        if (prodReview.getProduct() == null) {
             throw new RuntimeException("Thông tin sản phẩm hoặc khách hàng không hợp lệ.");
         }
         return iProdReviewRepository.save(prodReview);
@@ -57,11 +57,6 @@ public class ProdReviewService implements IProdReviewService {
         return iProdReviewRepository.findByProductProdId(prodId);
     }
 
-    @Override
-    public List<ProdReview> getReviewsByCustomer(Long custId) {
-        // Tìm các đánh giá sản phẩm của khách hàng theo custId
-        return iProdReviewRepository.findByCustomerCustId(custId);
-    }
 
     @Override
     public List<ProdReview> findByProductProdIdAndSizeSizeId(Long prodId, Long sizeId) {
