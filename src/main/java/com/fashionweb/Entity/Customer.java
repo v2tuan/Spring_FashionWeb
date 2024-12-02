@@ -21,8 +21,8 @@ public class Customer {
     private String custPhone;
     private String address;
 
-    // Thêm cartId vào Customer để lưu thông tin về giỏ hàng
-    private Long cartId;  // Trường này lưu cartId của giỏ hàng (không cần bảng Cart nữa)
+    @Column(nullable = false, unique = true)
+    private Long cartId;
 
     @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "accountId")
