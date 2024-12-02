@@ -22,7 +22,7 @@ public class CartDetailService implements ICartDetailService {
 
     @Override
     public Optional<CartDetail> getById(Long id) {
-        return cartDetailRepos.findById(id);        // Long??? CartDetailsId???
+        return cartDetailRepos.findById(id);        //! Long??? CartDetailsId???
     }
 
     @Override
@@ -63,10 +63,10 @@ public class CartDetailService implements ICartDetailService {
 
     @Override
     public void deleteCart(Long id) {
-        if (cartDetailRepos.existsById(id)) {            // Long??? CartDetailsId???
-
+        if (cartDetailRepos.existsById(id)) {            //! Long??? CartDetailsId???
+            throw new RuntimeException("Không tìm thấy 'Cart' với cartId(" + id + ")");
         }
 
-        //cartDetailRepos.deleteById(id);
+        cartDetailRepos.deleteById(id);
     }
 }

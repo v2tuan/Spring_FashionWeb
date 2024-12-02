@@ -1,7 +1,9 @@
 package com.fashionweb.service.Impl;
 
 import com.fashionweb.Entity.Brand;
+import com.fashionweb.Entity.Product;
 import com.fashionweb.repository.IBrandRepository;
+import com.fashionweb.repository.IProductRepository;
 import com.fashionweb.service.IBrandService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,6 +16,8 @@ public class BrandService implements IBrandService {
 
     @Autowired
     private IBrandRepository brandRepos;
+    @Autowired
+    private IProductRepository productRepos;
 
     @Override
     public List<Brand> getAll() {
@@ -65,6 +69,11 @@ public class BrandService implements IBrandService {
         }
 
         brandRepos.deleteById(id);
+    }
+
+    @Override
+    public List<Product> getProductsByBrandId(Long id) {
+        return productRepos.findAllByBrandBrandId(id);
     }
 
 }
