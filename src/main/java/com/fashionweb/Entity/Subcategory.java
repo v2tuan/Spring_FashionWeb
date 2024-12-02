@@ -1,6 +1,5 @@
 package com.fashionweb.Entity;
 
-
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -16,7 +15,7 @@ public class Subcategory {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long subCatId;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)  // Xóa Category, các Subcategory cũng bị xóa
     @JoinColumn(name = "categoryId", nullable = false)
     private Category category;
 }

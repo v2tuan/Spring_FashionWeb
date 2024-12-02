@@ -5,7 +5,6 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-
 import java.util.Date;
 
 @Data
@@ -27,10 +26,10 @@ public class ProdReview {
     private Customer customer;
 
     @ManyToOne
-    @JoinColumn(name = "prodId", nullable = false)
+    @JoinColumn(name = "prodId", nullable = true)  // Cho phép null khi xóa Product
     private Product product;
 
     @ManyToOne
-    @JoinColumn(name = "sizeId")
+    @JoinColumn(name = "sizeId", nullable = true)  // Cho phép null khi xóa Size
     private Size size;
 }

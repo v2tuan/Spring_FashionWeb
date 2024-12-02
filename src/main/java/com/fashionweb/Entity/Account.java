@@ -45,6 +45,7 @@ public class Account {
         return encoder.matches(rawPassword, this.password); // So sánh mật khẩu nhập vào với mật khẩu đã mã hóa
     }
 
-    @OneToOne(mappedBy = "account")
+    @OneToOne(mappedBy = "account", cascade = CascadeType.ALL, orphanRemoval = true)
     private Customer customer;
+
 }

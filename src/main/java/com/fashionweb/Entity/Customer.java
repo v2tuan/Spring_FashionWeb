@@ -7,7 +7,6 @@ import lombok.NoArgsConstructor;
 
 import java.util.List;
 
-
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -22,7 +21,10 @@ public class Customer {
     private String custPhone;
     private String address;
 
-    @OneToOne
+    // Thêm cartId vào Customer để lưu thông tin về giỏ hàng
+    private Long cartId;  // Trường này lưu cartId của giỏ hàng (không cần bảng Cart nữa)
+
+    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "accountId")
     private Account account;
 
@@ -33,12 +35,9 @@ public class Customer {
         }
     }
 
-    @OneToMany(mappedBy = "customer")
+    @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Order> orders;
 
-    @OneToMany(mappedBy = "customer")
-    private List<Cart> carts;
-
-    @OneToMany(mappedBy = "customer")
+    @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ProdReview> reviews;
 }

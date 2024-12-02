@@ -16,7 +16,6 @@ public class CartDetailsId implements Serializable {
     private String size;
     private Long prodId;
     private Long cartId;
-    private Long custId;
 
     @Override
     public boolean equals(Object o) {
@@ -25,12 +24,12 @@ public class CartDetailsId implements Serializable {
         CartDetailsId that = (CartDetailsId) o;
         return Objects.equals(size, that.size) &&
                 Objects.equals(prodId, that.prodId) &&
-                Objects.equals(cartId, that.cartId) &&
-                Objects.equals(custId, that.custId);
+                Objects.equals(cartId, that.cartId);
+
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(size, prodId, cartId, custId);
+        return Objects.hash(size, prodId, cartId);
     }
 }

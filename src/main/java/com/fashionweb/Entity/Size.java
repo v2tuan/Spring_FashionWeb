@@ -21,13 +21,12 @@ public class Size {
     private Integer quantity;
 
     @ManyToOne
-    @JoinColumn(name = "prodId", nullable = false)
+    @JoinColumn(name = "prodId", nullable = true)  // Cho phép null khi xóa Product
     private Product product;
 
-    @OneToMany(mappedBy = "size")
+    @OneToMany(mappedBy = "size", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<CartDetail> cartDetails;
 
-    @OneToMany(mappedBy = "size")
+    @OneToMany(mappedBy = "size", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<OrderDetail> orderDetails;
 }
-

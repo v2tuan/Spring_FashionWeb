@@ -7,7 +7,6 @@ import lombok.NoArgsConstructor;
 
 import java.util.List;
 
-
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -21,6 +20,7 @@ public class Category {
     private String cateName;
     private String description;
 
-    @OneToMany(mappedBy = "category")
-    private List<Product> products;
+    @OneToMany(mappedBy = "category", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Subcategory> subcategories;
+
 }
