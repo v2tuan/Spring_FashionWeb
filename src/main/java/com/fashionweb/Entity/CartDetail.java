@@ -5,7 +5,6 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -31,10 +30,5 @@ public class CartDetail {
     @ManyToOne
     @MapsId("cartId")
     @JoinColumn(name = "cartId", nullable = false)
-    private Cart cart;
-
-    @ManyToOne
-    @MapsId("custId")
-    @JoinColumn(name = "custId", nullable = false)
-    private Customer customer;
+    private Customer customer;  // Liên kết với Customer qua cartId
 }

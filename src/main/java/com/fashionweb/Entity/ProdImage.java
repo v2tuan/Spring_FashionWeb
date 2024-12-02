@@ -19,7 +19,7 @@ public class ProdImage {
 
     private String stt;
 
-    @ManyToOne
-    @JoinColumn(name = "prodId")
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "prodId", nullable = true)  // Cho phép null khi xóa Product
     private Product product;
 }
