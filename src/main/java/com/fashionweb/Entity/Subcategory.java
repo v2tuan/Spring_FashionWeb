@@ -13,7 +13,9 @@ import lombok.NoArgsConstructor;
 public class Subcategory {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long subCatId;
+    private Long subCateId;
+
+    private String subCateName;
 
     @ManyToOne(cascade = CascadeType.ALL)  // Xóa Category, các Subcategory cũng bị xóa
     @JoinColumn(name = "categoryId", nullable = false)

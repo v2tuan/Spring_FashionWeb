@@ -31,21 +31,7 @@ public class BrandService implements IBrandService {
 
     @Override
     public Optional<Brand> findByNameOrEmailOrPhone(String keyword) {
-        Optional<Brand> brand = brandRepos.findByBrandName(keyword);
-
-        if (brand.isEmpty()) {
-            brand = brandRepos.findByEmail(keyword);
-
-            if (brand.isEmpty()) {
-                brand = brandRepos.findByPhone(keyword);
-
-                if (brand.isEmpty()) {
-                    return Optional.empty();
-                }
-            }
-        }
-
-        return brand;
+        return brandRepos.findByBrandName(keyword).or(() -> brandRepos.findByEmail(keyword).or(() -> brandRepos.findByPhone(keyword)));
     }
 
     @Override

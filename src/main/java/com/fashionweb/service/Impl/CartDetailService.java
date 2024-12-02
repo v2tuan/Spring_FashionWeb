@@ -1,6 +1,7 @@
 package com.fashionweb.service.Impl;
 
 import com.fashionweb.Entity.CartDetail;
+import com.fashionweb.Entity.CartDetailsId;
 import com.fashionweb.repository.ICartDetailRepository;
 import com.fashionweb.service.ICartDetailService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,12 +23,17 @@ public class CartDetailService implements ICartDetailService {
 
     @Override
     public Optional<CartDetail> getById(Long id) {
-        return cartDetailRepos.findById(id);        //! Long??? CartDetailsId???
+        return cartDetailRepos.findById(id);        //! Long
+    }
+
+    @Override
+    public Optional<CartDetail> getById(CartDetailsId id) {
+        return cartDetailRepos.findById(id);        //! CartDetailsId
     }
 
     @Override
     public void addCartDetail(CartDetail cartDetail) {
-        if (cartDetailRepos.existsById(cartDetail.getId())) {
+        if (cartDetailRepos.existsById(cartDetail.getId())) {   //! CartDetailsId
             throw new RuntimeException("'Cart' với id(" + cartDetail.getId().getCartId() + ", "
                                                         + cartDetail.getId().getProdId() + ", "
                                                         + cartDetail.getId().getSize()
@@ -39,7 +45,7 @@ public class CartDetailService implements ICartDetailService {
 
     @Override
     public void updateCartDetail(CartDetail cartDetail) {
-        if (cartDetailRepos.existsById(cartDetail.getId())) {
+        if (cartDetailRepos.existsById(cartDetail.getId())) {   //! CartDetailsId
             throw new RuntimeException("Không tìm thấy 'Cart' với id(" + cartDetail.getId().getCartId() + ", "
                                                                         + cartDetail.getId().getProdId() + ", "
                                                                         + cartDetail.getId().getSize()
@@ -51,7 +57,7 @@ public class CartDetailService implements ICartDetailService {
 
     @Override
     public void deleteCartDetail(CartDetail cartDetail) {
-        if (cartDetailRepos.existsById(cartDetail.getId())) {
+        if (cartDetailRepos.existsById(cartDetail.getId())) {   //! CartDetailsId
             throw new RuntimeException("Không tìm thấy 'Cart' với id(" + cartDetail.getId().getCartId() + ", "
                                                                         + cartDetail.getId().getProdId() + ", "
                                                                         + cartDetail.getId().getSize()
@@ -63,7 +69,7 @@ public class CartDetailService implements ICartDetailService {
 
     @Override
     public void deleteCart(Long id) {
-        if (cartDetailRepos.existsById(id)) {            //! Long??? CartDetailsId???
+        if (cartDetailRepos.existsById(id)) {            //! Long
             throw new RuntimeException("Không tìm thấy 'Cart' với cartId(" + id + ")");
         }
 
