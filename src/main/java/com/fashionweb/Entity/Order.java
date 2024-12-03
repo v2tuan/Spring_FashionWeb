@@ -1,10 +1,12 @@
 package com.fashionweb.Entity;
 
+import com.fashionweb.Enum.OrderStatus;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 
@@ -18,20 +20,24 @@ public class Order {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long orderId;
 
-    private Date orderDate;
-    private Double totalAmount;
-    private String status;
-    private String shippingAddress;
+    private LocalDate createDate;
+    private Double total;
+
+    @Enumerated(EnumType.STRING)
+    private OrderStatus status;
 
     @ManyToOne
     @JoinColumn(name = "accId")
     private Account account;
 
+    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
+    private List<OrderItem> orderItems;
+
     @ManyToOne
-    @JoinColumn(name = "discountId", nullable = true)
+    @JoinColumn(name = "discountId")
     private Discount discount;
 
-    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<OrderDetail> orderDetails;
+    @OneToOne(mappedBy = "order", cascade = CascadeType.ALL)
+    private Address address;
 
 }

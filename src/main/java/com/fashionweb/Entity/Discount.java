@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 
@@ -21,9 +22,10 @@ public class Discount {
     private String voucher;
     private String description;
     private Double discountPercentage;
-    private Date startDate;
-    private Date endDate;
+    private LocalDate startDate;
+    private LocalDate endDate;
+    private LocalDate createDate;
 
-    @OneToMany(mappedBy = "discount", orphanRemoval = false)  // Không xóa Order khi xóa Discount
+    @OneToMany(mappedBy = "discount", cascade = CascadeType.ALL)
     private List<Order> orders;
 }

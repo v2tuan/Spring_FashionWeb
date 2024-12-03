@@ -1,5 +1,6 @@
 package com.fashionweb.Entity;
 
+import com.fashionweb.Entity.Embeddable.OrderItemsId;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -9,10 +10,10 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "OrderDetails")
-public class OrderDetail {
+@Table(name = "OrderItems")
+public class OrderItem {
     @EmbeddedId
-    private OrderDetailsId id;
+    private OrderItemsId id;
 
     private Double price;
     private Integer quantity;
@@ -28,7 +29,9 @@ public class OrderDetail {
     private Product product;
 
     @ManyToOne
-    @MapsId("size")
-    @JoinColumn(name = "size", nullable = true)  // Cho phép null khi xóa Size
+    @JoinColumns({
+            @JoinColumn(name = "sizeName", referencedColumnName = "sizeName", insertable = false, updatable = false),
+            @JoinColumn(name = "prodId", referencedColumnName = "prodId", insertable = false, updatable = false)
+    })
     private Size size;
 }

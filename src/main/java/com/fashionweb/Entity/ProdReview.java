@@ -1,10 +1,13 @@
 package com.fashionweb.Entity;
 
+import com.fashionweb.Entity.Embeddable.ProdReviewsId;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Date;
 
 @Data
@@ -13,23 +16,21 @@ import java.util.Date;
 @Entity
 @Table(name = "ProdReviews")
 public class ProdReview {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long reviewId;
+    @EmbeddedId
+    private ProdReviewsId reviewId;
 
     private Integer rating;
     private String comment;
-    private Date reviewDate;
+    private LocalDate createDate;
+    private String images;
 
     @ManyToOne
-    @JoinColumn(name = "accId", nullable = false)
-    private Account account;
-
-    @ManyToOne
-    @JoinColumn(name = "prodId", nullable = true)  // Cho phép null khi xóa Product
+    @MapsId("prodId") // Maps "prodId" from SizeId
+    @JoinColumn(name = "prodId", nullable = false)
     private Product product;
 
     @ManyToOne
-    @JoinColumn(name = "sizeId", nullable = true)  // Cho phép null khi xóa Size
-    private Size size;
+    @MapsId("accId") // Maps "prodId" from SizeId
+    @JoinColumn(name = "accId", nullable = false)
+    private Account account;
 }

@@ -5,10 +5,12 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
+@Entity
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Entity
 @Table(name = "Subcategories")
 public class Subcategory {
     @Id
@@ -16,8 +18,13 @@ public class Subcategory {
     private Long subCateId;
 
     private String subCateName;
+    private String description;
 
-    @ManyToOne(cascade = CascadeType.ALL)  // Xóa Category, các Subcategory cũng bị xóa
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "categoryId", nullable = false)
     private Category category;
+
+    @OneToMany(mappedBy = "subcategory", cascade = CascadeType.ALL)
+    private List<Product> products;
 }
+
