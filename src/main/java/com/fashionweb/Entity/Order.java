@@ -7,33 +7,37 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 
-@Entity
 @Data
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
+@Entity
 @Table(name = "Orders")
 public class Order {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long orderId;
 
-    private LocalDateTime createDate;
+    private LocalDate createDate;
     private Double total;
-    private String status;
+
+    @Enumerated(EnumType.STRING)
+    private OrderStatus status;
 
     @ManyToOne
-    @JoinColumn(name = "discountId", referencedColumnName = "discountId")
-    private Discount discount;
-
-    @ManyToOne
-    @JoinColumn(name = "accId", referencedColumnName = "accId")
+    @JoinColumn(name = "accId")
     private Account account;
 
-    @OneToMany(mappedBy = "order")
+    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
     private List<OrderItem> orderItems;
-}
 
+    @ManyToOne
+    @JoinColumn(name = "discountId")
+    private Discount discount;
+
+    @OneToOne(mappedBy = "order", cascade = CascadeType.ALL)
+    private Address address;
+
+}

@@ -15,7 +15,7 @@ import java.util.List;
 public class Subcategory {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long subCateId;
+    private Long subCatId;
 
     private String subCateName;
     private String description;

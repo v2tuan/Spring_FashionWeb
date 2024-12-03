@@ -37,8 +37,8 @@ public class SubcategoryService implements ISubcategoryService {
 
     @Override
     public void updateSubcategory(Subcategory subcategory) {
-        if(subcategoryRepos.existsById(subcategory.getSubCateId())) {
-            throw new RuntimeException("Không tìm thấy 'Subcategory' với id(" + subcategory.getSubCateId() + ")");
+        if(subcategoryRepos.existsById(subcategory.getSubCatId())) {
+            throw new RuntimeException("Không tìm thấy 'Subcategory' với id(" + subcategory.getSubCatId() + ")");
         }
 
         subcategoryRepos.save(subcategory);

@@ -25,12 +25,12 @@ public class ProdReview {
     private String images;
 
     @ManyToOne
-    @MapsId("prodId")
-    @JoinColumn(name = "prodId")
+    @MapsId("prodId") // Maps "prodId" from SizeId
+    @JoinColumn(name = "prodId", nullable = false)
     private Product product;
 
     @ManyToOne
-    @MapsId("accId")
-    @JoinColumn(name = "accId")
+    @MapsId("accId") // Maps "prodId" from SizeId
+    @JoinColumn(name = "accId", nullable = false)
     private Account account;
 }

@@ -7,7 +7,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 
 @Entity
 @Data
@@ -19,18 +18,23 @@ public class CartItem {
     private CartItemsId id;
 
     private Integer quantity;
-    private LocalDateTime createDate;
+    private Double price;
+    private LocalDate createDate;
 
-    @MapsId("accId")
     @ManyToOne
-    @JoinColumn(name = "accId", referencedColumnName = "accId")
+    @MapsId("accId")
+    @JoinColumn(name = "accId", insertable = false, updatable = false)
     private Account account;
 
+    @ManyToOne
     @MapsId("prodId")
+    @JoinColumn(name = "prodId", insertable = false, updatable = false)
+    private Product product;
+
     @ManyToOne
     @JoinColumns({
-            @JoinColumn(name = "sizeName", referencedColumnName = "sizeName"),
-            @JoinColumn(name = "prodId", referencedColumnName = "prodId")
+            @JoinColumn(name = "sizeName", referencedColumnName = "sizeName", insertable = false, updatable = false),
+            @JoinColumn(name = "prodId", referencedColumnName = "prodId", insertable = false, updatable = false)
     })
     private Size size;
 

@@ -45,16 +45,7 @@ public class Account {
     private LocalDateTime verificationCodeExpiresAt;
 
     private LocalDate createDate;
-
-
-//    @OneToMany(mappedBy = "account", cascade = CascadeType.ALL)
-//    private List<ProdReview> reviews;
-//
-//    @OneToMany(mappedBy = "account", cascade = CascadeType.ALL)
-//    private List<Order> orders;
-//
-//    @OneToMany(mappedBy = "account", cascade = CascadeType.ALL)
-//    private List<CartItem> cartItems;
+    
     @OneToMany(mappedBy = "account")
     private List<Order> orders;
 

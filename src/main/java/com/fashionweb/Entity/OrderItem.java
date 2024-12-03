@@ -6,31 +6,32 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Entity
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Entity
 @Table(name = "OrderItems")
 public class OrderItem {
-
     @EmbeddedId
     private OrderItemsId id;
 
-    private Integer quantity;
     private Double price;
+    private Integer quantity;
 
-    @MapsId("orderId")
     @ManyToOne
-    @JoinColumn(name = "orderId", referencedColumnName = "orderId")
+    @MapsId("orderId")
+    @JoinColumn(name = "orderId", nullable = false)
     private Order order;
 
-    @MapsId("sizeName")
+    @ManyToOne
+    @MapsId("prodId")
+    @JoinColumn(name = "prodId", nullable = true)  // Cho phép null khi xóa Product
+    private Product product;
+
     @ManyToOne
     @JoinColumns({
-            @JoinColumn(name = "sizeName", referencedColumnName = "sizeName"),
-            @JoinColumn(name = "prodId", referencedColumnName = "prodId")
+            @JoinColumn(name = "sizeName", referencedColumnName = "sizeName", insertable = false, updatable = false),
+            @JoinColumn(name = "prodId", referencedColumnName = "prodId", insertable = false, updatable = false)
     })
     private Size size;
 }
-
-
