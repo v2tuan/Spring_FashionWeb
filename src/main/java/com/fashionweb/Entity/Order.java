@@ -1,37 +1,39 @@
 package com.fashionweb.Entity;
 
+import com.fashionweb.Enum.OrderStatus;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 
-@Data
-@AllArgsConstructor
-@NoArgsConstructor
 @Entity
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 @Table(name = "Orders")
 public class Order {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long orderId;
 
-    private Date orderDate;
-    private Double totalAmount;
+    private LocalDateTime createDate;
+    private Double total;
     private String status;
-    private String shippingAddress;
 
     @ManyToOne
-    @JoinColumn(name = "accId")
-    private Account account;
-
-    @ManyToOne
-    @JoinColumn(name = "discountId", nullable = true)
+    @JoinColumn(name = "discountId", referencedColumnName = "discountId")
     private Discount discount;
 
-    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<OrderDetail> orderDetails;
+    @ManyToOne
+    @JoinColumn(name = "accId", referencedColumnName = "accId")
+    private Account account;
 
+    @OneToMany(mappedBy = "order")
+    private List<OrderItem> orderItems;
 }
+

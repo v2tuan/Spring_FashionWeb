@@ -1,7 +1,7 @@
 package com.fashionweb.service.Impl;
 
-import com.fashionweb.Entity.CartDetail;
-import com.fashionweb.Entity.CartDetailsId;
+import com.fashionweb.Entity.CartItem;
+import com.fashionweb.Entity.Embeddable.CartItemsId;
 import com.fashionweb.repository.ICartDetailRepository;
 import com.fashionweb.service.ICartDetailService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,52 +17,52 @@ public class CartDetailService implements ICartDetailService {
     ICartDetailRepository cartDetailRepos;
 
     @Override
-    public List<CartDetail> getAll() {
+    public List<CartItem> getAll() {
         return cartDetailRepos.findAll();
     }
 
     @Override
-    public Optional<CartDetail> getById(Long id) {
+    public Optional<CartItem> getById(Long id) {
         return cartDetailRepos.findById(id);        //! Long
     }
 
     @Override
-    public Optional<CartDetail> getById(CartDetailsId id) {
+    public Optional<CartItem> getById(CartItemsId id) {
         return cartDetailRepos.findById(id);        //! CartDetailsId
     }
 
     @Override
-    public void addCartDetail(CartDetail cartDetail) {
-        if (cartDetailRepos.existsById(cartDetail.getId())) {   //! CartDetailsId
-            throw new RuntimeException("'Cart' với id(" + cartDetail.getId().getCartId() + ", "
-                                                        + cartDetail.getId().getProdId() + ", "
-                                                        + cartDetail.getId().getSize()
-                                                        + ") đã tồn tại");
-        }
+    public void addCartDetail(CartItem cartDetail) {
+//        if (cartDetailRepos.existsById(cartDetail.getId())) {   //! CartDetailsId
+//            throw new RuntimeException("'Cart' với id(" + cartDetail.getId().getCartId() + ", "
+//                                                        + cartDetail.getId().getProdId() + ", "
+//                                                        + cartDetail.getId().getSize()
+//                                                        + ") đã tồn tại");
+//        }
 
         cartDetailRepos.save(cartDetail);
     }
 
     @Override
-    public void updateCartDetail(CartDetail cartDetail) {
-        if (cartDetailRepos.existsById(cartDetail.getId())) {   //! CartDetailsId
-            throw new RuntimeException("Không tìm thấy 'Cart' với id(" + cartDetail.getId().getCartId() + ", "
-                                                                        + cartDetail.getId().getProdId() + ", "
-                                                                        + cartDetail.getId().getSize()
-                                                                        + ")");
-        }
+    public void updateCartDetail(CartItem cartDetail) {
+//        if (cartDetailRepos.existsById(cartDetail.getId())) {   //! CartDetailsId
+//            throw new RuntimeException("Không tìm thấy 'Cart' với id(" + cartDetail.getId().getCartId() + ", "
+//                                                                        + cartDetail.getId().getProdId() + ", "
+//                                                                        + cartDetail.getId().getSize()
+//                                                                        + ")");
+//        }
 
         cartDetailRepos.save(cartDetail);
     }
 
     @Override
-    public void deleteCartDetail(CartDetail cartDetail) {
-        if (cartDetailRepos.existsById(cartDetail.getId())) {   //! CartDetailsId
-            throw new RuntimeException("Không tìm thấy 'Cart' với id(" + cartDetail.getId().getCartId() + ", "
-                                                                        + cartDetail.getId().getProdId() + ", "
-                                                                        + cartDetail.getId().getSize()
-                                                                        + ")");
-        }
+    public void deleteCartDetail(CartItem cartDetail) {
+//        if (cartDetailRepos.existsById(cartDetail.getId())) {   //! CartDetailsId
+//            throw new RuntimeException("Không tìm thấy 'Cart' với id(" + cartDetail.getId().getCartId() + ", "
+//                                                                        + cartDetail.getId().getProdId() + ", "
+//                                                                        + cartDetail.getId().getSize()
+//                                                                        + ")");
+//        }
 
         cartDetailRepos.delete(cartDetail);
     }

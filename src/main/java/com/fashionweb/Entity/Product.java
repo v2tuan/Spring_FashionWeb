@@ -5,13 +5,14 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.util.Date;
 import java.util.List;
 
+@Entity
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Entity
 @Table(name = "Products")
 public class Product {
     @Id
@@ -22,29 +23,38 @@ public class Product {
     private String description;
     private Double regular;
     private Double promo;
-    private String status;
+    private Boolean status;
     private Integer totalQuantity;
+    private String images;
+    private Date createDate;
 
+//    @ManyToOne
+//    @JoinColumn(name = "brandId", nullable = false)
+//    private Brand brand;
+//
+//    // Đảm bảo rằng tên thuộc tính này là `subcategory`
+//    @ManyToOne
+//    @JoinColumn(name = "subCateId", nullable = false)
+//    private Subcategory subcategory;
+//
+//    // Các quan hệ OneToMany
+//    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
+//    private List<Size> sizes;
+//
+//    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
+//    private List<CartItem> cartItems;
+//
+//    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
+//    private List<ProdReview> productReviews;
     @ManyToOne
-    @JoinColumn(name = "brandId", nullable = false)
+    @JoinColumn(name = "brandId", referencedColumnName = "brandId")
     private Brand brand;
 
     @ManyToOne
-    @JoinColumn(name = "subCateId", nullable = false)
+    @JoinColumn(name = "subCatId", referencedColumnName = "subCatId")
     private Subcategory subcategory;
 
-    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "product")
     private List<Size> sizes;
-
-    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<CartDetail> cartDetails;
-
-    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<OrderDetail> orderDetails;
-
-    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<ProdImage> productImages;
-
-    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<ProdReview> productReviews;
 }
+

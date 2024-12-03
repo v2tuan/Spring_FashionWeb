@@ -1,7 +1,7 @@
 package com.fashionweb.service.Impl;
 
 import com.fashionweb.Entity.Account;
-import com.fashionweb.Entity.CartDetail;
+import com.fashionweb.Entity.CartItem;
 import com.fashionweb.dto.request.accounts.AccountDTO;
 import com.fashionweb.mapper.IAccountMapper;
 import com.fashionweb.repository.IAccountRepository;
@@ -70,7 +70,7 @@ public class AccountService implements IAccountService {
     }
 
     @Override
-    public List<CartDetail> cart(Long accountId) {
+    public List<CartItem> cart(Long accountId) {
         return cartDetailRepos.findAllByAccountAccId(accountId);
     }
 }
