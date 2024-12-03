@@ -11,6 +11,6 @@ public interface IOrderService {
     List<Order> findAll();
     Optional<Order> findById(Long orderId);
     void deleteById(Long orderId);
-    Optional<Order> findByOrderDate(Date orderDate);
+    Optional<Order> findByCreateDate(Date createDate);
     Optional<Order> findByStatus(String status);
 }

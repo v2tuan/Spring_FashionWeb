@@ -1,5 +1,6 @@
 package com.fashionweb.service.Impl;
 
+import com.fashionweb.Entity.Embeddable.ProdReviewsId;
 import com.fashionweb.Entity.ProdReview;
 import com.fashionweb.repository.IProdReviewRepository;
 import com.fashionweb.service.IProdReviewService;
@@ -59,7 +60,7 @@ public class ProdReviewService implements IProdReviewService {
 
 
     @Override
-    public List<ProdReview> findByProductProdIdAndSizeSizeId(Long prodId, Long sizeId) {
-        return iProdReviewRepository.findByProductProdIdAndSizeSizeId(prodId, sizeId);
+    public List<ProdReview> findById(ProdReviewsId id) {
+        return iProdReviewRepository.findByReviewId(id);
     }
 }

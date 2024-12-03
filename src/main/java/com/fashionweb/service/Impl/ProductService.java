@@ -64,7 +64,7 @@ public class    ProductService implements IProductService {
     }
 
     @Override
-    public List<Product> getProductsByStatus(String status) {
+    public List<Product> getProductsByStatus(Boolean status) {
         // Tìm sản phẩm theo trạng thái
         return iProductRepository.findByStatus(status);
     }
