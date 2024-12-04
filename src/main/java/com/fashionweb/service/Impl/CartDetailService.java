@@ -68,9 +68,9 @@ public class CartDetailService implements ICartDetailService {
     }
 
     @Override
-    public void deleteCart(Long id) {
-        if (cartDetailRepos.existsById(id)) {            //! Long
-            throw new RuntimeException("Không tìm thấy 'Cart' với cartId(" + id + ")");
+    public void deleteCart(Long accId) {
+        if (cartItemRepos.existsById(accId)) {
+            throw new RuntimeException("Không tìm thấy 'Cart' với cartId(" + accId + ")");
         }
 
         cartDetailRepos.deleteById(id);
