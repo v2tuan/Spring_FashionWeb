@@ -33,14 +33,18 @@ public class CartDetailService implements ICartDetailService {
 
     @Override
     public void addCartDetail(CartItem cartDetail) {
-//        if (cartDetailRepos.existsById(cartDetail.getId())) {   //! CartDetailsId
-//            throw new RuntimeException("'Cart' với id(" + cartDetail.getId().getCartId() + ", "
-//                                                        + cartDetail.getId().getProdId() + ", "
-//                                                        + cartDetail.getId().getSize()
-//                                                        + ") đã tồn tại");
-//        }
+        // Kiểm tra xem sản phẩm đã tồn tại trong giỏ hàng chưa
+        Optional<CartItem> existingCartItem = cartDetailRepos.findById(cartDetail.getId());
 
-        cartDetailRepos.save(cartDetail);
+        if (existingCartItem.isPresent()) {
+            // Nếu đã tồn tại, tăng số lượng lên 1
+            CartItem existingItem = existingCartItem.get();
+            existingItem.setQuantity(existingItem.getQuantity() + 1);
+            cartDetailRepos.save(existingItem);
+        } else {
+            // Nếu chưa tồn tại, thêm mới vào giỏ hàng
+            cartDetailRepos.save(cartDetail);
+        }
     }
 
     @Override
