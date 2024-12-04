@@ -1,5 +1,6 @@
 package com.fashionweb.service;
 
+import com.fashionweb.Entity.Embeddable.ProdReviewsId;
 import com.fashionweb.Entity.ProdReview;
 
 import java.util.List;
@@ -13,4 +14,5 @@ public interface IProdReviewService {
     void deleteProdReview(Long reviewId);
 
     List<ProdReview> getReviewsByProduct(Long prodId);
-    List<ProdReview> findByProductProdIdAndSizeSizeId(Long prodId, Long sizeId);}
+    List<ProdReview> findById(ProdReviewsId id);
+}

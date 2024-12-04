@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class ProductService implements IProductService {
+public class    ProductService implements IProductService {
 
     @Autowired
     private IProductRepository iProductRepository;
@@ -64,7 +64,7 @@ public class ProductService implements IProductService {
     }
 
     @Override
-    public List<Product> getProductsByStatus(String status) {
+    public List<Product> getProductsByStatus(Boolean status) {
         // Tìm sản phẩm theo trạng thái
         return iProductRepository.findByStatus(status);
     }

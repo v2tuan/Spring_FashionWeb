@@ -50,8 +50,8 @@ public class OrderService implements IOrderService {
     }
 
     @Override
-    public Optional<Order> findByOrderDate(Date orderDate) {
-        return orderRepository.findByOrderDate(orderDate);
+    public Optional<Order> findByCreateDate(Date createDate) {
+        return orderRepository.findByCreateDate(createDate);
     }
 
     @Override

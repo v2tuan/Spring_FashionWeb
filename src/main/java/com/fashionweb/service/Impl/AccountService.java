@@ -1,9 +1,11 @@
 package com.fashionweb.service.Impl;
 
 import com.fashionweb.Entity.Account;
+import com.fashionweb.Entity.CartItem;
 import com.fashionweb.dto.request.accounts.AccountDTO;
 import com.fashionweb.mapper.IAccountMapper;
 import com.fashionweb.repository.IAccountRepository;
+import com.fashionweb.repository.ICartDetailRepository;
 import com.fashionweb.service.IAccountService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -19,6 +21,8 @@ public class AccountService implements IAccountService {
     private IAccountRepository iAccountRepository;
     @Autowired
     private IAccountMapper accountMapper;
+    @Autowired
+    private ICartDetailRepository cartDetailRepos;
 
     @Override
     public List<Account> getAllAccounts() {
@@ -63,5 +67,10 @@ public class AccountService implements IAccountService {
     @Override
     public void deleteAccount(long accountId) {
         iAccountRepository.deleteById(accountId);
+    }
+
+    @Override
+    public List<CartItem> cart(Long accountId) {
+        return cartDetailRepos.findAllByAccountAccId(accountId);
     }
 }
