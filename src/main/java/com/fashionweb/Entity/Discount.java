@@ -26,6 +26,6 @@ public class Discount {
     private LocalDate endDate;
     private LocalDate createDate;
 
-    @OneToMany(mappedBy = "discount", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "discount", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Order> orders;
 }

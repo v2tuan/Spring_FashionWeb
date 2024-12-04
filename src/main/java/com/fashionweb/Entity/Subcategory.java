@@ -14,8 +14,8 @@ import java.util.List;
 @Table(name = "Subcategories")
 public class Subcategory {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long subCateId;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)  // Auto-increment behavior
+    private Long subCateId;  // This is the primary key
 
     private String subCateName;
     private String description;
@@ -24,7 +24,7 @@ public class Subcategory {
     @JoinColumn(name = "categoryId", nullable = false)
     private Category category;
 
-    @OneToMany(mappedBy = "subcategory", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "subcategory", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Product> products;
 }
 

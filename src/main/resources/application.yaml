@@ -38,4 +38,4 @@ jwt:
   signerKey: "1TjXchw5FloESb63Kc+DFhTARvpWL4jUGCwfGWxuG5SIf/1y/LgJxHnMqaF6A/ij"
 
 storage:
-  location: D:\\Upload
+  location: C:\\Upload

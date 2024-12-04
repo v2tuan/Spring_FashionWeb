@@ -27,11 +27,6 @@ public class CartItem {
     private Account account;
 
     @ManyToOne
-    @MapsId("prodId")
-    @JoinColumn(name = "prodId", insertable = false, updatable = false)
-    private Product product;
-
-    @ManyToOne
     @JoinColumns({
             @JoinColumn(name = "sizeName", referencedColumnName = "sizeName", insertable = false, updatable = false),
             @JoinColumn(name = "prodId", referencedColumnName = "prodId", insertable = false, updatable = false)

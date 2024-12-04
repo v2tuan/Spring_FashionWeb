@@ -30,14 +30,14 @@ public class Order {
     @JoinColumn(name = "accId")
     private Account account;
 
-    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<OrderItem> orderItems;
 
     @ManyToOne
     @JoinColumn(name = "discountId")
     private Discount discount;
 
-    @OneToOne(mappedBy = "order", cascade = CascadeType.ALL)
+    @OneToOne(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
     private Address address;
 
 }
