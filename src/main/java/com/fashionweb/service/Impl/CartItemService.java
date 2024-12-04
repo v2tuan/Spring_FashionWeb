@@ -2,7 +2,9 @@ package com.fashionweb.service.Impl;
 
 import com.fashionweb.Entity.CartItem;
 import com.fashionweb.Entity.Embeddable.CartItemsId;
+import com.fashionweb.Entity.Product;
 import com.fashionweb.repository.ICartItemRepository;
+import com.fashionweb.repository.IProductRepository;
 import com.fashionweb.service.ICartItemService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,6 +17,8 @@ public class CartItemService implements ICartItemService {
 
     @Autowired
     ICartItemRepository cartItemRepos;
+    @Autowired
+    IProductRepository productRepos;
 
     @Override
     public List<CartItem> getAll() {
@@ -74,6 +78,13 @@ public class CartItemService implements ICartItemService {
         }
 
         cartItemRepos.deleteById(accId);
+    }
+
+    @Override
+    public List<Product> getProductsInCartByAccId(Long accId) {
+        // #
+
+        return null;
     }
 
 }

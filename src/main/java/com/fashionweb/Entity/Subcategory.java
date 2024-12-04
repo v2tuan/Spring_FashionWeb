@@ -15,7 +15,7 @@ import java.util.List;
 public class Subcategory {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)  // Auto-increment behavior
-    private Long subCatId;  // This is the primary key
+    private Long subCateId;  // This is the primary key
 
     private String subCateName;
     private String description;
