@@ -2,6 +2,7 @@ package com.fashionweb.service.Impl;
 
 import com.fashionweb.Entity.Account;
 import com.fashionweb.Entity.CartItem;
+import com.fashionweb.Enum.Role;
 import com.fashionweb.dto.request.accounts.AccountDTO;
 import com.fashionweb.mapper.IAccountMapper;
 import com.fashionweb.repository.IAccountRepository;
@@ -12,6 +13,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 
@@ -37,6 +39,12 @@ public class AccountService implements IAccountService {
     }
 
     @Override
+    public Optional<Account> getAccounts(String email) {
+        // Trả về tài khoản theo ID, nếu không tìm thấy sẽ trả về Optional.empty()
+        return iAccountRepository.findAccountByEmail(email);
+    }
+
+    @Override
     public Account createAccount(AccountDTO accountDTO) {
         // Kiểm tra xem email của tài khoản đã tồn tại trong hệ thống chưa
         if(iAccountRepository.existsByEmail(accountDTO.getEmail())) {
@@ -45,6 +53,8 @@ public class AccountService implements IAccountService {
         Account account = accountMapper.toAccount(accountDTO);
         PasswordEncoder passwordEncoder = new BCryptPasswordEncoder(10);
         account.setPassword(passwordEncoder.encode(account.getPassword()));
+        account.setEnabled(true);
+        account.setRole(Role.USER);
         return iAccountRepository.save(account);
     }
 
