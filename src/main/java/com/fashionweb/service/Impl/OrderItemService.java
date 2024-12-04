@@ -2,8 +2,8 @@ package com.fashionweb.service.Impl;
 
 import com.fashionweb.Entity.OrderItem;
 import com.fashionweb.Entity.Embeddable.OrderItemsId;
-import com.fashionweb.repository.IOrderDetailRepository;
-import com.fashionweb.service.IOrderDetailService;
+import com.fashionweb.repository.IOrderItemRepository;
+import com.fashionweb.service.IOrderItemService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -11,9 +11,9 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class OrderDetailService implements IOrderDetailService {
+public class OrderItemService implements IOrderItemService {
     @Autowired
-    private IOrderDetailRepository orderDetailRepository;
+    private IOrderItemRepository orderItemRepository;
     @Override
     public <S extends OrderItem> S save(S orderDetail) {
         // Kiểm tra nếu ID bị null
@@ -22,29 +22,29 @@ public class OrderDetailService implements IOrderDetailService {
         }
 
         // Kiểm tra sự tồn tại của OrderDetail theo khóa chính
-        Optional<OrderItem> existingOrderDetail = orderDetailRepository.findById(orderDetail.getId());
+        Optional<OrderItem> existingOrderDetail = orderItemRepository.findById(orderDetail.getId());
 
         if (existingOrderDetail.isPresent()) {
             // Nếu đã tồn tại, cập nhật bản ghi
-            return orderDetailRepository.save(orderDetail);
+            return orderItemRepository.save(orderDetail);
         } else {
             // Nếu chưa tồn tại, lưu bản ghi mới
-            return orderDetailRepository.save(orderDetail);
+            return orderItemRepository.save(orderDetail);
         }
     }
 
     @Override
     public List<OrderItem> findAll() {
-        return orderDetailRepository.findAll();
+        return orderItemRepository.findAll();
     }
 
     @Override
     public Optional<OrderItem> findById(OrderItemsId orderDetailId) {
-        return orderDetailRepository.findById(orderDetailId);
+        return orderItemRepository.findById(orderDetailId);
     }
 
     @Override
     public void deleteById(OrderItemsId orderDetailId) {
-        orderDetailRepository.deleteById(orderDetailId);
+        orderItemRepository.deleteById(orderDetailId);
     }
 }

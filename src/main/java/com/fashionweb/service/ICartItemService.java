@@ -6,14 +6,14 @@ import com.fashionweb.Entity.Embeddable.CartItemsId;
 import java.util.List;
 import java.util.Optional;
 
-public interface ICartDetailService {
+public interface ICartItemService {
 
     List<CartItem> getAll();
-    Optional<CartItem> getById(Long id);
+    List<CartItem> getAllByAccId(Long accId);
     Optional<CartItem> getById(CartItemsId id);
-    void addCartDetail(CartItem cartDetail);
-    void updateCartDetail(CartItem cartDetail);
-    void deleteCartDetail(CartItem cartDetail);
-    void deleteCart(Long id);
+    void addCartItem(CartItem cartDetail);
+    void updateCartItem(CartItem cartDetail);
+    void deleteCartItem(CartItemsId id);
+    void deleteCart(Long accId);
 
 }

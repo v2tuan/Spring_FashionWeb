@@ -1,7 +1,9 @@
 package com.fashionweb.service.Impl;
 
 import com.fashionweb.Entity.Discount;
+import com.fashionweb.Entity.Order;
 import com.fashionweb.repository.IDiscountRepository;
+import com.fashionweb.repository.IOrderRepository;
 import com.fashionweb.service.IDiscountService;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +17,8 @@ import java.util.Optional;
 public class DiscountService implements IDiscountService {
     @Autowired
     private IDiscountRepository discountRepository;
+    @Autowired
+    private IOrderRepository orderRepos;
 
     @Override
     public <S extends Discount> S save(S entity) {
@@ -53,5 +57,10 @@ public class DiscountService implements IDiscountService {
     @Override
     public Optional<Discount> findByEndDate(Date endDate) {
         return discountRepository.findByEndDate(endDate);
+    }
+
+    @Override
+    public List<Order> findOrdersByDiscountId(Long discountId) {
+        return orderRepos.findAllByDiscountDiscountId(discountId);
     }
 }

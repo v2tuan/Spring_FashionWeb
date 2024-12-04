@@ -2,8 +2,8 @@ package com.fashionweb.service.Impl;
 
 import com.fashionweb.Entity.CartItem;
 import com.fashionweb.Entity.Embeddable.CartItemsId;
-import com.fashionweb.repository.ICartDetailRepository;
-import com.fashionweb.service.ICartDetailService;
+import com.fashionweb.repository.ICartItemRepository;
+import com.fashionweb.service.ICartItemService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -11,69 +11,69 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class CartDetailService implements ICartDetailService {
+public class CartItemService implements ICartItemService {
 
     @Autowired
-    ICartDetailRepository cartDetailRepos;
+    ICartItemRepository cartItemRepos;
 
     @Override
     public List<CartItem> getAll() {
-        return cartDetailRepos.findAll();
+        return cartItemRepos.findAll();
     }
 
     @Override
-    public Optional<CartItem> getById(Long id) {
-        return cartDetailRepos.findById(id);        //! Long
+    public List<CartItem> getAllByAccId(Long accId) {
+        return cartItemRepos.findAllByAccountAccId(accId);
     }
 
     @Override
     public Optional<CartItem> getById(CartItemsId id) {
-        return cartDetailRepos.findById(id);        //! CartDetailsId
+        return cartItemRepos.findById(id);
     }
 
     @Override
-    public void addCartDetail(CartItem cartDetail) {
-//        if (cartDetailRepos.existsById(cartDetail.getId())) {   //! CartDetailsId
+    public void addCartItem(CartItem cartDetail) {
+//        if (cartDetailRepos.existsById(cartDetail.getId())) {
 //            throw new RuntimeException("'Cart' với id(" + cartDetail.getId().getCartId() + ", "
 //                                                        + cartDetail.getId().getProdId() + ", "
 //                                                        + cartDetail.getId().getSize()
 //                                                        + ") đã tồn tại");
 //        }
 
-        cartDetailRepos.save(cartDetail);
+        cartItemRepos.save(cartDetail);
     }
 
     @Override
-    public void updateCartDetail(CartItem cartDetail) {
-//        if (cartDetailRepos.existsById(cartDetail.getId())) {   //! CartDetailsId
+    public void updateCartItem(CartItem cartDetail) {
+//        if (cartDetailRepos.existsById(cartDetail.getId())) {
 //            throw new RuntimeException("Không tìm thấy 'Cart' với id(" + cartDetail.getId().getCartId() + ", "
 //                                                                        + cartDetail.getId().getProdId() + ", "
 //                                                                        + cartDetail.getId().getSize()
 //                                                                        + ")");
 //        }
 
-        cartDetailRepos.save(cartDetail);
+        cartItemRepos.save(cartDetail);
     }
 
     @Override
-    public void deleteCartDetail(CartItem cartDetail) {
-//        if (cartDetailRepos.existsById(cartDetail.getId())) {   //! CartDetailsId
+    public void deleteCartItem(CartItemsId id) {
+//        if (cartDetailRepos.existsById(cartDetail.getId())) {
 //            throw new RuntimeException("Không tìm thấy 'Cart' với id(" + cartDetail.getId().getCartId() + ", "
 //                                                                        + cartDetail.getId().getProdId() + ", "
 //                                                                        + cartDetail.getId().getSize()
 //                                                                        + ")");
 //        }
 
-        cartDetailRepos.delete(cartDetail);
+        cartItemRepos.deleteCartItemById(id);
     }
 
     @Override
-    public void deleteCart(Long id) {
-        if (cartDetailRepos.existsById(id)) {            //! Long
-            throw new RuntimeException("Không tìm thấy 'Cart' với cartId(" + id + ")");
+    public void deleteCart(Long accId) {
+        if (cartItemRepos.existsById(accId)) {            //! Long
+            throw new RuntimeException("Không tìm thấy 'Cart' với cartId(" + accId + ")");
         }
 
-        cartDetailRepos.deleteById(id);
+        cartItemRepos.deleteById(accId);
     }
 
 }

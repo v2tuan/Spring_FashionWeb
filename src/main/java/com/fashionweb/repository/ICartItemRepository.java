@@ -9,10 +9,11 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface ICartDetailRepository extends JpaRepository<CartItem, Long> {
+public interface ICartItemRepository extends JpaRepository<CartItem, Long> {
 
     boolean existsById(CartItemsId id);
     Optional<CartItem> findById(CartItemsId id);
     List<CartItem> findAllByAccountAccId(Long accountId);
+    void deleteCartItemById(CartItemsId id);
 
 }
