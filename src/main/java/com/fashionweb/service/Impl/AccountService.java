@@ -6,7 +6,7 @@ import com.fashionweb.Enum.Role;
 import com.fashionweb.dto.request.accounts.AccountDTO;
 import com.fashionweb.mapper.IAccountMapper;
 import com.fashionweb.repository.IAccountRepository;
-import com.fashionweb.repository.ICartDetailRepository;
+import com.fashionweb.repository.ICartItemRepository;
 import com.fashionweb.service.IAccountService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -24,7 +24,7 @@ public class AccountService implements IAccountService {
     @Autowired
     private IAccountMapper accountMapper;
     @Autowired
-    private ICartDetailRepository cartDetailRepos;
+    private ICartItemRepository cartDetailRepos;
 
     @Override
     public List<Account> getAllAccounts() {

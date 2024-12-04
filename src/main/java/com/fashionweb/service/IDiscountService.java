@@ -1,6 +1,7 @@
 package com.fashionweb.service;
 
 import com.fashionweb.Entity.Discount;
+import com.fashionweb.Entity.Order;
 
 import java.util.Date;
 import java.util.List;
@@ -13,4 +14,5 @@ public interface IDiscountService {
     void deleteById(Long id);
     Optional<Discount> findByStartDate(Date startDate);
     Optional<Discount> findByEndDate(Date endDate);
+    List<Order> findOrdersByDiscountId(Long discountId);
 }
