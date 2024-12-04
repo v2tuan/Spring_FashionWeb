@@ -34,7 +34,7 @@ public class Order {
     private List<OrderItem> orderItems;
 
     @ManyToOne
-    @JoinColumn(name = "discountId")
+    @JoinColumn(name = "discountId", referencedColumnName = "discountId", nullable = true)
     private Discount discount;
 
     @OneToOne(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
