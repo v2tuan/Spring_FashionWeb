@@ -22,4 +22,8 @@ public class Address {
     @OneToOne
     @JoinColumn(name = "orderId")
     private Order order;
+
+    @ManyToOne
+    @JoinColumn(name = "accId") // Cột accId trong bảng Address
+    private Account account;
 }

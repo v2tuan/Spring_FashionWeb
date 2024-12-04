@@ -45,10 +45,10 @@ public class Account {
     private LocalDateTime verificationCodeExpiresAt;
 
     private LocalDate createDate;
-    
-    @OneToMany(mappedBy = "account")
+
+    @OneToMany(mappedBy = "account", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Order> orders;
 
-    @OneToMany(mappedBy = "account")
+    @OneToMany(mappedBy = "account", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<CartItem> cartItems;
 }

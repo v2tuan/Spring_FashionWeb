@@ -22,12 +22,12 @@ public class Size {
     private Integer quantity;
 
     @ManyToOne
-    @MapsId("prodId")
-    @JoinColumn(name = "prodId")
-    private Product product;
+    @JoinColumn(name = "prodId", referencedColumnName = "prodId", insertable = false, updatable = false)
+    private Product product;  // Liên kết với Product
 
-    @OneToMany(mappedBy = "size")
-    private List<CartItem> cartItems;
+    @OneToMany(mappedBy = "size", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<CartItem> cartItems;  // Liên kết với CartItem
+
 
 }
 
