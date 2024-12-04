@@ -23,10 +23,10 @@ public class OrderItem {
     @JoinColumn(name = "orderId", nullable = false)
     private Order order;
 
-    @ManyToOne
-    @MapsId("prodId")
-    @JoinColumn(name = "prodId", nullable = true)  // Cho phép null khi xóa Product
-    private Product product;
+//    @ManyToOne
+//    @MapsId("prodId")
+//    @JoinColumn(name = "prodId", nullable = true)  // Cho phép null khi xóa Product
+//    private Product product;
 
     @ManyToOne
     @JoinColumns({
