@@ -11,4 +11,5 @@ public interface IAccountMapper {
     Account toAccount(AccountDTO accountDTO);
     Account toAccount(RegisterAccountDTO registerAccountDTO);
     void updateAccount(@MappingTarget Account account, AccountDTO accountDTO);
+    AccountDTO toAccountDTO(Account account);
 }

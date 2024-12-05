@@ -7,6 +7,7 @@ import com.fashionweb.dto.request.VerifyAccountDTO;
 import com.fashionweb.dto.request.accounts.AccountDTO;
 import com.fashionweb.dto.request.accounts.RegisterAccountDTO;
 import com.fashionweb.dto.response.AuthenticationResponse;
+import com.fashionweb.mapper.IAccountMapper;
 import com.fashionweb.service.AuthenticationService;
 import com.fashionweb.service.IStorageService;
 import com.fashionweb.service.Impl.AccountService;
@@ -27,17 +28,19 @@ public class AccountController {
     private AuthenticationService authenticationService;
     @Autowired
     private IStorageService storageService;
+    @Autowired
+    IAccountMapper accountMapper;
 
 
     @GetMapping("/me")
-    Account getMyInfo() {
+    AccountDTO getMyInfo() {
         var context = SecurityContextHolder.getContext();
         String email = context.getAuthentication().getName();
 
         Account account = accountService.getAccounts(email).orElseThrow(
                 () -> new RuntimeException("Không tìm thấy người dùng"));
 
-        return account;
+        return accountMapper.toAccountDTO(account);
 
 //        return "web/my_profile";
     }
