@@ -13,6 +13,7 @@ public interface ICartItemService {
     List<CartItem> getAllByAccId(Long accId);
     Optional<CartItem> getById(CartItemsId id);
     void addCartItem(CartItem cartDetail);
+    Optional<CartItem> getCartItemById(CartItemsId cartItemsId);
     void updateCartItem(CartItem cartDetail);
     void deleteCartItem(CartItemsId id);
     void deleteCart(Long accId);

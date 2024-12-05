@@ -19,14 +19,8 @@ public class OrderItem {
     private Integer quantity;
 
     @ManyToOne
-    @MapsId("orderId")
-    @JoinColumn(name = "orderId", nullable = false)
+    @JoinColumn(name = "orderId", insertable=false, updatable=false)
     private Order order;
-
-//    @ManyToOne
-//    @MapsId("prodId")
-//    @JoinColumn(name = "prodId", nullable = true)  // Cho phép null khi xóa Product
-//    private Product product;
 
     @ManyToOne
     @JoinColumns({

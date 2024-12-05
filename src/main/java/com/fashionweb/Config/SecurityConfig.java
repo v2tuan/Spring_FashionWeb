@@ -43,11 +43,11 @@ public class SecurityConfig {
 
         httpSecurity.csrf(AbstractHttpConfigurer::disable);
 
-//        // Cấu hình form login
-//        httpSecurity.formLogin(form -> form.loginPage("/home/user-login")
-//                .defaultSuccessUrl("/home", true)  // Khi đăng nhập thành công sẽ chuyển hướng đến trang chủ
-//                .failureUrl("/home/user-login?error=true")  // Khi đăng nhập thất bại
-//                .permitAll());
+        // Cấu hình form login
+        httpSecurity.formLogin(form -> form.loginPage("/home/user-login")
+                .defaultSuccessUrl("/home", true)  // Khi đăng nhập thành công sẽ chuyển hướng đến trang chủ
+                .failureUrl("/home/user-login?error=true")  // Khi đăng nhập thất bại
+                .permitAll());
 
         return httpSecurity.build();
     }
