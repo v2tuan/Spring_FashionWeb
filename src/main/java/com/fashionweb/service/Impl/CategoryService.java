@@ -3,6 +3,7 @@ package com.fashionweb.service.Impl;
 import com.fashionweb.Entity.Category;
 import com.fashionweb.Entity.Subcategory;
 import com.fashionweb.repository.ICategoryRepository;
+import com.fashionweb.repository.IProductRepository;
 import com.fashionweb.repository.ISubcategoryRepository;
 import com.fashionweb.service.ICategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +19,8 @@ public class CategoryService implements ICategoryService {
     ICategoryRepository categoryRepos;
     @Autowired
     ISubcategoryRepository subcategoryRepos;
+    @Autowired
+    IProductRepository productRepos;
 
 
     @Override
@@ -59,7 +62,8 @@ public class CategoryService implements ICategoryService {
     }
 
     @Override
-    public List<Subcategory> findSubcategoriesByCategoryId(Long id) {
-        return subcategoryRepos.findAllByCategoryCategoryId(id);
+    public List<Subcategory> findSubcategoriesByCategoryId(Long cateId) {
+        return subcategoryRepos.findAllByCategoryCategoryId(cateId);
     }
+
 }

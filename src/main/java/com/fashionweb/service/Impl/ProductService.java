@@ -68,4 +68,9 @@ public class    ProductService implements IProductService {
         // Tìm sản phẩm theo trạng thái
         return iProductRepository.findByStatus(status);
     }
+
+    @Override
+    public List<Product> findProductsByCategoryId(Long cateId) {
+        return iProductRepository.findAllBySubcategoryCategoryCategoryId(cateId);
+    }
 }

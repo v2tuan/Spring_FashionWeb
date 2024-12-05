@@ -35,7 +35,7 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.POST, "/account").permitAll()
                         .requestMatchers(HttpMethod.POST, "/account/signup", "/account/login","/account/verify").permitAll()
                         .requestMatchers("/assets/**", "/cdn.jsdelivr.net/**", "/cdnjs.cloudflare.com/**").permitAll() // Cho phép truy cập tài nguyên tĩnh
-                .anyRequest().authenticated());
+                .anyRequest().permitAll());
 
         httpSecurity.oauth2ResourceServer(oauth2 ->
              oauth2.jwt(jwtConfigurer -> jwtConfigurer.decoder(jwtDecoder()))

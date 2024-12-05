@@ -15,4 +15,6 @@ public interface IProductService {
     List<Product> getProductsByBrand(Long brandId); // Tìm sản phẩm theo brandId
     List<Product> getProductsBySubcategory(Long subCateId); // Tìm sản phẩm theo subcategoryId
     List<Product> getProductsByStatus(Boolean status); // Tìm sản phẩm theo trạng thái
+    List<Product> findProductsByCategoryId(Long cateId);
+
 }

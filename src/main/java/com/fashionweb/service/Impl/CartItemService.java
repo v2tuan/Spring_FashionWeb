@@ -37,37 +37,16 @@ public class CartItemService implements ICartItemService {
 
     @Override
     public void addCartItem(CartItem cartDetail) {
-//        if (cartDetailRepos.existsById(cartDetail.getId())) {
-//            throw new RuntimeException("'Cart' với id(" + cartDetail.getId().getCartId() + ", "
-//                                                        + cartDetail.getId().getProdId() + ", "
-//                                                        + cartDetail.getId().getSize()
-//                                                        + ") đã tồn tại");
-//        }
-
         cartItemRepos.save(cartDetail);
     }
 
     @Override
     public void updateCartItem(CartItem cartDetail) {
-//        if (cartDetailRepos.existsById(cartDetail.getId())) {
-//            throw new RuntimeException("Không tìm thấy 'Cart' với id(" + cartDetail.getId().getCartId() + ", "
-//                                                                        + cartDetail.getId().getProdId() + ", "
-//                                                                        + cartDetail.getId().getSize()
-//                                                                        + ")");
-//        }
-
         cartItemRepos.save(cartDetail);
     }
 
     @Override
     public void deleteCartItem(CartItemsId id) {
-//        if (cartDetailRepos.existsById(cartDetail.getId())) {
-//            throw new RuntimeException("Không tìm thấy 'Cart' với id(" + cartDetail.getId().getCartId() + ", "
-//                                                                        + cartDetail.getId().getProdId() + ", "
-//                                                                        + cartDetail.getId().getSize()
-//                                                                        + ")");
-//        }
-
         cartItemRepos.deleteCartItemById(id);
     }
 

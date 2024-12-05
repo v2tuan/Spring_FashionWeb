@@ -34,33 +34,32 @@
         <div class="card mb-4 rounded-4 p-7">
             <div class="card-header bg-transparent px-0 pt-0 pb-7">
                 <div class="row align-items-center justify-content-between">
-                    <div class="col-md-4 col-12 mr-auto mb-md-0 mb-6">
-                        <select class="form-select">
-                            <option selected="" data-select2-id="3">All Categories</option>
-                            <option>Women's Clothing</option>
-                            <option>Men's Clothing</option>
-                            <option>Cellphones</option>
-                            <option>Computer &amp; Office</option>
-                            <option>Consumer Electronics</option>
-                            <option>Jewelry &amp; Accessories</option>
-                            <option>Home &amp; Garden</option>
-                            <option>Luggage &amp; Bags</option>
-                            <option>Shoes</option>
-                            <option>Mother &amp; Kids</option>
-                        </select>
+                    <div class="row col-md-6">
+                            <select class="form-select" id="categorySelect">
+                                <option selected="" data-select2-id="3">All Categories</option>
+                                <th:block th:each="category : ${categories}">
+                                    <option th:value="${category.categoryId}" th:text="${category.cateName}"></option>
+                                </th:block>
+                            </select>
+                            <select class="form-select" id="subcategorySelect">
+                                <option selected="" data-select2-id="3">All Subcategories</option>
+                                <th:block th:each="subcategory : ${subcategories}">
+                                    <option th:value="${subcategory.subCateId}"
+                                            th:text="${subcategory.subCateName}"></option>
+                                </th:block>
+                            </select>
+
                     </div>
-                    <div class="col-md-8">
+                    <div class="col-md-6">
                         <div class="row justify-content-end flex-nowrap d-flex">
                             <div class="col-lg-4 col-md-6 col-6">
-                                <input type="date" class="form-control bg-input border-0">
+                                <input type="date" class="form-control bg-input border-0" id="dateSelect">
                             </div>
                             <div class="col-lg-4 col-md-6 col-6">
-                                <select class="form-select">
+                                <select class="form-select" id="statusSelect">
                                     <option>Status</option>
-                                    <option>All</option>
-                                    <option>Paid</option>
-                                    <option>Chargeback</option>
-                                    <option>Refund</option>
+                                    <option value="1">Active</option>
+                                    <option value="0">Disabled</option>
                                 </select>
                             </div>
                         </div>
@@ -74,7 +73,6 @@
 
 
                         <tr>
-
                             <td class="text-center">
                                 <div class="form-check">
                                     <input class="form-check-input rounded-0 ms-0" type="checkbox"
@@ -101,16 +99,7 @@
                             </td>
 
 
-
-
-
-
-
-
-
-
                             <td>$44.25</td>
-
 
 
                             <td>
@@ -119,13 +108,7 @@
                             </td>
 
 
-
-
                             <td>02.11.2021</td>
-
-
-
-
 
 
                             <td class="text-center">
@@ -169,16 +152,7 @@
                             </td>
 
 
-
-
-
-
-
-
-
-
                             <td>$7.50</td>
-
 
 
                             <td>
@@ -187,13 +161,7 @@
                             </td>
 
 
-
-
                             <td>02.11.2021</td>
-
-
-
-
 
 
                             <td class="text-center">
@@ -237,16 +205,7 @@
                             </td>
 
 
-
-
-
-
-
-
-
-
                             <td>$43.50</td>
-
 
 
                             <td>
@@ -255,13 +214,7 @@
                             </td>
 
 
-
-
                             <td>02.11.2021</td>
-
-
-
-
 
 
                             <td class="text-center">
@@ -305,16 +258,7 @@
                             </td>
 
 
-
-
-
-
-
-
-
-
                             <td>$99.00</td>
-
 
 
                             <td>
@@ -323,13 +267,7 @@
                             </td>
 
 
-
-
                             <td>02.11.2021</td>
-
-
-
-
 
 
                             <td class="text-center">
@@ -373,16 +311,7 @@
                             </td>
 
 
-
-
-
-
-
-
-
-
                             <td>$44.25</td>
-
 
 
                             <td>
@@ -391,13 +320,7 @@
                             </td>
 
 
-
-
                             <td>02.11.2021</td>
-
-
-
-
 
 
                             <td class="text-center">
@@ -441,16 +364,7 @@
                             </td>
 
 
-
-
-
-
-
-
-
-
                             <td>$7.50</td>
-
 
 
                             <td>
@@ -459,13 +373,7 @@
                             </td>
 
 
-
-
                             <td>02.11.2021</td>
-
-
-
-
 
 
                             <td class="text-center">
@@ -509,16 +417,7 @@
                             </td>
 
 
-
-
-
-
-
-
-
-
                             <td>$43.50</td>
-
 
 
                             <td>
@@ -527,13 +426,7 @@
                             </td>
 
 
-
-
                             <td>02.11.2021</td>
-
-
-
-
 
 
                             <td class="text-center">
@@ -577,16 +470,7 @@
                             </td>
 
 
-
-
-
-
-
-
-
-
                             <td>$99.00</td>
-
 
 
                             <td>
@@ -595,13 +479,7 @@
                             </td>
 
 
-
-
                             <td>02.11.2021</td>
-
-
-
-
 
 
                             <td class="text-center">
@@ -645,16 +523,7 @@
                             </td>
 
 
-
-
-
-
-
-
-
-
                             <td>$44.25</td>
-
 
 
                             <td>
@@ -663,13 +532,7 @@
                             </td>
 
 
-
-
                             <td>02.11.2021</td>
-
-
-
-
 
 
                             <td class="text-center">
@@ -713,16 +576,7 @@
                             </td>
 
 
-
-
-
-
-
-
-
-
                             <td>$7.50</td>
-
 
 
                             <td>
@@ -731,13 +585,7 @@
                             </td>
 
 
-
-
                             <td>02.11.2021</td>
-
-
-
-
 
 
                             <td class="text-center">
@@ -781,16 +629,7 @@
                             </td>
 
 
-
-
-
-
-
-
-
-
                             <td>$43.50</td>
-
 
 
                             <td>
@@ -799,13 +638,7 @@
                             </td>
 
 
-
-
                             <td>02.11.2021</td>
-
-
-
-
 
 
                             <td class="text-center">
@@ -849,16 +682,7 @@
                             </td>
 
 
-
-
-
-
-
-
-
-
                             <td>$99.00</td>
-
 
 
                             <td>
@@ -867,13 +691,7 @@
                             </td>
 
 
-
-
                             <td>02.11.2021</td>
-
-
-
-
 
 
                             <td class="text-center">
