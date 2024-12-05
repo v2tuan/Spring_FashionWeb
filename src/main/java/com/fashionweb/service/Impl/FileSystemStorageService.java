@@ -92,7 +92,7 @@ public class FileSystemStorageService implements IStorageService {
     @Override
     public String getStorageFileName(MultipartFile file, String id) {
         String ext = FilenameUtils.getExtension(file.getOriginalFilename());
-        return "img" + id + "." + ext;
+        return id + "." + ext;
     }
 
 }
