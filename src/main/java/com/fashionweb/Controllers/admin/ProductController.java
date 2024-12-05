@@ -110,12 +110,12 @@ public class ProductController {
         return "admin/addOrEditProduct";
     }
 
-    @PostMapping("/createproduct")
-    public ResponseEntity<?> createProduct(@RequestBody @Valid ProductDTO productDto) {
-        Product product = productMapper.toProduct(productDto);
-        productService.createProduct(product);
-        return ResponseEntity.ok("Thêm sản phẩm thành công");
-    }
+//    @PostMapping("/createproduct")
+//    public ResponseEntity<?> createProduct(@RequestBody @Valid ProductDTO productDto) {
+////        Product product = productMapper.toProduct(productDto);
+////        productService.createProduct(product);
+////        return ResponseEntity.ok("Thêm sản phẩm thành công");
+//    }
 
     @PostMapping("/deleteproduct/{id}")
     public String deleteProduct(@PathVariable Long id, Model model) {
