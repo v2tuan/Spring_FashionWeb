@@ -36,35 +36,43 @@ public class CartItemService implements ICartItemService {
     }
 
     @Override
-    public void addCartItem(CartItem cartDetail) {
-//        if (cartDetailRepos.existsById(cartDetail.getId())) {
-//            throw new RuntimeException("'Cart' với id(" + cartDetail.getId().getCartId() + ", "
-//                                                        + cartDetail.getId().getProdId() + ", "
-//                                                        + cartDetail.getId().getSize()
-//                                                        + ") đã tồn tại");
-//        }
+    public void addCartItem(CartItem cartItem) {
+        // Kiểm tra xem sản phẩm đã tồn tại trong giỏ hàng chưa
+        Optional<CartItem> existingCartItem = cartItemRepos.findById(cartItem.getId());
 
-        cartItemRepos.save(cartDetail);
+        if (existingCartItem.isPresent()) {
+            // Nếu đã tồn tại, tăng số lượng lên 1
+            CartItem existingItem = existingCartItem.get();
+            existingItem.setQuantity(existingItem.getQuantity() + 1);
+            cartItemRepos.save(existingItem);
+        } else {
+            // Nếu chưa tồn tại, thêm mới vào giỏ hàng
+            cartItemRepos.save(cartItem);
+        }
     }
 
     @Override
-    public void updateCartItem(CartItem cartDetail) {
-//        if (cartDetailRepos.existsById(cartDetail.getId())) {
-//            throw new RuntimeException("Không tìm thấy 'Cart' với id(" + cartDetail.getId().getCartId() + ", "
-//                                                                        + cartDetail.getId().getProdId() + ", "
-//                                                                        + cartDetail.getId().getSize()
-//                                                                        + ")");
-//        }
+    public Optional<CartItem> getCartItemById(CartItemsId cartItemsId) {
+        return cartItemRepos.findById(cartItemsId);
+    }
 
-        cartItemRepos.save(cartDetail);
+    @Override
+    public void updateCartItem(CartItem cartItem) {
+        if (cartItemRepos.existsById(cartItem.getId())) {
+            throw new RuntimeException("Không tìm thấy 'Cart' với id(" + cartItem.getId().getAccId() + ", "
+                                                                        + cartItem.getId().getProdId() + ", "
+                                                                        + cartItem.getId().getSizeName()
+                                                                        + ")");
+        }
+        cartItemRepos.save(cartItem);
     }
 
     @Override
     public void deleteCartItem(CartItemsId id) {
-//        if (cartDetailRepos.existsById(cartDetail.getId())) {
-//            throw new RuntimeException("Không tìm thấy 'Cart' với id(" + cartDetail.getId().getCartId() + ", "
-//                                                                        + cartDetail.getId().getProdId() + ", "
-//                                                                        + cartDetail.getId().getSize()
+//        if (cartItemRepos.existsById(id.getId())) {
+//            throw new RuntimeException("Không tìm thấy 'Cart' với id(" + id.getAccId() + ", "
+//                                                                        + id.getProdId() + ", "
+//                                                                        + id.getSize()
 //                                                                        + ")");
 //        }
 
