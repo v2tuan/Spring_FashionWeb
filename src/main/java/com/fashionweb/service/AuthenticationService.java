@@ -51,15 +51,15 @@ public class AuthenticationService {
 
     // Dang nhap xac thuc va tao token
     public AuthenticationResponse authenticate(AuthenticationRequestDTO request){
-        Account user = accountRepository.findAccountByEmail(request.getEmail())
+        Account account = accountRepository.findAccountByEmail(request.getEmail())
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
 
         PasswordEncoder passwordEncoder = new BCryptPasswordEncoder(10);
-        boolean authenticated = passwordEncoder.matches(request.getPassword(), user.getPassword());
+        boolean authenticated = passwordEncoder.matches(request.getPassword(), account.getPassword());
         if (!authenticated)
             throw new RuntimeException("Tài khoan mat khau khong dung");
-        var token = generateToken(request.getEmail());
+        var token = generateToken(account);
 
         return AuthenticationResponse.builder()
                 .token(token)
@@ -67,17 +67,17 @@ public class AuthenticationService {
                 .build();
     }
 
-    private String generateToken(String username) {
+    private String generateToken(Account account) {
         JWSHeader header = new JWSHeader(JWSAlgorithm.HS512);
 
         JWTClaimsSet jwtClaimsSet = new JWTClaimsSet.Builder()
-                .subject(username)
+                .subject(account.getEmail())
                 .issuer("devteria.com")
                 .issueTime(new Date())
                 .expirationTime(new Date(
                         Instant.now().plus(1, ChronoUnit.HOURS).toEpochMilli()
                 ))
-                .claim("userId", "Custom")
+                .claim("accId", account.getAccId()) // Thêm account ID
                 .build();
 
         Payload payload = new Payload(jwtClaimsSet.toJSONObject());
@@ -127,13 +127,39 @@ public class AuthenticationService {
         return accountRepository.save(account);
     }
 
-    public void verifyUser(VerifyAccountDTO input) {
+    public Account sendcodeforgotpassword(String email) {
+        Optional<Account> optionalAccount = accountRepository.findAccountByEmail(email);
+        if (optionalAccount.isPresent()) {
+            // Tài khoản tồn tại
+            Account account = optionalAccount.get();
+            account.setVerificationCode(generateVerificationCode());
+            account.setVerificationCodeExpiresAt(LocalDateTime.now().plusMinutes(15));
+            sendVerificationEmail(account);
+            return accountRepository.save(account);
+        } else {
+            // Tài khoản không tồn tại
+            throw new RuntimeException("Email không tồn tại.");
+        }
+    }
+
+    public Account resetPassword(RegisterAccountDTO input) {
         Optional<Account> optionalAccount = accountRepository.findAccountByEmail(input.getEmail());
         if (optionalAccount.isPresent()) {
             Account account = optionalAccount.get();
-            if(account.isEnabled()){
-                throw new RuntimeException("Tài khoản đã được kích hoạt trước đó rồi");
-            }
+            // Tài khoản tồn tại
+            PasswordEncoder passwordEncoder = new BCryptPasswordEncoder(10);
+            account.setPassword(passwordEncoder.encode(input.getPassword()));
+            return accountRepository.save(account);
+        } else {
+            // Tài khoản không tồn tại
+            throw new RuntimeException("Email không tồn tại.");
+        }
+    }
+
+    public Account verifyUser(VerifyAccountDTO input) {
+        Optional<Account> optionalAccount = accountRepository.findAccountByEmail(input.getEmail());
+        if (optionalAccount.isPresent()) {
+            Account account = optionalAccount.get();
             if (account.getVerificationCodeExpiresAt().isBefore(LocalDateTime.now())) {
                 throw new RuntimeException("Verification code has expired");
             }
@@ -141,7 +167,7 @@ public class AuthenticationService {
                 account.setEnabled(true);
                 account.setVerificationCode(null);
                 account.setVerificationCodeExpiresAt(null);
-                accountRepository.save(account);
+                return accountRepository.save(account);
             } else {
                 throw new RuntimeException("Invalid verification code");
             }

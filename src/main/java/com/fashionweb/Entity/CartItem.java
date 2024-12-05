@@ -22,6 +22,7 @@ public class CartItem {
     private LocalDate createDate;
 
     @ManyToOne
+//    @MapsId("accId")
     @JoinColumn(name = "accId", insertable = false, updatable = false)
     private Account account;
 

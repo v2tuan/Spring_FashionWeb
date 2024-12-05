@@ -7,6 +7,7 @@ import com.fashionweb.dto.request.CartItemDTO;
 import com.fashionweb.mapper.ICartItemMapper;
 import com.fashionweb.service.ICartItemService;
 import com.fashionweb.service.Impl.AccountService;
+import com.fashionweb.service.Impl.ProductService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -29,6 +30,9 @@ public class CartItemController {
 
     @Autowired
     private AccountService accountService;
+
+    @Autowired
+    private ProductService productService;
 
     @PostMapping("/add")
     public ResponseEntity<?> addCartItem(@RequestBody @Valid CartItemDTO cartItemDTO) {
@@ -90,6 +94,13 @@ public class CartItemController {
                         itemDetails.put("quantity", item.getQuantity());
                         itemDetails.put("price", item.getPrice());
                         itemDetails.put("createDate", item.getCreateDate());
+
+                        var product = productService.getProduct(item.getId().getProdId());
+                        product.ifPresent(p -> {
+                            itemDetails.put("productName", p.getProdName());
+                            itemDetails.put("productImage", p.getImages());
+                        });
+
                         return itemDetails;
                     })
                     .collect(Collectors.toList());

@@ -22,7 +22,7 @@ import java.util.List;
 @NoArgsConstructor
 @Entity
 @Table(name = "Accounts")
-public class Account implements UserDetails {
+public class Account{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long accId;
@@ -38,6 +38,7 @@ public class Account implements UserDetails {
     private String fullname;
     private String address;
     private String phone;
+    private String gender;
 
     @Enumerated(EnumType.STRING)
     private Role role;
@@ -54,14 +55,4 @@ public class Account implements UserDetails {
 
     @OneToMany(mappedBy = "account", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<CartItem> cartItems;
-
-    @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of();
-    }
-
-    @Override
-    public String getUsername() {
-        return email;
-    }
 }

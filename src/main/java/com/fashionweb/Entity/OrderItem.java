@@ -19,7 +19,7 @@ public class OrderItem {
     private Integer quantity;
 
     @ManyToOne
-    @JoinColumn(name = "orderId", nullable = false)
+    @JoinColumn(name = "orderId", insertable = false, updatable = false)
     private Order order;
 
 //    @ManyToOne

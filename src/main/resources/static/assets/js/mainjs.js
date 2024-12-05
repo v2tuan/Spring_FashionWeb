@@ -17,6 +17,8 @@ $(document).ready(function (){
             data: basicInfo,
             success: function (data) {
                 localStorage.token = data.token;
+                // Lưu JWT vào cookie
+                document.cookie = `token=${data.token}; path=/; secure; SameSite=Strict`;
                 // alert('Got a token from the server! Token: ' + data.token);
                 alert('Đăng nhập thành công')
                 window.location.href = "/home";
@@ -27,4 +29,10 @@ $(document).ready(function (){
         });
 
     });
+
+    function logout() {
+        console.log('Đang thực hiện đăng xuất...');
+        localStorage.clear(); // Xóa localStorage
+        window.location.href = "/login"; // Chuyển hướng đến trang login
+    }
 });
