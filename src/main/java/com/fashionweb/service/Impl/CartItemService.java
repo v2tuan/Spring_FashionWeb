@@ -51,7 +51,6 @@ public class CartItemService implements ICartItemService {
         }
     }
 
-    @Override
     public Optional<CartItem> getCartItemById(CartItemsId cartItemsId) {
         return cartItemRepos.findById(cartItemsId);
     }
@@ -69,13 +68,6 @@ public class CartItemService implements ICartItemService {
 
     @Override
     public void deleteCartItem(CartItemsId id) {
-//        if (cartItemRepos.existsById(id.getId())) {
-//            throw new RuntimeException("Không tìm thấy 'Cart' với id(" + id.getAccId() + ", "
-//                                                                        + id.getProdId() + ", "
-//                                                                        + id.getSize()
-//                                                                        + ")");
-//        }
-
         cartItemRepos.deleteCartItemById(id);
     }
 

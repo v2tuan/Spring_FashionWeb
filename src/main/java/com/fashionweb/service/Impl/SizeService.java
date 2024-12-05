@@ -29,19 +29,12 @@ public class SizeService implements ISizeService {
 
     @Override
     public <S extends Size> S createSize(S size) {
-        // Kiểm tra tính hợp lệ của thông tin sản phẩm trước khi lưu
-        if (size.getProduct() == null || size.getProduct().getProdId() == null) {
-            throw new RuntimeException("Thông tin sản phẩm không hợp lệ.");
-        }
         return iSizeRepository.save(size);
     }
 
     @Override
     public <S extends Size> S updateSize(S size) {
-        // Kiểm tra tính hợp lệ của thông tin trước khi cập nhật
-        if (size.getProduct() == null || size.getProduct().getProdId() == null) {
-            throw new RuntimeException("Thông tin sản phẩm không hợp lệ.");
-        }
+
         return iSizeRepository.save(size);
     }
 

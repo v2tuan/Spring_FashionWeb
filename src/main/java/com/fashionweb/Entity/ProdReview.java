@@ -7,8 +7,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.Date;
 
 @Data
 @AllArgsConstructor
@@ -25,12 +23,10 @@ public class ProdReview {
     private String images;
 
     @ManyToOne
-    @MapsId("prodId") // Maps "prodId" from SizeId
-    @JoinColumn(name = "prodId", nullable = false)
+    @JoinColumn(name = "prodId", insertable=false, updatable=false)
     private Product product;
 
     @ManyToOne
-    @MapsId("accId") // Maps "prodId" from SizeId
-    @JoinColumn(name = "accId", nullable = false)
+    @JoinColumn(name = "accId", insertable=false, updatable=false)
     private Account account;
 }

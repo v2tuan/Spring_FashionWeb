@@ -16,13 +16,15 @@
                         <div class="col-sm-6 d-flex flex-wrap justify-content-sm-end">
 
 
-                            <a href="#" class="btn btn-outline-primary me-4">
+                            <!-- Submit Save Draft -->
+                            <button type="submit" class="btn btn-outline-primary me-4" form="productForm">
                                 Save to draft
-                            </a>
+                            </button>
 
-                            <a href="#" class="btn btn-primary">
+                            <!-- Submit Publish -->
+                            <button type="submit" class="btn btn-primary" form="productForm">
                                 Publish
-                            </a>
+                            </button>
 
                         </div>
                     </div>
@@ -38,19 +40,21 @@
                                     <h4 class="fs-18 mb-0 font-weight-500">Basic</h4>
                                 </div>
                                 <div class="card-body p-7">
-                                    <form class="form-border-1">
+                                    <form id="productForm" name="productForm"  class="form-border-1" th:action="@{/admin/createProduct}" th:object="${product}" method="post">
                                         <div class="mb-8">
                                             <label for="product_title"
                                                    class="mb-4 fs-13px ls-1 fw-bold text-uppercase">Product
                                                 title</label>
                                             <input type="text" placeholder="Type here" class="form-control"
-                                                   id="product_title">
+                                                   id="product_title" th:field="*{prodName}" required>
+                                            <span th:if="${#fields.hasErrors('prodName')}" th:errors="*{prodName}"></span>
                                         </div>
                                         <div class="mb-8">
                                             <label class="mb-4 fs-13px ls-1 fw-bold text-uppercase">Full
                                                 description</label>
                                             <textarea placeholder="Type here" class="form-control"
-                                                      rows="4"></textarea>
+                                                      rows="4" th:field="*{description}" >
+                                            </textarea>
                                         </div>
                                         <div class="row">
                                             <div class="col-lg-4">
@@ -58,7 +62,7 @@
                                                     <label class="mb-4 fs-13px ls-1 fw-bold text-uppercase"
                                                            for="regular-price">Regular price</label>
                                                     <input placeholder="$" type="text" class="form-control"
-                                                           id="regular-price">
+                                                           id="regular-price" th:field="*{regular}" required>
                                                 </div>
                                             </div>
                                             <div class="col-lg-4">
@@ -66,25 +70,17 @@
                                                     <label class="mb-4 fs-13px ls-1 fw-bold text-uppercase"
                                                            for="promotional-price">Promotional price</label>
                                                     <input placeholder="$" type="text" class="form-control"
-                                                           id="promotional-price">
+                                                           id="promotional-price" th:field="*{promo}">
                                                 </div>
                                             </div>
-                                            <div class="col-lg-4">
-                                                <label class="mb-4 fs-13px ls-1 fw-bold text-uppercase"
-                                                       for="currency">Currency</label>
-                                                <select class="form-select" id="currency">
-                                                    <option>USD</option>
-                                                    <option>EUR</option>
-                                                    <option>RUBL</option>
-                                                </select>
-                                            </div>
+
                                         </div>
-                                        <div class="mb-8">
-                                            <label class="mb-4 fs-13px ls-1 fw-bold text-uppercase"
-                                                   for="tax-rate">Tax rate</label>
-                                            <input type="text" placeholder="%" class="form-control"
-                                                   id="tax-rate">
-                                        </div>
+                                        <!--                                        <div class="mb-8">-->
+                                        <!--                                            <label class="mb-4 fs-13px ls-1 fw-bold text-uppercase"-->
+                                        <!--                                                   for="tax-rate">Tax rate</label>-->
+                                        <!--                                            <input type="text" placeholder="%" class="form-control"-->
+                                        <!--                                                   id="tax-rate">-->
+                                        <!--                                        </div>-->
 
                                         <!-- Phần thêm size ################################################################################################################## -->
                                         <div id="" class="mb-3">
@@ -110,46 +106,46 @@
                                 </div>
                             </div>
 
-                            <div class="card mb-8 rounded-4">
-                                <div class="card-header p-7 bg-transparent">
-                                    <h4 class="fs-18px mb-0 font-weight-500">Shipping</h4>
-                                </div>
-                                <div class="card-body p-7">
-                                    <form class="form-border-1">
-                                        <div class="row">
-                                            <div class="col-lg-6">
-                                                <div class="mb-8">
-                                                    <label for="width"
-                                                           class="mb-4 fs-13px ls-1 fw-bold text-uppercase">Width</label>
-                                                    <input type="text" placeholder="inch"
-                                                           class="form-control" id="width">
-                                                </div>
-                                            </div>
-                                            <div class="col-lg-6">
-                                                <div class="mb-8">
-                                                    <label for="height"
-                                                           class="mb-4 fs-13px ls-1 fw-bold text-uppercase">Height</label>
-                                                    <input type="text" placeholder="inch"
-                                                           class="form-control" id="height">
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="mb-8">
-                                            <label for="weight"
-                                                   class="mb-4 fs-13px ls-1 fw-bold text-uppercase">Weight</label>
-                                            <input type="text" placeholder="gam" class="form-control"
-                                                   id="weight">
-                                        </div>
-                                        <div class="mb-8">
-                                            <label for="shipping-fee"
-                                                   class="mb-4 fs-13px ls-1 fw-bold text-uppercase">Shipping
-                                                fees</label>
-                                            <input type="text" placeholder="$" class="form-control"
-                                                   id="shipping-fee">
-                                        </div>
-                                    </form>
-                                </div>
-                            </div>
+                            <!--                            <div class="card mb-8 rounded-4">-->
+                            <!--                                <div class="card-header p-7 bg-transparent">-->
+                            <!--                                    <h4 class="fs-18px mb-0 font-weight-500">Shipping</h4>-->
+                            <!--                                </div>-->
+                            <!--                                <div class="card-body p-7">-->
+                            <!--                                    <form class="form-border-1">-->
+                            <!--                                        <div class="row">-->
+                            <!--                                            <div class="col-lg-6">-->
+                            <!--                                                <div class="mb-8">-->
+                            <!--                                                    <label for="width"-->
+                            <!--                                                           class="mb-4 fs-13px ls-1 fw-bold text-uppercase">Width</label>-->
+                            <!--                                                    <input type="text" placeholder="inch"-->
+                            <!--                                                           class="form-control" id="width">-->
+                            <!--                                                </div>-->
+                            <!--                                            </div>-->
+                            <!--                                            <div class="col-lg-6">-->
+                            <!--                                                <div class="mb-8">-->
+                            <!--                                                    <label for="height"-->
+                            <!--                                                           class="mb-4 fs-13px ls-1 fw-bold text-uppercase">Height</label>-->
+                            <!--                                                    <input type="text" placeholder="inch"-->
+                            <!--                                                           class="form-control" id="height">-->
+                            <!--                                                </div>-->
+                            <!--                                            </div>-->
+                            <!--                                        </div>-->
+                            <!--                                        <div class="mb-8">-->
+                            <!--                                            <label for="weight"-->
+                            <!--                                                   class="mb-4 fs-13px ls-1 fw-bold text-uppercase">Weight</label>-->
+                            <!--                                            <input type="text" placeholder="gam" class="form-control"-->
+                            <!--                                                   id="weight">-->
+                            <!--                                        </div>-->
+                            <!--                                        <div class="mb-8">-->
+                            <!--                                            <label for="shipping-fee"-->
+                            <!--                                                   class="mb-4 fs-13px ls-1 fw-bold text-uppercase">Shipping-->
+                            <!--                                                fees</label>-->
+                            <!--                                            <input type="text" placeholder="$" class="form-control"-->
+                            <!--                                                   id="shipping-fee">-->
+                            <!--                                        </div>-->
+                            <!--                                    </form>-->
+                            <!--                                </div>-->
+                            <!--                            </div>-->
 
                         </div>
                         <div class="col-lg-4">
@@ -184,31 +180,55 @@
                                     <div class="row mx-n3">
                                         <div class="col-sm-6 mb-6 px-3">
                                             <label class="mb-4 fs-13px ls-1 fw-bold text-uppercase "
-                                                   for="category">Category</label>
-                                            <select class="form-select" id="category">
-                                                <option>Automobiles</option>
-                                                <option>Home items</option>
-                                                <option>Electronics</option>
-                                                <option>Smartphones</option>
-                                                <option>Sport items</option>
-                                                <option>Baby and Tous</option>
+                                                   for="category-select">Category</label>
+                                            <select class="form-select" id="category-select" >
+                                                <option value=""> Select Category </option>
+                                                <th:block th:each="category : ${categories}">
+                                                    <option th:value="${category.categoryId}"
+                                                            th:text="${category.cateName}"></option>
+                                                </th:block>
+                                                <!--                                                <option>Automobiles</option>-->
+                                                <!--                                                <option>Home items</option>-->
+                                                <!--                                                <option>Electronics</option>-->
+                                                <!--                                                <option>Smartphones</option>-->
+                                                <!--                                                <option>Sport items</option>-->
+                                                <!--                                                <option>Baby and Tous</option>-->
                                             </select>
                                         </div>
                                         <div class="col-sm-6 mb-6 px-3">
                                             <label class="mb-4 fs-13px ls-1 fw-bold text-uppercase"
                                                    for="sub-category">Sub-category</label>
                                             <select class="form-select" id="sub-category">
-                                                <option>Nissan</option>
-                                                <option>Honda</option>
-                                                <option>Mercedes</option>
-                                                <option>Chevrolet</option>
+                                                <option value=""> Select Subcategory </option>
+                                                <th:block th:each="subcategory : ${subcategories}">
+                                                    <option th:value="${subcategory.subCateId}"
+                                                            th:text="${subcategory.subCateName}"></option>
+                                                </th:block>
+                                            </select>
+
+
+                                        </div>
+                                        <!--                                        <div class="mb-5 col-12 px-3">-->
+                                        <!--                                            <label for="tag"-->
+                                        <!--                                                   class="mb-4 fs-13px ls-1 fw-bold text-uppercase">Tags</label>-->
+                                        <!--                                            <input type="text" class="form-control" id="tag">-->
+                                        <!--                                        </div>-->
+                                        <div class="col-sm-6 mb-6 px-3">
+                                            <label class="mb-4 fs-13px ls-1 fw-bold text-uppercase"
+                                                   for="brand-select">Brands</label>
+                                            <select class="form-select" id="brand-select">
+                                                <option value=""> Select Brand </option>
+                                                <th:block th:each="brand : ${brands}">
+                                                    <option th:value="${brand.brandId}"
+                                                            th:text="${brand.brandName}"></option>
+                                                </th:block>
+                                                <!--                                                <option>Nissan</option>-->
+                                                <!--                                                <option>Honda</option>-->
+                                                <!--                                                <option>Mercedes</option>-->
+                                                <!--                                                <option>Chevrolet</option>-->
                                             </select>
                                         </div>
-                                        <div class="mb-5 col-12 px-3">
-                                            <label for="tag"
-                                                   class="mb-4 fs-13px ls-1 fw-bold text-uppercase">Tags</label>
-                                            <input type="text" class="form-control" id="tag">
-                                        </div>
+
                                     </div>
 
                                 </div>
@@ -233,4 +253,8 @@
             </div>
         </footer>
     </main>
+
+
+
+
 </div>

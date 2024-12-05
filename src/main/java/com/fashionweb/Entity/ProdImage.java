@@ -16,7 +16,6 @@ public class ProdImage {
     private ProductImagesId productImageId;
 
     @ManyToOne
-    @MapsId("prodId")
-    @JoinColumn(name = "prodId")
+    @JoinColumn(name = "prodId", insertable=false, updatable=false)
     private Product product;
 }

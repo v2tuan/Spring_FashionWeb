@@ -14,6 +14,6 @@ public interface ICategoryService {
     void createCategory(Category category);
     void updateCategory(Category category);
     void deleteCategory(Long id);
-    List<Subcategory> findSubcategoriesByCategoryId(Long id);
+    List<Subcategory> findSubcategoriesByCategoryId(Long cateId);
 
 }
