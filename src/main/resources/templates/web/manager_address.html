@@ -20,7 +20,7 @@
                 <div class="row mx-n8">
                     <aside class="col-lg-3 border-end px-8">
                         <nav class="nav nav-pills flex-lg-column mb-7 nav-add-product">
-                            <a class="nav-link" aria-current="page" href="#">General</a>
+                            <a class="nav-link" aria-current="page" href="/home/profile">General</a>
                             <a class="nav-link active" href="#">Address</a>
                         </nav>
                     </aside>
@@ -29,45 +29,65 @@
                         <div class="d-flex justify-content-between align-items-center mb-5">
                             <h5 class="mb-0 mx-4">My Address</h5>
                             <button class="btn btn-primary mx-4" data-bs-toggle="modal"
-                                    data-bs-target="#addAddressModal">+ Add address</button>
+                                    data-bs-target="#addAddressModal">+ Add address
+                            </button>
                         </div>
-                        <div class="list-group">
+                        <div class="list-group" id="addressList">
+
+                            <!--                            &lt;!&ndash; Loop through the list of addresses &ndash;&gt;-->
+                            <!--                            <div th:each="address : ${addresses}" class="list-group-item d-flex justify-content-between align-items-start py-10">-->
+                            <!--                                <div>-->
+                            <!--                                    <h6 class="mb-6" th:text="${address.name}">Võ Văn Tuấn</h6>-->
+                            <!--                                    <p class="mb-2 small">-->
+                            <!--                                        <strong>Số điện thoại:</strong> <span th:text="${address.phone}">+84 969 424 914</span>-->
+                            <!--                                    </p>-->
+                            <!--                                    <p class="mb-3 small" th:text="${address.address}">27/27, Phường Tân Định, Quận 1, TP. Hồ Chí Minh</p>-->
+                            <!--                                </div>-->
+                            <!--                                <div>-->
+                            <!--                                    <button class="btn btn-sm btn-outline-secondary me-1" data-bs-toggle="modal" data-bs-target="#editAddressModal">Cập nhật</button>-->
+                            <!--                                    <button class="btn btn-sm btn-outline-danger" th:attr="data-id=${address.id}">Xóa</button>-->
+                            <!--                                </div>-->
+                            <!--                            </div>-->
+                            <!--                            &lt;!&ndash; End of address list &ndash;&gt;-->
+
                             <!-- Example Address -->
-                            <div
-                                    class="list-group-item d-flex justify-content-between align-items-start py-10">
-                                <div>
-                                    <h6 class="mb-6">Võ Văn Tuấn <span
-                                            class="badge bg-warning text-dark">Mặc định</span></h6>
-                                    <p class="mb-2 small">
-                                        <strong>Số điện thoại:</strong> +84 969 424 914
-                                    </p>
-                                    <p class="mb-3 small">27/27, Phường Tân Định, Quận
-                                        1, TP. Hồ Chí Minh</p>
-                                </div>
-                                <div>
-                                    <button class="btn btn-sm btn-outline-secondary me-1"
-                                            data-bs-toggle="modal" data-bs-target="#editAddressModal">Cập
-                                        nhật</button>
-                                    <button class="btn btn-sm btn-outline-danger">Xóa</button>
-                                </div>
-                            </div>
-                            <!-- Add more addresses here -->
-                            <div
-                                    class="list-group-item d-flex justify-content-between align-items-start py-10">
-                                <div>
-                                    <h6 class="mb-6">Võ Văn Tuấn</h6>
-                                    <p class="mb-2 small">
-                                        <strong>Số điện thoại:</strong> +84 969 424 914
-                                    </p>
-                                    <p class="mb-2 small">Số nhà 07, Hẻm 29, Hello, Hà Nội</p>
-                                </div>
-                                <div>
-                                    <button class="btn btn-sm btn-outline-secondary me-1"
-                                            data-bs-toggle="modal" data-bs-target="#editAddressModal">Cập
-                                        nhật</button>
-                                    <button class="btn btn-sm btn-outline-danger">Xóa</button>
-                                </div>
-                            </div>
+                            <!--                            <div-->
+                            <!--                                    class="list-group-item d-flex justify-content-between align-items-start py-10">-->
+                            <!--                                <div>-->
+                            <!--                                    <h6 class="mb-6">Võ Văn Tuấn <span-->
+                            <!--                                            class="badge bg-warning text-dark">Mặc định</span></h6>-->
+                            <!--                                    <p class="mb-2 small">-->
+                            <!--                                        <strong>Số điện thoại:</strong> +84 969 424 914-->
+                            <!--                                    </p>-->
+                            <!--                                    <p class="mb-3 small">27/27, Phường Tân Định, Quận-->
+                            <!--                                        1, TP. Hồ Chí Minh</p>-->
+                            <!--                                </div>-->
+                            <!--                                <div>-->
+                            <!--                                    <button class="btn btn-sm btn-outline-secondary me-1"-->
+                            <!--                                            data-bs-toggle="modal" data-bs-target="#editAddressModal">Cập-->
+                            <!--                                        nhật-->
+                            <!--                                    </button>-->
+                            <!--                                    <button class="btn btn-sm btn-outline-danger">Xóa</button>-->
+                            <!--                                </div>-->
+                            <!--                            </div>-->
+                            <!--                            &lt;!&ndash; Add more addresses here &ndash;&gt;-->
+                            <!--                            <div-->
+                            <!--                                    class="list-group-item d-flex justify-content-between align-items-start py-10">-->
+                            <!--                                <div>-->
+                            <!--                                    <h6 class="mb-6">Võ Văn Tuấn</h6>-->
+                            <!--                                    <p class="mb-2 small">-->
+                            <!--                                        <strong>Số điện thoại:</strong> +84 969 424 914-->
+                            <!--                                    </p>-->
+                            <!--                                    <p class="mb-2 small">Số nhà 07, Hẻm 29, Hello, Hà Nội</p>-->
+                            <!--                                </div>-->
+                            <!--                                <div>-->
+                            <!--                                    <button class="btn btn-sm btn-outline-secondary me-1"-->
+                            <!--                                            data-bs-toggle="modal" data-bs-target="#editAddressModal">Cập-->
+                            <!--                                        nhật-->
+                            <!--                                    </button>-->
+                            <!--                                    <button class="btn btn-sm btn-outline-danger">Xóa</button>-->
+                            <!--                                </div>-->
+                            <!--                            </div>-->
                         </div>
                     </div>
 
@@ -82,32 +102,33 @@
                                             aria-label="Close"></button>
                                 </div>
                                 <div class="modal-body">
-                                    <form>
+                                    <form id="addAddress">
                                         <div class="mb-3">
                                             <label for="fullName" class="form-label">Họ và tên</label>
-                                            <input type="text" class="form-control" id="fullName" required>
+                                            <input type="text" name="fullName" class="form-control" id="fullName"
+                                                   required>
                                         </div>
                                         <div class="mb-3">
                                             <label for="phone" class="form-label">Số điện thoại</label>
-                                            <input type="text" class="form-control" id="phone" required>
+                                            <input type="text" name="phone" class="form-control" id="phone" required>
                                         </div>
                                         <div class="mb-3">
                                             <label for="address" class="form-label">Địa chỉ</label>
-                                            <textarea class="form-control" id="address" rows="3"
+                                            <textarea class="form-control" name="addr" id="address" rows="3"
                                                       required></textarea>
                                         </div>
-                                        <div class="form-check">
-                                            <input class="form-check-input" type="checkbox" id="defaultAddress">
-                                            <label class="form-check-label" for="defaultAddress">Đặt làm mặc
-                                                định</label>
-                                        </div>
+                                        <!--                                        <div class="form-check">-->
+                                        <!--                                            <input class="form-check-input" type="checkbox" id="defaultAddress">-->
+                                        <!--                                            <label class="form-check-label" for="defaultAddress">Đặt làm mặc-->
+                                        <!--                                                định</label>-->
+                                        <!--                                        </div>-->
                                         <button type="submit" class="btn btn-primary mt-3">Lưu</button>
                                     </form>
                                 </div>
                             </div>
                         </div>
 
-                </div>
+                    </div>
 
                     <!-- Modal for Editing Address -->
                     <div class="modal fade" id="editAddressModal" tabindex="-1"
@@ -120,23 +141,24 @@
                                             aria-label="Close"></button>
                                 </div>
                                 <div class="modal-body">
-                                    <form>
+                                    <form id="updateAddress">
                                         <!-- Same form as adding, pre-filled with address data -->
                                         <div class="mb-3">
                                             <label for="editFullName" class="form-label">Họ và tên</label>
-                                            <input type="text" class="form-control" id="editFullName"
+                                            <input name="fullName" type="text" class="form-control" id="editFullName"
                                                    value="Võ Văn Tuấn" required>
                                         </div>
                                         <div class="mb-3">
                                             <label for="editPhone" class="form-label">Số điện thoại</label>
-                                            <input type="text" class="form-control" id="editPhone"
+                                            <input name="phone" type="text" class="form-control" id="editPhone"
                                                    value="+84 969 424 914" required>
                                         </div>
                                         <div class="mb-3">
                                             <label for="editAddress" class="form-label">Địa chỉ</label>
-                                            <textarea class="form-control" id="editAddress" rows="3"
+                                            <textarea name="addr" class="form-control" id="editAddress" rows="3"
                                                       required>63/16, Nguyễn Hữu Cầu, Quận 1</textarea>
                                         </div>
+                                        <input type="hidden" id="idaddressupdate" value="">
                                         <div class="form-check">
                                             <input class="form-check-input" type="checkbox" id="editDefaultAddress"
                                                    checked>
@@ -150,98 +172,252 @@
                         </div>
                     </div>
 
-            </div>
+                </div>
 
+            </div>
         </div>
     </div>
 
-    <!--    <script>-->
-    <!--        document.addEventListener('DOMContentLoaded', function () {-->
-    <!--            // Display user information after successful login-->
-    <!--            $.ajax({-->
-    <!--                type: 'GET', // HTTP method-->
-    <!--                url: '/account/me', // API endpoint-->
-    <!--                dataType: 'json', // Expected response data type-->
-    <!--                contentType: 'application/json; charset=utf-8', // Content type-->
-    <!--                beforeSend: function (xhr) {-->
-    <!--                    // Add authorization header if token exists in localStorage-->
-    <!--                    if (localStorage.token) {-->
-    <!--                        xhr.setRequestHeader('Authorization', 'Bearer ' + localStorage.token);-->
-    <!--                    }-->
-    <!--                },-->
-    <!--                success: function (data) {-->
-    <!--                    alert(data.email);-->
+    <!-- Thẻ ẩn để lưu thông tin về errorMessage -->
+    <input type="hidden" id="errorMessageValue" th:value="${errorMessage != null ? 'true' : 'false'}" />
 
-    <!--                    $('#full-name').val(data.fullname);-->
-    <!--                    $('#email').val(data.email);-->
-    <!--                    $('#address').val(data.address);-->
-    <!--                    $('#phone').val(data.phone);-->
-    <!--                },-->
-    <!--                error: function (e) {-->
-    <!--                    // Handle errors-->
-    <!--                    const json = e.responseText;-->
-    <!--                    alert("Sorry, you are not logged in.");-->
-    <!--                    console.error(json);-->
-    <!--                }-->
-    <!--            });-->
+    <!-- Modal thông báo lỗi -->
+    <div class="modal fade" id="errorModal" tabindex="-1" aria-labelledby="errorModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header bg-danger text-white">
+                    <h5 class="modal-title" id="errorModalLabel">Thông báo lỗi</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <span th:text="${errorMessage}"></span>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
-    <!--            $('#FormUpDateInfo').on('submit', function (e) {-->
-    <!--                // Hiển thị spinner khi bắt đầu xử lý-->
-    <!--                const spinner = new bootstrap.Modal(document.getElementById('loadingSpinner'));-->
-    <!--                spinner.show();-->
+    <!-- JavaScript để kiểm tra lỗi và hiển thị modal -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const errorMessage = document.getElementById('errorMessageValue').value;
+            if (errorMessage === 'true') {
+                const errorModal = new bootstrap.Modal(document.getElementById('errorModal'));
+                errorModal.show();
+            }
 
-    <!--                e.preventDefault(); // Ngăn form submit mặc định-->
+            // Sau khi hiển thị modal, đặt lại giá trị của thẻ ẩn về false
+            errorModal._element.addEventListener('shown.bs.modal', function () {
+                errorInput.value = 'false';
+            });
+        });
+    </script>
 
-    <!--                // Lấy dữ liệu từ form và chuyển thành JSON-->
-    <!--                const formDataArray = $('#FormUpDateInfo').serializeArray(); // Lấy dữ liệu dạng mảng-->
-    <!--                const formDataJson = {};-->
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            function loadAddress() {
+                // Display user information after successful login
+                $.ajax({
+                    type: 'GET', // HTTP method
+                    url: '/address', // API endpoint
+                    dataType: 'json', // Expected response data type
+                    contentType: 'application/json; charset=utf-8', // Content type
+                    beforeSend: function (xhr) {
+                        // Add authorization header if token exists in localStorage
+                        if (localStorage.token) {
+                            xhr.setRequestHeader('Authorization', 'Bearer ' + localStorage.token);
+                        }
+                    },
+                    success: function (response) {
 
-    <!--// Duyệt qua từng phần tử trong mảng để tạo đối tượng JSON-->
-    <!--                formDataArray.forEach(field => {-->
-    <!--                    // Nếu trường có giá trị thì thêm vào đối tượng JSON-->
-    <!--                    if (field.value) {-->
-    <!--                        formDataJson[field.name] = field.value;-->
-    <!--                    }-->
-    <!--                });-->
+                        $('#addressList').empty()
+                        // Kiểm tra nếu response.body là chuỗi JSON
+                        let addressData = response.body;
+                        if (typeof addressData === 'string') {
+                            try {
+                                addressData = JSON.parse(addressData);
+                            } catch (e) {
+                                console.error('Lỗi phân tích cú pháp JSON:', e);
+                                return;
+                            }
+                        }
 
-    <!--                // Lấy token từ localStorage-->
-    <!--                const token = localStorage.getItem("token");-->
-    <!--                if (!token) {-->
-    <!--                    console.error('Token không tồn tại trong localStorage!');-->
-    <!--                    return;-->
-    <!--                }-->
+                        addressData.forEach(function (address) {
+                            const addressItem = `
+                                    <div class="list-group-item d-flex justify-content-between align-items-start py-10">
+                                        <div>
+                                            <h6 class="mb-6">${address.fullName}</h6>
+                                            <p class="mb-2 small">
+                                                <strong>Số điện thoại:</strong> ${address.phone}
+                                            </p>
+                                            <input type="hidden" id="idaddress" value="${address.id}">
+                                            <p class="mb-3 small">${address.addr}</p>
+                                        </div>
+                                        <div class="d-flex align-items-center">
+                                            <button
+                                                class="btn btn-sm btn-outline-secondary me-1 edit-button"
+                                                data-bs-toggle="modal"
+                                                data-bs-target="#editAddressModal"
+                                                data-id="${address.id}"
+                                                data-fullname="${address.fullName}"
+                                                data-phone="${address.phone}"
+                                                data-addr="${address.addr}">Cập nhật</button>
+                                            <form action="/home/deladdr/${address.id}" method="POST" onsubmit="return confirm('Bạn có chắc chắn muốn xóa địa chỉ này không?')">
+    <button type="submit" class="btn btn-sm btn-outline-danger">Xóa</button>
+</form>
+                                        </div>
+                                    </div>
+                                `;
+                            document.querySelector('.list-group').innerHTML += addressItem;
+                        });
 
-    <!--                // Decode the JWT token using jwt-decode-->
-    <!--                const decoded = jwt_decode(token);-->
-    <!--                const id = decoded.accId;-->
+                        const editFullName = document.getElementById("editFullName");
+                        const editPhone = document.getElementById("editPhone");
+                        const editAddress = document.getElementById("editAddress");
+                        // const editAddressId = document.getElementById("idaddress");
+                        const editButtons = document.querySelectorAll(".edit-button");
+                        const idupdate = document.getElementById("idaddressupdate");
 
-    <!--                // Gửi request bằng AJAX-->
-    <!--                $.ajax({-->
-    <!--                    url: `/account/${id}`, // URL server xử lý-->
-    <!--                    type: 'PUT',          // Loại request-->
-    <!--                    dataType: "json",-->
-    <!--                    contentType: "application/json; charset=utf-8",-->
-    <!--                    data: JSON.stringify(formDataJson),       // Dữ liệu từ form-->
-    <!--                    headers: {-->
-    <!--                        'Authorization': `Bearer ${token}` // Đính kèm JWT vào header-->
-    <!--                    },-->
-    <!--                    success: function (response) {-->
-    <!--                        spinner.hide(); // Ẩn spinner sau khi xử lý thành công-->
-    <!--                        alert('Response: ' + response.body)-->
-    <!--                        console.log('Response:', response); // Xử lý thành công-->
-    <!--                    },-->
-    <!--                    error: function(xhr, status, error) {-->
-    <!--                        spinner.hide(); // Ẩn spinner sau khi xử lý thành công-->
-    <!--                        // Nếu có lỗi, thông báo cho người dùng-->
-    <!--                        alert('Lỗi: ' + xhr.responseJSON.body);-->
-    <!--                    }-->
-    <!--                });-->
-    <!--            });-->
-    <!--        });-->
-    <!--    </script>-->
+                        editButtons.forEach(button => {
+                            button.addEventListener("click", function () {
+                                const id = button.getAttribute("data-id");
+                                const name = button.getAttribute("data-fullname");
+                                const phone = button.getAttribute("data-phone");
+                                const address = button.getAttribute("data-addr");
+
+                                // Điền dữ liệu vào các trường trong modal
+                                idupdate.value = id; // Nếu bạn cần chỉnh sửa ID
+                                editFullName.value = name;
+                                editPhone.value = phone;
+                                editAddress.value = address;
+                            });
+                        });
+                    },
+
+                    error: function (e) {
+                        // Handle errors
+                        const json = e.responseText;
+                        alert("Sorry, you are not logged in.");
+                        console.error(json);
+                    }
+                });
+            }
 
 
+
+
+            $('#addAddress').on('submit', function (e) {
+                // Hiển thị spinner khi bắt đầu xử lý
+                const spinner = new bootstrap.Modal(document.getElementById('loadingSpinner'));
+                spinner.show();
+
+                e.preventDefault(); // Ngăn form submit mặc định
+
+                // Lấy dữ liệu từ form và chuyển thành JSON
+                const formDataArray = $('#addAddress').serializeArray(); // Lấy dữ liệu dạng mảng
+                const formDataJson = {};
+
+// Duyệt qua từng phần tử trong mảng để tạo đối tượng JSON
+                formDataArray.forEach(field => {
+                    // Nếu trường có giá trị thì thêm vào đối tượng JSON
+                    if (field.value) {
+                        formDataJson[field.name] = field.value;
+                    }
+                });
+
+                // Lấy token từ localStorage
+                const token = localStorage.getItem("token");
+                if (!token) {
+                    console.error('Token không tồn tại trong localStorage!');
+                    return;
+                }
+
+                // Gửi request bằng AJAX
+                $.ajax({
+                    url: `/address`, // URL server xử lý
+                    type: 'POST',          // Loại request
+                    dataType: "json",
+                    contentType: "application/json; charset=utf-8",
+                    data: JSON.stringify(formDataJson),       // Dữ liệu từ form
+                    headers: {
+                        'Authorization': `Bearer ${token}` // Đính kèm JWT vào header
+                    },
+                    success: function (response) {
+
+                        window.location.href = "/home/managerAddress";
+                        spinner.hide(); // Ẩn spinner sau khi xử lý thành công
+                        alert("Thêm thành công")
+                    },
+                    error: function (xhr, status, error) {
+                        spinner.hide(); // Ẩn spinner sau khi xử lý thành công
+                        // Nếu có lỗi, thông báo cho người dùng
+                        alert('Lỗi: ' + xhr.responseJSON.body);
+                    }
+                });
+            });
+
+
+            $('#updateAddress').on('submit', function (e) {
+
+                const idupdate = document.getElementById("idaddressupdate");
+                let idaddr = idupdate.value
+                alert(idaddr)
+                // Hiển thị spinner khi bắt đầu xử lý
+                const spinner = new bootstrap.Modal(document.getElementById('loadingSpinner'));
+                spinner.show();
+
+                e.preventDefault(); // Ngăn form submit mặc định
+
+                // Lấy dữ liệu từ form và chuyển thành JSON
+                const formDataArray = $('#updateAddress').serializeArray(); // Lấy dữ liệu dạng mảng
+                const formDataJson = {};
+
+// Duyệt qua từng phần tử trong mảng để tạo đối tượng JSON
+                formDataArray.forEach(field => {
+                    // Nếu trường có giá trị thì thêm vào đối tượng JSON
+                    if (field.value) {
+                        formDataJson[field.name] = field.value;
+                    }
+                });
+
+                // Lấy token từ localStorage
+                const token = localStorage.getItem("token");
+                if (!token) {
+                    console.error('Token không tồn tại trong localStorage!');
+                    return;
+                }
+
+                alert(JSON.stringify(formDataJson));
+
+                // Gửi request bằng AJAX
+                $.ajax({
+                    url: `/address/${idaddr}`, // URL server xử lý
+                    type: 'PUT',          // Loại request
+                    dataType: "json",
+                    contentType: "application/json; charset=utf-8",
+                    data: JSON.stringify(formDataJson),       // Dữ liệu từ form
+                    headers: {
+                        'Authorization': `Bearer ${token}` // Đính kèm JWT vào header
+                    },
+                    success: function (response) {
+
+                        window.location.href = "/home/managerAddress";
+                        spinner.hide(); // Ẩn spinner sau khi xử lý thành công
+                        alert("Update thành công")
+                    },
+                    error: function (xhr, status, error) {
+                        spinner.hide(); // Ẩn spinner sau khi xử lý thành công
+                        // Nếu có lỗi, thông báo cho người dùng
+                        alert('Lỗi: ' + xhr.responseJSON.body);
+                    }
+                });
+            });
+
+
+            loadAddress()
+        });
+    </script>
 </main>
-
-
 </html>
