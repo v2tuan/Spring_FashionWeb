@@ -2,11 +2,7 @@ package com.fashionweb.Controllers.admin;
 
 import com.fashionweb.Entity.*;
 import com.fashionweb.dto.request.product.ProductDTO;
-import com.fashionweb.mapper.ProductMapper;
-import com.fashionweb.service.Impl.BrandService;
-import com.fashionweb.service.Impl.CategoryService;
-import com.fashionweb.service.Impl.ProductService;
-import com.fashionweb.service.Impl.SubcategoryService;
+import com.fashionweb.service.Impl.*;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -14,9 +10,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @Controller
 @RequestMapping("/admin")
@@ -35,7 +33,11 @@ public class ProductController {
     private SubcategoryService SubcategoryService;
 
     @Autowired
-    private ProductMapper productMapper;
+    private BrandService brandService;
+    @Autowired
+    private SizeService sizeService;
+    @Autowired
+    private SubcategoryService subcategoryService;
 
     public List<Map<String, Object>> simplifiedImages(List<ProdImage> images) {
         return images.stream().map(item -> {
@@ -111,10 +113,29 @@ public class ProductController {
     }
 
     @PostMapping("/createproduct")
+    @ResponseBody
     public ResponseEntity<?> createProduct(@RequestBody @Valid ProductDTO productDto) {
-        Product product = productMapper.toProduct(productDto);
-        productService.createProduct(product);
-        return ResponseEntity.ok("Thêm sản phẩm thành công");
+        Product product = new Product();
+
+        Optional<Brand> brnd = brandService.findById(productDto.getBrandId());
+        Optional<Subcategory> subcat = subcategoryService.getById(productDto.getSubCateId());
+        if (brnd.isPresent() && subcat.isPresent()){
+            product.setProdName(productDto.getProdName());
+            product.setDescription(productDto.getDescription());
+            product.setRegular(productDto.getRegular());
+            product.setPromo(productDto.getPromo());
+            product.setStatus(productDto.getStatus());
+            product.setCreateDate(java.sql.Date.valueOf(LocalDate.now()));
+            product.setBrand(brnd.get());
+            product.setSubcategory(subcat.get());
+
+            productService.createProduct(product);
+
+            return ResponseEntity.ok("Thêm sản phẩm thành công");
+        }
+        else {
+            return ResponseEntity.badRequest().body("Thêm sản phẩm thất bại");
+        }
     }
 
     @PostMapping("/deleteproduct/{id}")

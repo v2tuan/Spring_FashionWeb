@@ -5,21 +5,18 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.Date;
 import java.util.List;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-
 public class ProductDTO {
     private String prodName;
     private String description;
     private Double regular;
     private Double promo;
     private Boolean status;
-    private Date createDate;
 
     private Long brandId;
     private Long subCateId;
