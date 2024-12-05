@@ -12,9 +12,9 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @Builder
 public class CartItemDTO {
+    private Long prodId;
+    private String sizeName;
     private Integer quantity;
     private Double price;
     private LocalDate createDate;
-    private String sizeName;
-    private Long prodId;
 }

@@ -19,7 +19,6 @@ public class OrderItem {
     private Integer quantity;
 
     @ManyToOne
-    @MapsId("orderId")
     @JoinColumn(name = "orderId", nullable = false)
     private Order order;
 
