@@ -35,19 +35,20 @@
             <div class="card-header bg-transparent px-0 pt-0 pb-7">
                 <div class="row align-items-center justify-content-between">
                     <div class="row col-md-6">
-                            <select class="form-select" id="categorySelect">
-                                <option selected="" data-select2-id="3">All Categories</option>
-                                <th:block th:each="category : ${categories}">
-                                    <option th:value="${category.categoryId}" th:text="${category.cateName}"></option>
-                                </th:block>
-                            </select>
-                            <select class="form-select" id="subcategorySelect">
-                                <option selected="" data-select2-id="3">All Subcategories</option>
+                        <select class="form-select" id="categorySelect">
+                            <option value="" selected>All Categories</option>
+                            <th:block th:each="category : ${categories}">
+                                <option th:value="${category.categoryId}" th:text="${category.cateName}"></option>
                                 <th:block th:each="subcategory : ${subcategories}">
-                                    <option th:value="${subcategory.subCateId}"
-                                            th:text="${subcategory.subCateName}"></option>
+                                    <option th:if="${subcategory.CategoryId == category.categoryId}"
+                                            th:value="${subcategory.subCateId}"
+                                            th:text="'-- ' + ${subcategory.subCateName}">
+                                    </option>
                                 </th:block>
-                            </select>
+                            </th:block>
+                        </select>
+
+
 
                     </div>
                     <div class="col-md-6">

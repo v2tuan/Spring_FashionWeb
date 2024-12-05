@@ -96,4 +96,9 @@ public class WebController {
         }
         return "web/manager_address";
     }
+
+    @GetMapping("/discount")
+    String discount() {
+        return "web/shop/discount";
+    }
 }

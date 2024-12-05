@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{web/web_layout.html}">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Discount Management</title>
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+<div class="container mt-5" th:fragment="content">
+  <h2>Discount Management</h2>
+
+  <!-- Button to open Add Discount Modal -->
+  <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addDiscountModal">Add New Discount</button>
+
+  <!-- Discount Table -->
+  <table class="table mt-3">
+    <thead>
+    <tr>
+      <th>ID</th>
+      <th>Voucher</th>
+      <th>Description</th>
+      <th>Discount %</th>
+      <th>Start Date</th>
+      <th>End Date</th>
+      <th>Actions</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="discount : ${discounts}">
+      <td th:text="${discount.id}"></td>
+      <td th:text="${discount.voucher}"></td>
+      <td th:text="${discount.description}"></td>
+      <td th:text="${discount.discountPercentage}"></td>
+      <td th:text="${discount.startDate}"></td>
+      <td th:text="${discount.endDate}"></td>
+      <td>
+        <a th:href="@{/discounts/{id}(id=${discount.id})}">Edit</a>
+        <a th:href="@{/discounts/{id}/delete(id=${discount.id})}">Delete</a>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- Add Discount Modal -->
+<div class="modal fade" id="addDiscountModal" tabindex="-1" aria-labelledby="addDiscountModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="addDiscountModalLabel">Add Discount</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form id="addDiscountForm" th:action="@{/discounts}" method="post">
+          <div class="mb-3">
+            <label for="voucher" class="form-label">Voucher</label>
+            <input type="text" class="form-control" id="voucher" name="voucher" required>
+          </div>
+          <div class="mb-3">
+            <label for="description" class="form-label">Description</label>
+            <input type="text" class="form-control" id="description" name="description" required>
+          </div>
+          <div class="mb-3">
+            <label for="discountPercentage" class="form-label">Discount Percentage</label>
+            <input type="number" class="form-control" id="discountPercentage" name="discountPercentage" required>
+          </div>
+          <div class="mb-3">
+            <label for="startDate" class="form-label">Start Date</label>
+            <input type="date" class="form-control" id="startDate" name="startDate" required>
+          </div>
+          <div class="mb-3">
+            <label for="endDate" class="form-label">End Date</label>
+            <input type="date" class="form-control" id="endDate" name="endDate" required>
+          </div>
+          <button type="submit" class="btn btn-primary">Save Discount</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Edit Discount Modal -->
+<div class="modal fade" id="editDiscountModal" tabindex="-1" aria-labelledby="editDiscountModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="editDiscountModalLabel">Edit Discount</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form id="editDiscountForm" th:action="@{/discounts/{id}(id=${discount.id})}" method="post">
+          <input type="hidden" id="editDiscountId" name="id">
+          <div class="mb-3">
+            <label for="editVoucher" class="form-label">Voucher</label>
+            <input type="text" class="form-control" id="editVoucher" name="voucher" required>
+          </div>
+          <div class="mb-3">
+            <label for="editDescription" class="form-label">Description</label>
+            <input type="text" class="form-control" id="editDescription" name="description" required>
+          </div>
+          <div class="mb-3">
+            <label for="editDiscountPercentage" class="form-label">Discount Percentage</label>
+            <input type="number" class="form-control" id="editDiscountPercentage" name="discountPercentage" required>
+          </div>
+          <div class="mb-3">
+            <label for="editStartDate" class="form-label">Start Date</label>
+            <input type="date" class="form-control" id="editStartDate" name="startDate" required>
+          </div>
+          <div class="mb-3">
+            <label for="editEndDate" class="form-label">End Date</label>
+            <input type="date" class="form-control" id="editEndDate" name="endDate" required>
+          </div>
+          <button type="submit" class="btn btn-primary">Update Discount</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Bootstrap JS and Fetch API Script -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+  // Fetch discounts from API and display them in the table
+  function displayDiscounts() {
+    fetch('/api/discounts')
+            .then(response => response.json())
+            .then(discounts => {
+              const discountTableBody = document.getElementById('discountTableBody');
+              discountTableBody.innerHTML = '';
+              discounts.forEach(discount => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                            <td>${discount.id}</td>
+                            <td>${discount.voucher}</td>
+                            <td>${discount.description}</td>
+                            <td>${discount.discountPercentage}%</td>
+                            <td>${discount.startDate}</td>
+                            <td>${discount.endDate}</td>
+                            <td>
+                                <button class="btn btn-warning btn-sm" onclick="editDiscount(${discount.id})">Edit</button>
+                                <button class="btn btn-danger btn-sm" onclick="deleteDiscount(${discount.id})">Delete</button>
+                            </td>
+                        `;
+                discountTableBody.appendChild(row);
+              });
+            })
+            .catch(error => {
+              console.error('Error fetching discounts:', error);
+            });
+  }
+
+  // Add new discount
+  document.getElementById('addDiscountForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+
+    const newDiscount = {
+      voucher: document.getElementById('voucher').value,
+      description: document.getElementById('description').value,
+      discountPercentage: document.getElementById('discountPercentage').value,
+      startDate: document.getElementById('startDate').value,
+      endDate: document.getElementById('endDate').value
+    };
+
+    fetch('/api/discounts', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(newDiscount)
+    })
+            .then(response => response.json())
+            .then(data => {
+              console.log('Discount created:', data);
+              displayDiscounts();
+              bootstrap.Modal.getInstance(document.getElementById('addDiscountModal')).hide();
+            })
+            .catch(error => {
+              console.error('Error creating discount:', error);
+            });
+  });
+
+  // Edit discount
+  function editDiscount(id) {
+    fetch(`/api/discounts/${id}`)
+            .then(response => response.json())
+            .then(discount => {
+              document.getElementById('editDiscountId').value = discount.id;
+              document.getElementById('editVoucher').value = discount.voucher;
+              document.getElementById('editDescription').value = discount.description;
+              document.getElementById('editDiscountPercentage').value = discount.discountPercentage;
+              document.getElementById('editStartDate').value = discount.startDate;
+              document.getElementById('editEndDate').value = discount.endDate;
+
+              const editModal = new bootstrap.Modal(document.getElementById('editDiscountModal'));
+              editModal.show();
+            })
+            .catch(error => {
+              console.error('Error fetching discount:', error);
+            });
+  }
+
+  // Update discount
+  document.getElementById('editDiscountForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+
+    const id = document.getElementById('editDiscountId').value;
+    const updatedDiscount = {
+      voucher: document.getElementById('editVoucher').value,
+      description: document.getElementById('editDescription').value,
+      discountPercentage: document.getElementById('editDiscountPercentage').value,
+      startDate: document.getElementById('editStartDate').value,
+      endDate: document.getElementById('editEndDate').value
+    };
+
+    fetch(`/api/discounts/${id}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(updatedDiscount)
+    })
+            .then(response => response.json())
+            .then(data => {
+              console.log('Discount updated:', data);
+              displayDiscounts();
+              bootstrap.Modal.getInstance(document.getElementById('editDiscountModal')).hide();
+            })
+            .catch(error => {
+              console.error('Error updating discount:', error);
+            });
+  });
+
+  // Delete discount
+  function deleteDiscount(id) {
+    fetch(`/api/discounts/${id}`, {
+      method: 'DELETE'
+    })
+            .then(response => {
+              if (response.ok) {
+                console.log('Discount deleted');
+                displayDiscounts();
+              } else {
+                console.error('Error deleting discount');
+              }
+            })
+            .catch(error => {
+              console.error('Error deleting discount:', error);
+            });
+  }
+
+  // Load discounts on page load
+  displayDiscounts();
+</script>
+</body>
+</html>

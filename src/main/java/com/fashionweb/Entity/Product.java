@@ -6,7 +6,6 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 
@@ -26,7 +25,10 @@ public class Product {
     private Double promo;
     private Boolean status;
     private Integer totalQuantity;
-    private String images;
+
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<ProdImage> images;
+
     private Date createDate;
 
     @ManyToOne
@@ -34,7 +36,7 @@ public class Product {
     private Brand brand;
 
     @ManyToOne
-    @JoinColumn(name = "subCatId", nullable = false)
+    @JoinColumn(name = "subCateId", nullable = false)
     private Subcategory subcategory;
 
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)

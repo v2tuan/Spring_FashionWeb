@@ -29,7 +29,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
-@RestController
+@Controller
 @RequestMapping("/admin")
 public class ProductController {
 
@@ -50,17 +50,18 @@ public class ProductController {
 
     @Autowired
     private ProductMapper productMapper;
+    @Autowired
+    private BrandService brandService;
 
-    // Hi?n th? danh sách s?n ph?m
-    @GetMapping("/productlist")
-    public String showProductList(Model model) {
-        List<Product> products = productService.getAllProducts();
-        model.addAttribute("product", new Product());
-        return "admin/product_list";
-    }
+//    // Hi?n th? danh sï¿½ch s?n ph?m
+//    @GetMapping("/productlist")
+//    public String showProductList(Model model) {
+//        List<Product> products = productService.getAllProducts();
+//        model.addAttribute("product", new Product());
+//        return "admin/product_list";
+//    }
 
-
-    // Hi?n th? form thêm s?n ph?m m?i
+    // Hi?n th? form thï¿½m s?n ph?m m?i
     @GetMapping("/addproduct")
     public String AddProductForm(Model model) {
         List<Category> categories = CategoryService.findAll();
@@ -73,50 +74,30 @@ public class ProductController {
         return "admin/addOrEditProduct";
     }
 
-//    // Hi?n th? form ch?nh s?a s?n ph?m
-//    @GetMapping("/editproduct/{id}")
-//    public String showEditProductForm(@PathVariable Long id, Model model) {
-//        Optional<Product> product = productService.getProduct(id);
-//        if (product.isPresent()) {
-//            model.addAttribute("product", product.get());
-//            return "admin/addOrEditProduct"; // Tr? v? form ch?nh s?a s?n ph?m
-//        } else {
-//            model.addAttribute("error", "Không tìm th?y s?n ph?m!");
-//            return "redirect:/admin/productlist";
-//        }
-//    }
 
     @PostMapping("/createproduct")
-    public ResponseEntity<?> createProduct(@RequestBody @Valid ProductDTO productDto) {
+    @ResponseBody
+    public ResponseEntity<?> createProduct(@RequestBody ProductDTO productDto) {
         Product product = productMapper.toProduct(productDto);
+
+
         productService.createProduct(product);
-        return ResponseEntity.ok("Thêm s?n ph?m thành công");
+        return ResponseEntity.ok("ThÃªm sáº£n pháº©m thÃ nh cÃ´ng");
     }
 
-//    @PostMapping("/saveproduct")
-//    public String saveProduct(
-//            @ModelAttribute("product") @Validated Product product,
-//            @RequestParam(value = "images", required = false) List<MultipartFile> images,
-//            Model model) {
-//
-//        productService.updateProduct(product);
-//        model.addAttribute("message", "C?p nh?t s?n ph?m thành công!");
-//
-//        return "redirect:/admin/productlist";
+
+
+//    // X? lï¿½ xï¿½a s?n ph?m
+//    @PostMapping("/deleteproduct/{id}")
+//    public String deleteProduct(@PathVariable Long id, Model model) {
+//        boolean isDeleted = productService.deleteProduct(id);
+//        if (isDeleted) {
+//            model.addAttribute("message", "XÃ³a sáº£n pháº©m thÃ nh cÃ´ng!");
+//        } else {
+//            model.addAttribute("error", "Xï¿½a s?n ph?m th?t b?i!");
+//        }
+//        return "redirect:/admin/productlist"; // Quay l?i danh sï¿½ch s?n ph?m
 //    }
-
-    // X? lý xóa s?n ph?m
-    @PostMapping("/deleteproduct/{id}")
-    public String deleteProduct(@PathVariable Long id, Model model) {
-        boolean isDeleted = productService.deleteProduct(id);
-        if (isDeleted) {
-            model.addAttribute("message", "Xóa s?n ph?m thành công!");
-        } else {
-            model.addAttribute("error", "Xóa s?n ph?m th?t b?i!");
-        }
-        return "redirect:/admin/productlist"; // Quay l?i danh sách s?n ph?m
-    }
-
 
     @GetMapping("/orderlist")
     String order_list(){
