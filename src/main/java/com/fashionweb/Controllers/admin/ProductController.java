@@ -51,7 +51,7 @@ public class ProductController {
     @Autowired
     private ProductMapper productMapper;
 
-    // Hiển thị danh sách sản phẩm
+    // Hi?n th? danh s�ch s?n ph?m
     @GetMapping("/productlist")
     public String showProductList(Model model) {
         List<Product> products = productService.getAllProducts();
@@ -60,7 +60,7 @@ public class ProductController {
     }
 
 
-    // Hiển thị form thêm sản phẩm mới
+    // Hi?n th? form th�m s?n ph?m m?i
     @GetMapping("/addproduct")
     public String AddProductForm(Model model) {
         List<Category> categories = CategoryService.findAll();
@@ -73,15 +73,15 @@ public class ProductController {
         return "admin/addOrEditProduct";
     }
 
-//    // Hiển thị form chỉnh sửa sản phẩm
+//    // Hi?n th? form ch?nh s?a s?n ph?m
 //    @GetMapping("/editproduct/{id}")
 //    public String showEditProductForm(@PathVariable Long id, Model model) {
 //        Optional<Product> product = productService.getProduct(id);
 //        if (product.isPresent()) {
 //            model.addAttribute("product", product.get());
-//            return "admin/addOrEditProduct"; // Trả về form chỉnh sửa sản phẩm
+//            return "admin/addOrEditProduct"; // Tr? v? form ch?nh s?a s?n ph?m
 //        } else {
-//            model.addAttribute("error", "Không tìm thấy sản phẩm!");
+//            model.addAttribute("error", "Kh�ng t�m th?y s?n ph?m!");
 //            return "redirect:/admin/productlist";
 //        }
 //    }
@@ -90,7 +90,7 @@ public class ProductController {
     public ResponseEntity<?> createProduct(@RequestBody @Valid ProductDTO productDto) {
         Product product = productMapper.toProduct(productDto);
         productService.createProduct(product);
-        return ResponseEntity.ok("Thêm sản phẩm thành công");
+        return ResponseEntity.ok("Th�m s?n ph?m th�nh c�ng");
     }
 
 //    @PostMapping("/saveproduct")
@@ -100,21 +100,21 @@ public class ProductController {
 //            Model model) {
 //
 //        productService.updateProduct(product);
-//        model.addAttribute("message", "Cập nhật sản phẩm thành công!");
+//        model.addAttribute("message", "C?p nh?t s?n ph?m th�nh c�ng!");
 //
 //        return "redirect:/admin/productlist";
 //    }
 
-    // Xử lý xóa sản phẩm
+    // X? l� x�a s?n ph?m
     @PostMapping("/deleteproduct/{id}")
     public String deleteProduct(@PathVariable Long id, Model model) {
         boolean isDeleted = productService.deleteProduct(id);
         if (isDeleted) {
-            model.addAttribute("message", "Xóa sản phẩm thành công!");
+            model.addAttribute("message", "X�a s?n ph?m th�nh c�ng!");
         } else {
-            model.addAttribute("error", "Xóa sản phẩm thất bại!");
+            model.addAttribute("error", "X�a s?n ph?m th?t b?i!");
         }
-        return "redirect:/admin/productlist"; // Quay lại danh sách sản phẩm
+        return "redirect:/admin/productlist"; // Quay l?i danh s�ch s?n ph?m
     }
 
 

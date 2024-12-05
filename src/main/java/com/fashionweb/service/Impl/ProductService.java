@@ -72,5 +72,8 @@ public class ProductService implements IProductService {
         return iProductRepository.findByStatus(status);
     }
 
-
+    @Override
+    public List<Product> findProductsByCategoryId(Long cateId) {
+        return iProductRepository.findAllBySubcategoryCategoryCategoryId(cateId);
+    }
 }

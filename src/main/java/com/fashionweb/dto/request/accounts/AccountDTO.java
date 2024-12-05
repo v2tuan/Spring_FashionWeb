@@ -12,12 +12,12 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Builder
 public class AccountDTO {
-
     @Email
     private String email;
-    @Size(min = 8, message = "Password must be at least 8 characters")
-    private String password;
-    private String profilePic;
-    private String role;
-    private String status;
+    private String avatar;
+    private String fullname;
+    private String address;
+    private String phone;
+    private String gender;
+    private String enabled;
 }

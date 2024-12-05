@@ -10,6 +10,7 @@ import java.util.Optional;
 public interface IAccountService {
     List<Account>  getAllAccounts();
     Optional<Account> getAccounts(Long accountId);
+    Optional<Account> getAccounts(String email);
     <S extends Account> S createAccount(AccountDTO accountDTO);
     <S extends Account> S updateAccount(Long accountId, AccountDTO accountDTO);
     void deleteAccount(long accountId);

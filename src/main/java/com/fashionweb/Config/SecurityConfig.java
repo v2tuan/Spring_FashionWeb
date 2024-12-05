@@ -32,6 +32,7 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.GET, "/home").permitAll()
                         .requestMatchers(HttpMethod.GET, "/home/user-login", "/home/user-register").permitAll()
                         .requestMatchers(HttpMethod.GET, "/home/shop").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/account").permitAll()
                         .requestMatchers(HttpMethod.POST, "/account/signup", "/account/login","/account/verify").permitAll()
                         .requestMatchers("/assets/**", "/cdn.jsdelivr.net/**", "/cdnjs.cloudflare.com/**").permitAll() // Cho phép truy cập tài nguyên tĩnh
                 .anyRequest().permitAll());
@@ -41,6 +42,12 @@ public class SecurityConfig {
         );
 
         httpSecurity.csrf(AbstractHttpConfigurer::disable);
+
+        // Cấu hình form login
+        httpSecurity.formLogin(form -> form.loginPage("/home/user-login")
+                .defaultSuccessUrl("/home", true)  // Khi đăng nhập thành công sẽ chuyển hướng đến trang chủ
+                .failureUrl("/home/user-login?error=true")  // Khi đăng nhập thất bại
+                .permitAll());
 
         return httpSecurity.build();
     }

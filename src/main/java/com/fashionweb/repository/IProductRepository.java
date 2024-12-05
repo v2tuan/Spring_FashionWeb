@@ -13,5 +13,6 @@ public interface IProductRepository extends JpaRepository<Product, Long> {
     List<Product> findByStatus(Boolean status); // Tìm sản phẩm theo trạng thái (ví dụ: "active")
 
     List<Product> findAllByBrandBrandId(Long id);
+    List<Product> findAllBySubcategoryCategoryCategoryId(Long categoryId);
 }
     
