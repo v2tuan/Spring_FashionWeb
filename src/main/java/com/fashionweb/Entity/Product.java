@@ -23,7 +23,7 @@ public class Product {
     private Double regular;
     private Double promo;
     private Boolean status;
-    private Integer totalQuantity;
+    private Integer totalQuantity;  // null, chưa dùng
 
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ProdImage> images;
@@ -35,7 +35,7 @@ public class Product {
     private Brand brand;
 
     @ManyToOne
-    @JoinColumn(name = "subCatId", nullable = false)
+    @JoinColumn(name = "subCateId", nullable = false)
     private Subcategory subcategory;
 
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
