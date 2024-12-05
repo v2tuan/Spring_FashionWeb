@@ -15,9 +15,7 @@ public class ProdImage {
     @EmbeddedId
     private ProductImagesId productImageId;
 
-    private String imageName;
-
     @ManyToOne
-    @MapsId("prodId")
+    @JoinColumn(name = "prodId", insertable=false, updatable=false)
     private Product product;
 }

@@ -5,6 +5,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -19,9 +21,8 @@ public class Address {
     private String addr;
     private String phone;
 
-    @OneToOne
-    @JoinColumn(name = "orderId")
-    private Order order;
+    @OneToMany(mappedBy = "address", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Order> orders;
 
     @ManyToOne
     @JoinColumn(name = "accId") // Cột accId trong bảng Address

@@ -34,10 +34,11 @@ public class Order {
     private List<OrderItem> orderItems;
 
     @ManyToOne
-    @JoinColumn(name = "discountId", referencedColumnName = "discountId", nullable = true)
+    @JoinColumn(name = "discountId")
     private Discount discount;
 
-    @OneToOne(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
+    @ManyToOne
+    @JoinColumn(name = "id")
     private Address address;
 
 }
