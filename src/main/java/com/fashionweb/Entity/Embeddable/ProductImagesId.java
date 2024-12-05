@@ -13,7 +13,7 @@ import java.util.Objects;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ProductImagesId implements Serializable {
-    private Long id;
+    private Integer stt;
     private Long prodId;
 
 }

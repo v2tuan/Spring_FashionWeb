@@ -10,10 +10,12 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class    ProductService implements IProductService {
+public class ProductService implements IProductService {
 
     @Autowired
     private IProductRepository iProductRepository;
+
+
 
     @Override
     public List<Product> getAllProducts() {
@@ -46,9 +48,10 @@ public class    ProductService implements IProductService {
     }
 
     @Override
-    public void deleteProduct(Long prodId) {
+    public boolean deleteProduct(Long prodId) {
         // Xóa sản phẩm theo ID
         iProductRepository.deleteById(prodId);
+        return true;
     }
 
     @Override
@@ -68,4 +71,6 @@ public class    ProductService implements IProductService {
         // Tìm sản phẩm theo trạng thái
         return iProductRepository.findByStatus(status);
     }
+
+
 }

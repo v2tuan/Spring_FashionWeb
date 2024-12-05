@@ -1,5 +1,6 @@
 package com.fashionweb.Entity;
 
+import com.fashionweb.Enum.ProductStatus;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -23,9 +24,15 @@ public class Product {
     private String description;
     private Double regular;
     private Double promo;
+
+//    @Enumerated(EnumType.STRING)
     private Boolean status;
+
     private Integer totalQuantity;
-    private String images;
+
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<ProdImage> prodImages;
+
     private Date createDate;
 
     @ManyToOne
@@ -41,9 +48,10 @@ public class Product {
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Size> sizes;
 
-
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ProdReview> productReviews;
+
+
 //    @ManyToOne
 //    @JoinColumn(name = "brandId", referencedColumnName = "brandId")
 //    private Brand brand;
