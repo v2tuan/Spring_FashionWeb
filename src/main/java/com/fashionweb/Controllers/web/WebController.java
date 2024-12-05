@@ -38,4 +38,29 @@ public class WebController {
     String shoppingCart() {
         return "web/shop/shopping_cart";
     }
+
+    @GetMapping("/profile")
+    String profile(){
+        return "web/my_profile";
+    }
+
+    @GetMapping("/forgotpassword")
+    String forgotPassword(){
+        return "web/forgot-password";
+    }
+
+    @GetMapping("/forgotpassword/verifycode")
+    String forgotPasswordVerifyCode(){
+        return "web/forgot-password-verify-code";
+    }
+
+    @GetMapping("/forgotpassword/verifycode/resetpassword")
+    String resetPassword(){
+        return "web/reset-password";
+    }
+
+    @GetMapping("/managerAddress")
+    String managerAddress(){
+        return "web/manager_address";
+    }
 }
