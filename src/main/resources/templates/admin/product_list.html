@@ -34,13 +34,15 @@
         <div class="card mb-4 rounded-4 p-7">
             <div class="card-header bg-transparent px-0 pt-0 pb-7">
                 <div class="row align-items-center justify-content-between">
-                    <div class="row col-md-6">
-                            <select class="form-select" id="categorySelect">
-                                <option selected="" data-select2-id="3">All Categories</option>
-                                <th:block th:each="category : ${categories}">
-                                    <option th:value="${category.categoryId}" th:text="${category.cateName}"></option>
-                                </th:block>
-                            </select>
+                    <div class="row col-md-6" style="margin-left: 0; margin-bottom: 5px">
+<!--                        <select class="form-select" id="categorySelect">-->
+<!--                                <option selected="" data-select2-id="3">All Categories</option>-->
+<!--                                <th:block th:each="category : ${categories}">-->
+<!--                                    <option th:value="${category.categoryId}" th:text="${category.cateName}"></option>-->
+<!--                                </th:block>-->
+<!--                            </select>-->
+<!--                        </div>-->
+<!--                    <div class="row col-md-3">-->
                             <select class="form-select" id="subcategorySelect">
                                 <option selected="" data-select2-id="3">All Subcategories</option>
                                 <th:block th:each="subcategory : ${subcategories}">
@@ -48,9 +50,8 @@
                                             th:text="${subcategory.subCateName}"></option>
                                 </th:block>
                             </select>
-
                     </div>
-                    <div class="col-md-6">
+                    <div class="col-md-6" style="margin-bottom: 5px">
                         <div class="row justify-content-end flex-nowrap d-flex">
                             <div class="col-lg-4 col-md-6 col-6">
                                 <input type="date" class="form-control bg-input border-0" id="dateSelect">
