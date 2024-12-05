@@ -88,11 +88,12 @@ public class AccountController {
     ResponseEntity<?> updateAccount(@PathVariable long id, @ModelAttribute @Valid AccountDTO accountDTO){
         MultipartFile file = accountDTO.getFile();
         if(file.getOriginalFilename() != ""){
-        accountDTO.setAvatar(String.valueOf(System.currentTimeMillis()));
+
         // Tạo tên file duy nhất hoặc từ một ID nào đó
         String fileName = storageService.getStorageFileName(file, accountDTO.getAvatar());
         // Lưu file vào hệ thống
         storageService.store(file, fileName);
+            accountDTO.setAvatar(fileName);
         }
         accountService.updateAccount(id, accountDTO);
         return new ResponseEntity<Response>(new Response(true, "Thành công", "Update thanh cong"), HttpStatus.OK);

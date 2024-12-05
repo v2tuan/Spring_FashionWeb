@@ -6,60 +6,63 @@
 <div th:fragment="content">
     <main id="content" class="bg-body-tertiary-01 d-flex flex-column main-content">
         <div class="dashboard-page-content">
+            <form id="productForm" name="productForm" class="form-border-1" enctype="multipart/form-data">
 
-            <div class="row mb-9 align-items-center">
-                <div class="col-xxl-9">
-                    <div class="row">
-                        <div class="col-sm-6 mb-8 mb-sm-0">
-                            <h2 class="fs-4 mb-0">Add New Product</h2>
-                        </div>
-                        <div class="col-sm-6 d-flex flex-wrap justify-content-sm-end">
+                <div class="row mb-9 align-items-center">
+                    <div class="col-xxl-9">
+                        <div class="row">
+                            <div class="col-sm-6 mb-8 mb-sm-0">
+                                <h2 class="fs-4 mb-0">Add New Product</h2>
+                            </div>
+                            <div class="col-sm-6 d-flex flex-wrap justify-content-sm-end">
 
 
-                            <!-- Submit Save Draft -->
-<!--                            <button type="submit" class="btn btn-outline-primary me-4" form="productForm">-->
-<!--                                Save to draft-->
-<!--                            </button>-->
+                                <!-- Submit Save Draft -->
+                                <!--                            <button type="submit" class="btn btn-outline-primary me-4" form="productForm">-->
+                                <!--                                Save to draft-->
+                                <!--                            </button>-->
 
-                            <!-- Submit Publish -->
-                            <button type="submit" class="btn btn-primary" form="productForm">
-                                Publish
-                            </button>
+                                <!-- Submit Publish -->
+                                <button type="submit" class="btn btn-primary">
+                                    Publish
+                                </button>
 
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
 
-            <div class="row">
-                <div class="col-xxl-9">
-                    <div class="row">
-                        <div class="col-lg-8">
-                            <div class="card mb-8 rounded-4">
-                                <div class="card-header p-7 bg-transparent">
-                                    <h4 class="fs-18 mb-0 font-weight-500">Basic</h4>
-                                </div>
-                                <div class="card-body p-7">
-                                    <form id="productForm" name="productForm"  class="form-border-1" th:action="@{/admin/createProduct}"method="post">
+                <div class="row">
+                    <div class="col-xxl-9">
+                        <div class="row">
+                            <div class="col-lg-8">
+                                <div class="card mb-8 rounded-4">
+                                    <div class="card-header p-7 bg-transparent">
+                                        <h4 class="fs-18 mb-0 font-weight-500">Basic</h4>
+                                    </div>
+                                    <div class="card-body p-7">
+                                        <!--                                    <form id="productForm" name="productForm"  class="form-border-1" th:action="@{/admin/createProduct}"method="post">-->
                                         <div class="mb-8">
                                             <label for="product-name"
                                                    class="mb-4 fs-13px ls-1 fw-bold text-uppercase">Product
                                                 title</label>
-                                            <input type="text" placeholder="Type here" class="form-control"
+                                            <input name="prodName" type="text" placeholder="Type here"
+                                                   class="form-control"
                                                    id="product-name" required>
                                         </div>
                                         <div class="mb-8">
                                             <label class="mb-4 fs-13px ls-1 fw-bold text-uppercase" for="product-desc">Full
                                                 description</label>
-                                            <textarea placeholder="Type here" class="form-control"
-                                                      rows="4" id="product-desc" ></textarea>
+                                            <textarea name="description" placeholder="Type here" class="form-control"
+                                                      rows="4" id="product-desc"></textarea>
                                         </div>
                                         <div class="row">
                                             <div class="col-lg-4">
                                                 <div class="mb-8">
                                                     <label class="mb-4 fs-13px ls-1 fw-bold text-uppercase"
                                                            for="regular-price">Regular price</label>
-                                                    <input placeholder="$" type="text" class="form-control"
+                                                    <input name="regular" placeholder="$" type="text"
+                                                           class="form-control"
                                                            id="regular-price" required>
                                                 </div>
                                             </div>
@@ -67,7 +70,7 @@
                                                 <div class="mb-8">
                                                     <label class="mb-4 fs-13px ls-1 fw-bold text-uppercase"
                                                            for="promotional-price">Promotional price</label>
-                                                    <input placeholder="$" type="text" class="form-control"
+                                                    <input name="promo" placeholder="$" type="text" class="form-control"
                                                            id="promotional-price">
                                                 </div>
                                             </div>
@@ -76,13 +79,17 @@
                                         <div class="row">
                                             <div class="col-lg-2">
                                                 <label class="form-check mb-5" for="status-active">
-                                                    <input class="form-check-input" type="radio" name="status" value="true" id="status-active">
+                                                    <input th:name="status" class="form-check-input" type="radio"
+                                                           name="status"
+                                                           value="true" id="status-active">
                                                     <span class="form-check-label">Active</span>
                                                 </label>
                                             </div>
                                             <div class="col-lg-3">
                                                 <label class="form-check mb-5" for="status-disabled">
-                                                    <input class="form-check-input" type="radio" name="status" value="false" id="status-disabled">
+                                                    <input th:name="status" class="form-check-input" type="radio"
+                                                           name="status"
+                                                           value="false" id="status-disabled">
                                                     <span class="form-check-label">Disabled</span>
                                                 </label>
                                             </div>
@@ -108,124 +115,85 @@
                                             <div class="form-text">Nhấn "+ Size" để thêm size và số lượng</div>
                                             <div id="sizesContainer" class="mb-3 size-row"></div>
                                         </div>
-                                    </form>
+                                        <!--                                    </form>-->
+                                    </div>
                                 </div>
+
                             </div>
-
-                            <!--                            <div class="card mb-8 rounded-4">-->
-                            <!--                                <div class="card-header p-7 bg-transparent">-->
-                            <!--                                    <h4 class="fs-18px mb-0 font-weight-500">Shipping</h4>-->
-                            <!--                                </div>-->
-                            <!--                                <div class="card-body p-7">-->
-                            <!--                                    <form class="form-border-1">-->
-                            <!--                                        <div class="row">-->
-                            <!--                                            <div class="col-lg-6">-->
-                            <!--                                                <div class="mb-8">-->
-                            <!--                                                    <label for="width"-->
-                            <!--                                                           class="mb-4 fs-13px ls-1 fw-bold text-uppercase">Width</label>-->
-                            <!--                                                    <input type="text" placeholder="inch"-->
-                            <!--                                                           class="form-control" id="width">-->
-                            <!--                                                </div>-->
-                            <!--                                            </div>-->
-                            <!--                                            <div class="col-lg-6">-->
-                            <!--                                                <div class="mb-8">-->
-                            <!--                                                    <label for="height"-->
-                            <!--                                                           class="mb-4 fs-13px ls-1 fw-bold text-uppercase">Height</label>-->
-                            <!--                                                    <input type="text" placeholder="inch"-->
-                            <!--                                                           class="form-control" id="height">-->
-                            <!--                                                </div>-->
-                            <!--                                            </div>-->
-                            <!--                                        </div>-->
-                            <!--                                        <div class="mb-8">-->
-                            <!--                                            <label for="weight"-->
-                            <!--                                                   class="mb-4 fs-13px ls-1 fw-bold text-uppercase">Weight</label>-->
-                            <!--                                            <input type="text" placeholder="gam" class="form-control"-->
-                            <!--                                                   id="weight">-->
-                            <!--                                        </div>-->
-                            <!--                                        <div class="mb-8">-->
-                            <!--                                            <label for="shipping-fee"-->
-                            <!--                                                   class="mb-4 fs-13px ls-1 fw-bold text-uppercase">Shipping-->
-                            <!--                                                fees</label>-->
-                            <!--                                            <input type="text" placeholder="$" class="form-control"-->
-                            <!--                                                   id="shipping-fee">-->
-                            <!--                                        </div>-->
-                            <!--                                    </form>-->
-                            <!--                                </div>-->
-                            <!--                            </div>-->
-
-                        </div>
-                        <div class="col-lg-4">
-                            <div class="card mb-8 rounded-4">
-                                <div class="card-header p-7 bg-transparent">
-                                    <h4 class="fs-18px mb-0 font-weight-500">Media</h4>
-                                </div>
-                                <div class="card-body p-7">
-                                    <div class="input-upload">
-                                        <h6>(<span id="imageCount">0</span>/5)</h6>
-                                        <div class="mb-7">
-                                            <!-- ################################################################################################################ -->
-                                            <div id="alertMessage" class="alert alert_message alert-danger" role="alert">
-                                                You can upload a maximum of 5 images.
+                            <div class="col-lg-4">
+                                <div class="card mb-8 rounded-4">
+                                    <div class="card-header p-7 bg-transparent">
+                                        <h4 class="fs-18px mb-0 font-weight-500">Media</h4>
+                                    </div>
+                                    <div class="card-body p-7">
+                                        <div class="input-upload">
+                                            <h6>(<span id="imageCount">0</span>/5)</h6>
+                                            <div class="mb-7">
+                                                <!-- ################################################################################################################ -->
+                                                <div id="alertMessage" class="alert alert_message alert-danger"
+                                                     role="alert">
+                                                    You can upload a maximum of 5 images.
+                                                </div>
+                                                <img src="/assets/images/dashboard/upload.svg" width="102"
+                                                     class="d-block mx-auto" alt="" id="image-upload-default">
+                                                <!-- ########################################################################################################################## -->
+                                                <div class="image-container" id="imageContainer"></div>
                                             </div>
-                                            <img src="/assets/images/dashboard/upload.svg" width="102"
-                                                 class="d-block mx-auto" alt="" id="image-upload-default">
-                                            <!-- ########################################################################################################################## -->
-                                            <div class="image-container" id="imageContainer"></div>
+                                            <input name="listImage" class="form-control" type="file" id="imageInput"
+                                                   accept="image/*" multiple>
                                         </div>
-                                        <input class="form-control" type="file" id="imageInput"
-                                               accept="image/*" multiple>
                                     </div>
                                 </div>
-                            </div>
 
-                            <div class="card mb-8 rounded-4">
-                                <div class="card-header p-7 bg-transparent">
-                                    <h4 class="fs-18px mb-0 font-weight-500">Organization</h4>
-                                </div>
-                                <div class="card-body p-7">
-                                    <div class="mx-n3">
-                                        <div class="col-sm-14 mb-6 px-3">
-                                            <label class="mb-4 fs-13px ls-1 fw-bold text-uppercase"
-                                                   for="brand-select">Brands</label>
-                                            <select class="form-select" id="brand-select">
-                                                <option value=""> Select Brand </option>
-                                                <th:block th:each="brand : ${brands}">
-                                                    <option th:value="${brand.brandId}"
-                                                            th:text="${brand.brandName}"></option>
-                                                </th:block>
-                                                <!--                                                <option>Nissan</option>-->
-                                                <!--                                                <option>Honda</option>-->
-                                                <!--                                                <option>Mercedes</option>-->
-                                                <!--                                                <option>Chevrolet</option>-->
-                                            </select>
-                                        </div>
-                                        <div class="col-sm-14 mb-6 px-3">
-                                            <label class="mb-4 fs-13px ls-1 fw-bold text-uppercase"
-                                                   for="sub-category">Sub-category</label>
-                                            <select class="form-select" id="sub-category">
-                                                <option value=""> Select Subcategory </option>
-                                                <th:block th:each="subcategory : ${subcategories}">
-                                                    <option th:value="${subcategory.subCateId}"
-                                                            th:text="${subcategory.subCateName}"></option>
-                                                </th:block>
-                                            </select>
-                                        </div>
-                                        <!--                                        <div class="mb-5 col-12 px-3">-->
-                                        <!--                                            <label for="tag"-->
-                                        <!--                                                   class="mb-4 fs-13px ls-1 fw-bold text-uppercase">Tags</label>-->
-                                        <!--                                            <input type="text" class="form-control" id="tag">-->
-                                        <!--                                        </div>-->
+                                <div class="card mb-8 rounded-4">
+                                    <div class="card-header p-7 bg-transparent">
+                                        <h4 class="fs-18px mb-0 font-weight-500">Organization</h4>
+                                    </div>
+                                    <div class="card-body p-7">
+                                        <div class="mx-n3">
+                                            <div class="col-sm-14 mb-6 px-3">
+                                                <label class="mb-4 fs-13px ls-1 fw-bold text-uppercase"
+                                                       for="brand-select">Brands</label>
+                                                <select name="brandId" class="form-select" id="brand-select">
+                                                    <option value=""> Select Brand</option>
+                                                    <th:block th:each="brand : ${brands}">
+                                                        <option th:value="${brand.brandId}"
+                                                                th:text="${brand.brandName}"></option>
+                                                    </th:block>
+                                                    <!--                                                <option>Nissan</option>-->
+                                                    <!--                                                <option>Honda</option>-->
+                                                    <!--                                                <option>Mercedes</option>-->
+                                                    <!--                                                <option>Chevrolet</option>-->
+                                                </select>
+                                            </div>
+                                            <div class="col-sm-14 mb-6 px-3">
+                                                <label class="mb-4 fs-13px ls-1 fw-bold text-uppercase"
+                                                       for="sub-category">Sub-category</label>
+                                                <select name="subCateId" class="form-select" id="sub-category">
+                                                    <option value=""> Select Subcategory</option>
+                                                    <th:block th:each="subcategory : ${subcategories}">
+                                                        <option th:value="${subcategory.subCateId}"
+                                                                th:text="${subcategory.subCateName}"></option>
+                                                    </th:block>
+                                                </select>
+                                            </div>
+                                            <!--                                        <div class="mb-5 col-12 px-3">-->
+                                            <!--                                            <label for="tag"-->
+                                            <!--                                                   class="mb-4 fs-13px ls-1 fw-bold text-uppercase">Tags</label>-->
+                                            <!--                                            <input type="text" class="form-control" id="tag">-->
+                                            <!--                                        </div>-->
 
+
+                                        </div>
 
                                     </div>
-
                                 </div>
-                            </div>
 
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
+            </form>
         </div>
         <footer class="pt-6 pb-10 footer-dashboard mt-auto">
             <div class="row">
@@ -240,9 +208,10 @@
                 </div>
             </div>
         </footer>
+
+        <script>
+        </script>
     </main>
-
-
 
 
 </div>

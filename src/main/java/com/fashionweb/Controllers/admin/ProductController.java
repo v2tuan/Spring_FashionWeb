@@ -1,20 +1,25 @@
 package com.fashionweb.Controllers.admin;
 
 import com.fashionweb.Entity.*;
+import com.fashionweb.Entity.Embeddable.SizeId;
 import com.fashionweb.dto.request.product.ProductDTO;
+import com.fashionweb.service.IStorageService;
 import com.fashionweb.service.Impl.*;
 import jakarta.validation.Valid;
+import org.apache.tomcat.util.http.fileupload.FileItem;
+import org.apache.tomcat.util.http.fileupload.FileItemFactory;
+import org.apache.tomcat.util.http.fileupload.disk.DiskFileItemFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.time.LocalDate;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.time.ZoneId;
+import java.util.*;
 
 @Controller
 @RequestMapping("/admin")
@@ -38,6 +43,10 @@ public class ProductController {
     private SizeService sizeService;
     @Autowired
     private SubcategoryService subcategoryService;
+    @Autowired
+    private FileSystemStorageService storageService;
+    @Autowired
+    private SizeService SizeService;
 
     public List<Map<String, Object>> simplifiedImages(List<ProdImage> images) {
         return images.stream().map(item -> {
@@ -114,7 +123,7 @@ public class ProductController {
 
     @PostMapping("/createproduct")
     @ResponseBody
-    public ResponseEntity<?> createProduct(@RequestBody @Valid ProductDTO productDto) {
+    public ResponseEntity<?> createProduct(@ModelAttribute @Valid ProductDTO productDto) {
         Product product = new Product();
 
         Optional<Brand> brnd = brandService.findById(productDto.getBrandId());
@@ -125,11 +134,31 @@ public class ProductController {
             product.setRegular(productDto.getRegular());
             product.setPromo(productDto.getPromo());
             product.setStatus(productDto.getStatus());
-            product.setCreateDate(java.sql.Date.valueOf(LocalDate.now()));
+            product.setCreateDate(java.sql.Date.valueOf(LocalDate.now(ZoneId.systemDefault())));
+
             product.setBrand(brnd.get());
             product.setSubcategory(subcat.get());
+            Product productadd = productService.createProduct(product);
 
-            productService.createProduct(product);
+//            for (int i = 0; i < productDto.getImages().size(); i++) {
+////                throw new RuntimeException(productDto.getImages().get(i));
+//                System.out.println(productDto.getImages().get(i));
+//                String imageBase64 = productDto.getImages().get(i);
+//
+//                String base64Image = "data:image/png;base64,iVBORw0K..."; // Chuỗi Base64 của ảnh
+//                String fileName = String.valueOf(System.currentTimeMillis()) + ".png"; // Tên file muốn lưu
+//                storageService.storeBase64Image(base64Image, fileName);
+//            }
+
+            for(var sizeitem : productDto.getSizes()){
+                Size size = new Size();
+                size.setQuantity(sizeitem.getQuantity());
+                SizeId sizeId = new SizeId();
+                sizeId.setProdId(productadd.getProdId());
+                sizeId.setSizeName(sizeitem.getName());
+                size.setId(sizeId);
+                SizeService.createSize(size);
+            }
 
             return ResponseEntity.ok("Thêm sản phẩm thành công");
         }

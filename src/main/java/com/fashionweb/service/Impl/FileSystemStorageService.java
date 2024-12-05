@@ -15,6 +15,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.util.Base64;
 
 @Service
 public class FileSystemStorageService implements IStorageService {
@@ -93,6 +94,28 @@ public class FileSystemStorageService implements IStorageService {
     public String getStorageFileName(MultipartFile file, String id) {
         String ext = FilenameUtils.getExtension(file.getOriginalFilename());
         return id + "." + ext;
+    }
+
+    // Các phương thức khác...
+    public void storeBase64Image(String base64Image, String fileName) {
+        try {
+            // Giải mã chuỗi Base64 thành byte array
+            String[] parts = base64Image.split(",");
+            byte[] decodedBytes = Base64.getDecoder().decode(parts[1]);
+
+            // Tạo đường dẫn lưu trữ file ảnh
+            Path destinationFile = this.rootLocation.resolve(Paths.get(fileName)).normalize().toAbsolutePath();
+
+            if (!destinationFile.getParent().equals(this.rootLocation.toAbsolutePath())) {
+                throw new StorageException("Không thể lưu trữ tập tin bên ngoài thư mục hiện tại");
+            }
+
+            // Lưu byte array vào file
+            Files.write(destinationFile, decodedBytes);
+
+        } catch (IOException e) {
+            throw new StorageException("Lỗi lưu file ảnh từ Base64", e);
+        }
     }
 
 }

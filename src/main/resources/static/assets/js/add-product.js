@@ -16,7 +16,7 @@ function handleFileSelect(event) {
 
     if (images.length + files.length > maxImages) {
         $("#alertMessage").fadeIn().delay(2000).fadeOut();
-        event.target.value = "";  // Clear input
+
         return;
     }
 
@@ -29,7 +29,6 @@ function handleFileSelect(event) {
         reader.readAsDataURL(file);
     });
 
-    event.target.value = "";
 }
 
 function renderImages() {
@@ -68,14 +67,17 @@ function updateOrder() {
 
 //   them size va so luong
 function addSize() {
-    // Tạo một hàng mới cho size và số lượng
+    // Lấy số lượng size-row hiện tại để làm index
+    let index = $('.size-row').length;
+
+    // Tạo một hàng mới với các name dựa trên index
     let sizeRow = `
     <div class="size-row row">
         <div class="col-md-4">
-            <input type="text" class="form-control" placeholder="Tên Size">
+            <input type="text" class="form-control" name="sizes[${index - 1}].name" placeholder="Tên Size">
         </div>
         <div class="col-md-4">
-            <input type="number" class="form-control" placeholder="Số Lượng">
+            <input type="number" class="form-control" name="sizes[${index - 1}].quantity" placeholder="Số Lượng">
         </div>
         <div class="col-md-2 d-flex align-items-center">
             <button type="button" class="btn btn-outline-danger btn-sm" onclick="removeSize(this)">Xóa</button>
@@ -87,31 +89,60 @@ function addSize() {
     $('#sizesContainer').append(sizeRow);
 }
 
+
 function removeSize(button) {
     // Xóa hàng size
     $(button).closest('.row').remove();
 }
 
-function submitForm(status) {
-    const form = document.getElementById("productForm");
-    const formData = new FormData(form);
 
-    // Add status to the form data
-    formData.append("status", status);
+document.addEventListener('DOMContentLoaded', function () {
+    $('#productForm').on('submit', function (e) {
+        alert("áldkgfjpaskhjgdksdf")
+        // Hiển thị spinner khi bắt đầu xử lý
+        const spinner = new bootstrap.Modal(document.getElementById('loadingSpinner'));
+        spinner.show();
 
-    // Handle file uploads
-    const files = document.getElementById("imageInput").files;
-    Array.from(files).forEach((file, index) => {
-        const ext = file.name.split('.').pop();
-        formData.append(`file${index}`, new File([file], `id${index + 1}.${ext}`, { type: file.type }));
+        e.preventDefault(); // Ngăn form submit mặc định
+
+        var formData = new FormData(this); // Lấy dữ liệu từ form
+// Append images to FormData
+        images.forEach(function (image, index) {
+            formData.append('images[' + index + ']', image); // Append each image as an array
+        });
+
+        // Lấy token từ localStorage
+        const token = localStorage.getItem("token");
+        if (!token) {
+            console.error('Token không tồn tại trong localStorage!');
+            return;
+        }
+
+        // Decode the JWT token using jwt-decode
+        const decoded = jwt_decode(token);
+        const id = decoded.accId;
+
+        // Gửi request bằng AJAX
+        $.ajax({
+            url: `/admin/createproduct`, // URL server xử lý
+            type: 'POST',          // Loại request
+            // dataType: "json",
+            processData: false,  // Không xử lý dữ liệu
+            contentType: false,  // Không thiết lập content type
+            data: formData,       // Dữ liệu từ form
+            headers: {
+                'Authorization': `Bearer ${token}` // Đính kèm JWT vào header
+            },
+            success: function (response) {
+                spinner.hide(); // Ẩn spinner sau khi xử lý thành công
+                alert('Response: ' + response)
+                console.log('Response:', response); // Xử lý thành công
+            },
+            error: function (xhr, status, error) {
+                spinner.hide(); // Ẩn spinner sau khi xử lý thành công
+                // Nếu có lỗi, thông báo cho người dùng
+                alert('Lỗi: ' + xhr.responseJSON.body);
+            }
+        });
     });
-
-    // Submit form using AJAX (example)
-    fetch(form.action, {
-        method: "POST",
-        body: formData,
-    })
-        .then(response => response.json())
-        .then(data => console.log("Success:", data))
-        .catch(error => console.error("Error:", error));
-}
+});
