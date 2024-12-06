@@ -2,8 +2,9 @@ package com.fashionweb.Controllers.admin;
 
 import com.fashionweb.Entity.*;
 import com.fashionweb.Entity.Embeddable.ProdReviewsId;
+import com.fashionweb.Entity.Embeddable.ProductImagesId;
 import com.fashionweb.Entity.Embeddable.SizeId;
-import com.fashionweb.dto.request.product.Product2DTO;
+import com.fashionweb.dto.request.product.ProductDTO;
 import com.fashionweb.dto.request.product.ProductListDTO;
 import com.fashionweb.service.Impl.*;
 import jakarta.validation.Valid;
@@ -14,6 +15,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -38,6 +40,12 @@ public class ProductController {
 
         return images.getFirst().getImgURL();
     }
+    @Autowired
+    private FileSystemStorageService storageService;
+    @Autowired
+    private SizeService SizeService;
+    @Autowired
+    private ProdImageService prodImageService;
 
     public List<String> simplifiedImages(List<ProdImage> images) {
         if (images == null || images.isEmpty()) {
@@ -112,22 +120,62 @@ public class ProductController {
 
     @PostMapping("/createproduct")
     @ResponseBody
-    public ResponseEntity<?> createProduct(@RequestBody @Valid Product2DTO product2Dto) {
+    public ResponseEntity<?> createProduct(@ModelAttribute @Valid ProductDTO productDto) {
         Product product = new Product();
 
-        Optional<Brand> brnd = brandService.findById(product2Dto.getBrandId());
-        Optional<Subcategory> subcat = subcategoryService.getById(product2Dto.getSubCateId());
+        Optional<Brand> brnd = brandService.findById(productDto.getBrandId());
+        Optional<Subcategory> subcat = subcategoryService.getById(productDto.getSubCateId());
         if (brnd.isPresent() && subcat.isPresent()) {
-            product.setProdName(product2Dto.getProdName());
-            product.setDescription(product2Dto.getDescription());
-            product.setRegular(product2Dto.getRegular());
-            product.setPromo(product2Dto.getPromo());
-            product.setStatus(product2Dto.getStatus());
-            product.setCreateDate(java.sql.Date.valueOf(LocalDate.now()));
+            product.setProdName(productDto.getProdName());
+            product.setDescription(productDto.getDescription());
+            product.setRegular(productDto.getRegular());
+            product.setPromo(productDto.getPromo());
+            product.setStatus(productDto.getStatus());
+            product.setCreateDate(java.sql.Date.valueOf(LocalDate.now(ZoneId.systemDefault())));
+
             product.setBrand(brnd.get());
             product.setSubcategory(subcat.get());
+            Product productadd = productService.createProduct(product);
 
-            productService.createProduct(product);
+//            for (int i = 0; i < productDto.getImages().size(); i++) {
+////                throw new RuntimeException(productDto.getImages().get(i));
+//                System.out.println(productDto.getImages().get(i));
+//                String imageBase64 = productDto.getImages().get(i);
+//
+//                String base64Image = "data:image/png;base64,iVBORw0K..."; // Chuỗi Base64 của ảnh
+//                String fileName = String.valueOf(System.currentTimeMillis()) + ".png"; // Tên file muốn lưu
+//                storageService.storeBase64Image(base64Image, fileName);
+//            }
+
+            if(productDto.getFiles()!=null) {
+                int i = 0;
+                for (var image : productDto.getFiles()) {
+                    // Tạo tên file duy nhất hoặc từ một ID nào đó
+                    String fileName = storageService.getStorageFileName(image, String.valueOf(System.currentTimeMillis()));
+                    // Lưu file vào hệ thống
+                    storageService.store(image, fileName);
+                    ProdImage prodImage = new ProdImage();
+                    prodImage.setProduct(productadd);
+                    prodImage.setImgURL(fileName);
+                    ProductImagesId imagesId = new ProductImagesId();
+                    imagesId.setProdId(productadd.getProdId());
+                    imagesId.setStt(i);
+                    prodImage.setProductImageId(imagesId);
+                    prodImageService.createProdImage(prodImage);
+                    i++;
+                }
+            }
+            if(productDto.getSizes() != null) {
+                for (var sizeitem : productDto.getSizes()) {
+                    Size size = new Size();
+                    size.setQuantity(sizeitem.getQuantity());
+                    SizeId sizeId = new SizeId();
+                    sizeId.setProdId(productadd.getProdId());
+                    sizeId.setSizeName(sizeitem.getName());
+                    size.setId(sizeId);
+                    SizeService.createSize(size);
+                }
+            }
 
             return ResponseEntity.ok("Thêm sản phẩm thành công");
         } else {
