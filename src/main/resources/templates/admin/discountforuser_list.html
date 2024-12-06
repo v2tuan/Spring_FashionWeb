@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{web/web_layout.html}">
+
+<main id="content" class="wrapper layout-page" th:fragment="content">
+  <div class="container mt-5">
+    <div class="row mb-9 align-items-center justify-content-between">
+      <div class="col-md-6 mb-8 mb-md-0">
+        <h2 class="fs-4 mb-0">Discount List</h2>
+      </div>
+    </div>
+
+    <!-- Discount Table -->
+    <table class="table mt-3">
+      <thead>
+      <tr>
+        <th>ID</th>
+        <th>Voucher</th>
+        <th>Description</th>
+        <th>Discount %</th>
+        <th>Start Date</th>
+        <th>End Date</th>
+        <th>Create Date</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr th:each="discount : ${discounts}">
+        <td th:text="${discount.discountId}"></td>
+        <td th:text="${discount.voucher}"></td>
+        <td th:text="${discount.description}"></td>
+        <td th:text="${discount.discountPercentage}"></td>
+        <td th:text="${discount.startDate}"></td>
+        <td th:text="${discount.endDate}"></td>
+        <td th:text="${discount.createDate}"></td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+</main>

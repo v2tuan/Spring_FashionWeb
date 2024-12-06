@@ -109,7 +109,7 @@ public class WebController {
     @GetMapping("/files/{filename}")
     public ResponseEntity<Resource> serveFile(@PathVariable String filename) {
         try {
-            Resource file = storageService.loadAsResource(filename + ".jpg");
+            Resource file = storageService.loadAsResource(filename);
             String contentType = Files.probeContentType(Paths.get(file.getURI()));
 
             return ResponseEntity.ok()
