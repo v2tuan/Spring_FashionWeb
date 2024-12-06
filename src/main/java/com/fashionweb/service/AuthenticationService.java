@@ -1,6 +1,7 @@
 package com.fashionweb.service;
 
 import com.fashionweb.Entity.Account;
+import com.fashionweb.Enum.Role;
 import com.fashionweb.dto.request.AuthenticationRequestDTO;
 import com.fashionweb.dto.request.IntrospectRequest;
 import com.fashionweb.dto.request.VerifyAccountDTO;
@@ -27,6 +28,7 @@ import org.springframework.stereotype.Service;
 
 import java.text.ParseException;
 import java.time.Instant;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.Date;
@@ -45,70 +47,70 @@ public class AuthenticationService {
     @Autowired
     private final EmailService emailService;
 
-    @NonFinal
-    @Value("${jwt.signerKey}")
-    protected String SIGNER_KEY;
-
-    // Dang nhap xac thuc va tao token
-    public AuthenticationResponse authenticate(AuthenticationRequestDTO request){
-        Account account = accountRepository.findAccountByEmail(request.getEmail())
-                .orElseThrow(() -> new RuntimeException("User not found"));
-
-
-        PasswordEncoder passwordEncoder = new BCryptPasswordEncoder(10);
-        boolean authenticated = passwordEncoder.matches(request.getPassword(), account.getPassword());
-        if (!authenticated)
-            throw new RuntimeException("Tài khoan mat khau khong dung");
-        var token = generateToken(account);
-
-        return AuthenticationResponse.builder()
-                .token(token)
-                .authenticated(true)
-                .build();
-    }
-
-    private String generateToken(Account account) {
-        JWSHeader header = new JWSHeader(JWSAlgorithm.HS512);
-
-        JWTClaimsSet jwtClaimsSet = new JWTClaimsSet.Builder()
-                .subject(account.getEmail())
-                .issuer("devteria.com")
-                .issueTime(new Date())
-                .expirationTime(new Date(
-                        Instant.now().plus(1, ChronoUnit.HOURS).toEpochMilli()
-                ))
-                .claim("accId", account.getAccId()) // Thêm account ID
-                .build();
-
-        Payload payload = new Payload(jwtClaimsSet.toJSONObject());
-
-        JWSObject jwsObject = new JWSObject(header, payload);
-
-        try {
-            jwsObject.sign(new MACSigner(SIGNER_KEY.getBytes()));
-            return jwsObject.serialize();
-        } catch (JOSEException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    // xac thuc token
-    public IntrospectResponse introspect(IntrospectRequest request)
-            throws JOSEException, ParseException {
-        var token = request.getToken();
-
-        JWSVerifier verifier = new MACVerifier(SIGNER_KEY.getBytes());
-
-        SignedJWT signedJWT = SignedJWT.parse(token);
-
-        Date expiryTime = signedJWT.getJWTClaimsSet().getExpirationTime();
-
-        var verified = signedJWT.verify(verifier);
-
-        return IntrospectResponse.builder()
-                .valid(verified && expiryTime.after(new Date()))
-                .build();
-    }
+//    @NonFinal
+////    @Value("${jwt.signerKey}")
+//    protected String SIGNER_KEY;
+//
+////     Dang nhap xac thuc va tao token
+//    public AuthenticationResponse authenticate(AuthenticationRequestDTO request){
+//        Account account = accountRepository.findAccountByEmail(request.getEmail())
+//                .orElseThrow(() -> new RuntimeException("User not found"));
+//
+//
+//        PasswordEncoder passwordEncoder = new BCryptPasswordEncoder(10);
+//        boolean authenticated = passwordEncoder.matches(request.getPassword(), account.getPassword());
+//        if (!authenticated)
+//            throw new RuntimeException("Tài khoan mat khau khong dung");
+//        var token = generateToken(account);
+//
+//        return AuthenticationResponse.builder()
+//                .token(token)
+//                .authenticated(true)
+//                .build();
+//    }
+//
+//    private String generateToken(Account account) {
+//        JWSHeader header = new JWSHeader(JWSAlgorithm.HS512);
+//
+//        JWTClaimsSet jwtClaimsSet = new JWTClaimsSet.Builder()
+//                .subject(account.getEmail())
+//                .issuer("devteria.com")
+//                .issueTime(new Date())
+//                .expirationTime(new Date(
+//                        Instant.now().plus(1, ChronoUnit.HOURS).toEpochMilli()
+//                ))
+//                .claim("accId", account.getAccId()) // Thêm account ID
+//                .build();
+//
+//        Payload payload = new Payload(jwtClaimsSet.toJSONObject());
+//
+//        JWSObject jwsObject = new JWSObject(header, payload);
+//
+//        try {
+//            jwsObject.sign(new MACSigner(SIGNER_KEY.getBytes()));
+//            return jwsObject.serialize();
+//        } catch (JOSEException e) {
+//            throw new RuntimeException(e);
+//        }
+//    }
+//
+//    // xac thuc token
+//    public IntrospectResponse introspect(IntrospectRequest request)
+//            throws JOSEException, ParseException {
+//        var token = request.getToken();
+//
+//        JWSVerifier verifier = new MACVerifier(SIGNER_KEY.getBytes());
+//
+//        SignedJWT signedJWT = SignedJWT.parse(token);
+//
+//        Date expiryTime = signedJWT.getJWTClaimsSet().getExpirationTime();
+//
+//        var verified = signedJWT.verify(verifier);
+//
+//        return IntrospectResponse.builder()
+//                .valid(verified && expiryTime.after(new Date()))
+//                .build();
+//    }
 
 
     public Account signup(RegisterAccountDTO input) {
@@ -123,6 +125,8 @@ public class AuthenticationService {
         account.setVerificationCode(generateVerificationCode());
         account.setVerificationCodeExpiresAt(LocalDateTime.now().plusMinutes(15));
         account.setEnabled(false);
+        account.setRole(Role.USER);
+        account.setCreateDate(LocalDate.now());
         sendVerificationEmail(account);
         return accountRepository.save(account);
     }

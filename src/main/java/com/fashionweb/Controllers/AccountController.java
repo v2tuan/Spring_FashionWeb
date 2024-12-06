@@ -32,47 +32,19 @@ public class AccountController {
     IAccountMapper accountMapper;
 
 
-    @GetMapping("/me")
-    AccountDTO getMyInfo() {
-        var context = SecurityContextHolder.getContext();
-        String email = context.getAuthentication().getName();
 
-        Account account = accountService.getAccounts(email).orElseThrow(
-                () -> new RuntimeException("Không tìm thấy người dùng"));
 
-        return accountMapper.toAccountDTO(account);
-
-//        return "web/my_profile";
-    }
-
-    @PostMapping("/signup")
-    public ResponseEntity<Account> register(@RequestBody RegisterAccountDTO registerAccountDTO) {
-        Account account = authenticationService.signup(registerAccountDTO);
-        return ResponseEntity.ok(account);
-    }
-
-    @PostMapping("/login")
-    public ResponseEntity<AuthenticationResponse> authenticate(@RequestBody AuthenticationRequestDTO authenticationRequestDTO){
-        AuthenticationResponse authenticationResponse = authenticationService.authenticate(authenticationRequestDTO);
-        return ResponseEntity.ok(authenticationResponse);
-    }
-
-    @PostMapping("/verify")
-    public ResponseEntity<?> verifyUser(@RequestBody VerifyAccountDTO verifyAccountDTO) {
-
-            authenticationService.verifyUser(verifyAccountDTO);
-            return ResponseEntity.ok("Account verified successfully");
-    }
-
-    @PostMapping("/resend")
-    public ResponseEntity<?> resendVerificationCode(@RequestParam String email) {
-        try {
-            authenticationService.resendVerificationCode(email);
-            return ResponseEntity.ok("Verification code sent");
-        } catch (RuntimeException e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
-        }
-    }
+//    @PostMapping("/signup")
+//    public ResponseEntity<Account> register(@RequestBody RegisterAccountDTO registerAccountDTO) {
+//        Account account = authenticationService.signup(registerAccountDTO);
+//        return ResponseEntity.ok(account);
+//    }
+//
+//    @PostMapping("/login")
+//    public ResponseEntity<AuthenticationResponse> authenticate(@RequestBody AuthenticationRequestDTO authenticationRequestDTO){
+//        AuthenticationResponse authenticationResponse = authenticationService.authenticate(authenticationRequestDTO);
+//        return ResponseEntity.ok(authenticationResponse);
+//    }
 
     @GetMapping
     ResponseEntity<?> getAllAccount(){
@@ -84,8 +56,10 @@ public class AccountController {
         return accountService.createAccount(accountDTO);
     }
 
-    @PutMapping("/{id}")
-    ResponseEntity<?> updateAccount(@PathVariable long id, @ModelAttribute @Valid AccountDTO accountDTO){
+    @PutMapping
+    ResponseEntity<?> updateAccount(@ModelAttribute @Valid AccountDTO accountDTO){
+        Account account = accountService.getAccountFromToken();
+        Long id = account.getAccId();
         MultipartFile file = accountDTO.getFile();
         if(file.getOriginalFilename() != ""){
 

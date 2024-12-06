@@ -68,21 +68,6 @@ public class WebController {
         return "web/my_profile";
     }
 
-    @GetMapping("/forgotpassword")
-    String forgotPassword(){
-        return "web/forgot-password";
-    }
-
-    @GetMapping("/forgotpassword/verifycode")
-    String forgotPasswordVerifyCode(){
-        return "web/forgot-password-verify-code";
-    }
-
-    @GetMapping("/forgotpassword/verifycode/resetpassword")
-    String resetPassword(){
-        return "web/reset-password";
-    }
-
     @GetMapping("/managerAddress")
     String managerAddress(Model model){
 //        var context = SecurityContextHolder.getContext();

@@ -15,4 +15,6 @@ public interface IAccountService {
     <S extends Account> S updateAccount(Long accountId, AccountDTO accountDTO);
     void deleteAccount(long accountId);
     List<CartItem> cart(Long accountId);
+    public String login(String identifier, String password) throws Exception;
+    public Account getAccountFromToken();
 }

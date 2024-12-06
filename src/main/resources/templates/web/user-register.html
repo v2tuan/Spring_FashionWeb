@@ -127,6 +127,73 @@
 
     <script>
 
+        // Auto-move between input fields
+        const codeInputs = document.querySelectorAll('.code-input');
+        codeInputs.forEach((input, index) => {
+            input.addEventListener('input', (e) => {
+                if (e.target.value.length === 1) {
+                    const nextInput = codeInputs[index + 1];
+                    if (nextInput) {
+                        nextInput.focus();
+                    }
+                } else if (e.target.value.length === 0) {
+                    const prevInput = codeInputs[index - 1];
+                    if (prevInput) {
+                        prevInput.focus();
+                    }
+                }
+            });
+
+            // Handle backspace to move to the previous input
+            input.addEventListener('keydown', (e) => {
+                if (e.key === 'Backspace' && input.value === '') {
+                    const prevInput = codeInputs[index - 1];
+                    if (prevInput) {
+                        prevInput.focus();
+                    }
+                }
+            });
+        });
+
+        function handlePaste(event) {
+            const input = event.target;
+            const pastedData = event.clipboardData.getData('text'); // Lấy dữ liệu đã dán
+            const inputs = Array.from(document.querySelectorAll('.code-input')); // Lấy tất cả các ô nhập liệu
+            const characters = pastedData.split(''); // Chia chuỗi dán thành các ký tự
+
+            // Chỉ dán nếu số ký tự không vượt quá số ô nhập liệu
+            if (characters.length <= inputs.length) {
+                // Dán từng ký tự vào các ô tương ứng
+                inputs.forEach((input, index) => {
+                    if (characters[index]) {
+                        input.value = characters[index]; // Điền ký tự vào ô
+                    }
+                });
+
+                // Tự động focus ô kế tiếp sau khi dán xong
+                const lastInput = inputs[characters.length - 1];
+                if (lastInput && lastInput.nextElementSibling) {
+                    lastInput.nextElementSibling.focus();
+                }
+            } else {
+                // Nếu số ký tự quá nhiều, chỉ dán phần đầu
+                inputs.forEach((input, index) => {
+                    if (characters[index]) {
+                        input.value = characters[index];
+                    }
+                });
+            }
+
+            // Ngừng hành động mặc định của sự kiện dán
+            event.preventDefault();
+        }
+
+        // Thêm sự kiện `onpaste` vào từng ô nhập liệu
+        document.querySelectorAll('.code-input').forEach(input => {
+            input.addEventListener('paste', handlePaste);
+        });
+
+
     </script>
 </main>
 

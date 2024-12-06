@@ -166,7 +166,7 @@
             // Display user information after successful login
             $.ajax({
                 type: 'GET', // HTTP method
-                url: '/account/me', // API endpoint
+                url: '/api/me', // API endpoint
                 dataType: 'json', // Expected response data type
                 contentType: 'application/json; charset=utf-8', // Content type
                 beforeSend: function (xhr) {
@@ -205,41 +205,14 @@
 
                 var formData = new FormData(this); // Lấy dữ liệu từ form
 
-
-//                 // Lấy dữ liệu từ form và chuyển thành JSON
-//                 const formDataArray = $('#FormUpDateInfo').serializeArray(); // Lấy dữ liệu dạng mảng
-//                 const formDataJson = {};
-//
-// // Duyệt qua từng phần tử trong mảng để tạo đối tượng JSON
-//                 formDataArray.forEach(field => {
-//                     // Nếu trường có giá trị thì thêm vào đối tượng JSON
-//                     if (field.value) {
-//                         formDataJson[field.name] = field.value;
-//                     }
-//                 });
-
-                // Lấy token từ localStorage
-                const token = localStorage.getItem("token");
-                if (!token) {
-                    console.error('Token không tồn tại trong localStorage!');
-                    return;
-                }
-
-                // Decode the JWT token using jwt-decode
-                const decoded = jwt_decode(token);
-                const id = decoded.accId;
-
                 // Gửi request bằng AJAX
                 $.ajax({
-                    url: `/account/${id}`, // URL server xử lý
+                    url: `/account`, // URL server xử lý
                     type: 'PUT',          // Loại request
                     // dataType: "json",
                     processData: false,  // Không xử lý dữ liệu
                     contentType: false,  // Không thiết lập content type
                     data: formData,       // Dữ liệu từ form
-                    headers: {
-                        'Authorization': `Bearer ${token}` // Đính kèm JWT vào header
-                    },
                     success: function (response) {
                         spinner.hide(); // Ẩn spinner sau khi xử lý thành công
                         alert('Response: ' + response.body)
