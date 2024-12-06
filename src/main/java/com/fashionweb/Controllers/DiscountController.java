@@ -1,18 +1,15 @@
 package com.fashionweb.Controllers;
 
-import com.fashionweb.Entity.Discount;
-import com.fashionweb.Entity.Order;
+import com.fashionweb.Entity.*;
 import com.fashionweb.dto.request.discount.DiscountDTO;
 import com.fashionweb.service.IDiscountService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.jaxb.SpringDataJaxb;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -22,12 +19,12 @@ public class DiscountController {
     @Autowired
     private IDiscountService discountService;
 
-    // Create a new discount
-    @PostMapping
-    public ResponseEntity<Discount> createDiscount(@RequestBody Discount discount) {
-        Discount createdDiscount = discountService.save(discount);
-        return ResponseEntity.ok(createdDiscount);
-    }
+//    // Create a new discount
+//    @PostMapping
+//    public ResponseEntity<Discount> createDiscount(@RequestBody Discount discount) {
+//        Discount createdDiscount = discountService.save(discount);
+//        return ResponseEntity.ok(createdDiscount);
+//    }
 
     // Get all discounts
     @GetMapping("/discounts")
@@ -59,10 +56,36 @@ public class DiscountController {
     @GetMapping("/discountlist")
     String showAllDiscount(Model model) {
         model.addAttribute("discounts", discountDTOS(discountService.findAll()));
-        return "admin/discount";
+        return "admin/discount_list";
+    }
+
+
+    // Get all discounts
+    @GetMapping("/adddiscount")
+    String showAddDiscount(Model model) {
+        model.addAttribute("discounts", discountDTOS(discountService.findAll()));
+        return "admin/create_discount";
+    }
+
+    @PostMapping("/creatediscount")
+    @ResponseBody
+    public ResponseEntity<?> createDiscount(@RequestBody @Valid DiscountDTO discountDTODto) {
+        Discount discount = new Discount();
+
+        discount.setVoucher(discountDTODto.getVoucher());
+        discount.setDescription(discountDTODto.getDescription());
+        discount.setDiscountPercentage(discountDTODto.getDiscountPercentage());
+        discount.setStartDate(discountDTODto.getStartDate());
+        discount.setEndDate(discountDTODto.getEndDate());
+        discount.setCreateDate(discountDTODto.getCreateDate());
+
+        discountService.save(discount);
+        return ResponseEntity.ok("Thêm mã giảm giá thành công");
+
     }
 
     @PutMapping("/{id}")
+    @ResponseBody
     public ResponseEntity<Discount> updateDiscount(@PathVariable Long id, @RequestBody Discount discountDetails) {
         Optional<Discount> optionalDiscount = discountService.findById(id);
         if (optionalDiscount.isPresent()) {
