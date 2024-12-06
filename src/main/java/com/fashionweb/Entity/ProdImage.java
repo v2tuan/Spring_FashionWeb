@@ -15,6 +15,8 @@ public class ProdImage {
     @EmbeddedId
     private ProductImagesId productImageId;
 
+    private String imgURL;
+
     @ManyToOne
     @JoinColumn(name = "prodId", insertable=false, updatable=false)
     private Product product;
