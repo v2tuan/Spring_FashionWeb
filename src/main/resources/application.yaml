@@ -7,13 +7,13 @@ spring:
       password: # Để trống để Spring Boot tự tạo mật khẩu ngẫu nhiên
 
   datasource:
-#    jdbc:mysql://fashionista:
-#      clcm6y6k0f9i:
-#        ap-southeast-2:
-#          rds:
-#            amazonaws:
-#              com:3306/fashionista?useSSL=false&serverTimezone=UTC
-    url: jdbc:mysql://localhost:3306/fashionista
+    jdbc:mysql://fashionista:
+      clcm6y6k0f9i:
+        ap-southeast-2:
+          rds:
+            amazonaws:
+              com:3306/fashionista?useSSL=false&serverTimezone=UTC
+#    url: jdbc:mysql://localhost:3306/fashionista
     username: root
     password: 123456
 

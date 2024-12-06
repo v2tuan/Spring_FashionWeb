@@ -28,6 +28,7 @@
         <th>Discount %</th>
         <th>Start Date</th>
         <th>End Date</th>
+        <th>Create Date</th>
         <th>Actions</th>
       </tr>
       </thead>
@@ -39,9 +40,10 @@
         <td th:text="${discount.discountPercentage}"></td>
         <td th:text="${discount.startDate}"></td>
         <td th:text="${discount.endDate}"></td>
+        <td th:text="${discount.createDate}"></td>
         <td>
-          <a th:href="@{/discounts/{id}(id=${discount.discountId})}">Edit</a>
-          <a th:href="@{/discounts/{id}/delete(id=${discount.discountId})}">Delete</a>
+          <a th:href="@{/admin/editdiscount/{id}(id=${discount.discountId})}" class="btn btn-sm btn-warning">Edit</a>
+          <a th:href="@{/admin/deletediscount/{id}(id=${discount.discountId})}" class="btn btn-sm btn-danger" onclick="return confirm('Are you sure you want to delete this discount?')">Delete</a>
         </td>
       </tr>
       </tbody>
@@ -124,141 +126,3 @@
 <!--  </div>-->
 </main>
 
-
-
-<!-- Bootstrap JS and Fetch API Script -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
-<script>
-  // Fetch discounts from API and display them in the table
-  function displayDiscounts() {
-    fetch('/api/discounts')
-            .then(response => response.json())
-            .then(discounts => {
-              const discountTableBody = document.getElementById('discountTableBody');
-              discountTableBody.innerHTML = '';
-              discounts.forEach(discount => {
-                const row = document.createElement('tr');
-                row.innerHTML = `
-                            <td>${discount.id}</td>
-                            <td>${discount.voucher}</td>
-                            <td>${discount.description}</td>
-                            <td>${discount.discountPercentage}%</td>
-                            <td>${discount.startDate}</td>
-                            <td>${discount.endDate}</td>
-                            <td>
-                                <button class="btn btn-warning btn-sm" onclick="editDiscount(${discount.id})">Edit</button>
-                                <button class="btn btn-danger btn-sm" onclick="deleteDiscount(${discount.id})">Delete</button>
-                            </td>
-                        `;
-                discountTableBody.appendChild(row);
-              });
-            })
-            .catch(error => {
-              console.error('Error fetching discounts:', error);
-            });
-  }
-
-  // Add new discount
-  document.getElementById('addDiscountForm').addEventListener('submit', function(e) {
-    e.preventDefault();
-
-    const newDiscount = {
-      voucher: document.getElementById('voucher').value,
-      description: document.getElementById('description').value,
-      discountPercentage: document.getElementById('discountPercentage').value,
-      startDate: document.getElementById('startDate').value,
-      endDate: document.getElementById('endDate').value
-    };
-
-    fetch('/api/discounts', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(newDiscount)
-    })
-            .then(response => response.json())
-            .then(data => {
-              console.log('Discount created:', data);
-              displayDiscounts();
-              bootstrap.Modal.getInstance(document.getElementById('addDiscountModal')).hide();
-            })
-            .catch(error => {
-              console.error('Error creating discount:', error);
-            });
-  });
-
-  // Edit discount
-  function editDiscount(id) {
-    fetch(`/api/discounts/${id}`)
-            .then(response => response.json())
-            .then(discount => {
-              document.getElementById('editDiscountId').value = discount.id;
-              document.getElementById('editVoucher').value = discount.voucher;
-              document.getElementById('editDescription').value = discount.description;
-              document.getElementById('editDiscountPercentage').value = discount.discountPercentage;
-              document.getElementById('editStartDate').value = discount.startDate;
-              document.getElementById('editEndDate').value = discount.endDate;
-
-              const editModal = new bootstrap.Modal(document.getElementById('editDiscountModal'));
-              editModal.show();
-            })
-            .catch(error => {
-              console.error('Error fetching discount:', error);
-            });
-  }
-
-  // Update discount
-  document.getElementById('editDiscountForm').addEventListener('submit', function(e) {
-    e.preventDefault();
-
-    const id = document.getElementById('editDiscountId').value;
-    const updatedDiscount = {
-      voucher: document.getElementById('editVoucher').value,
-      description: document.getElementById('editDescription').value,
-      discountPercentage: document.getElementById('editDiscountPercentage').value,
-      startDate: document.getElementById('editStartDate').value,
-      endDate: document.getElementById('editEndDate').value
-    };
-
-    fetch(`/api/discounts/${id}`, {
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(updatedDiscount)
-    })
-            .then(response => response.json())
-            .then(data => {
-              console.log('Discount updated:', data);
-              displayDiscounts();
-              bootstrap.Modal.getInstance(document.getElementById('editDiscountModal')).hide();
-            })
-            .catch(error => {
-              console.error('Error updating discount:', error);
-            });
-  });
-
-  // Delete discount
-  function deleteDiscount(id) {
-    fetch(`/api/discounts/${id}`, {
-      method: 'DELETE'
-    })
-            .then(response => {
-              if (response.ok) {
-                console.log('Discount deleted');
-                displayDiscounts();
-              } else {
-                console.error('Error deleting discount');
-              }
-            })
-            .catch(error => {
-              console.error('Error deleting discount:', error);
-            });
-  }
-
-  // Load discounts on page load
-  displayDiscounts();
-</script>
-</body>
-</html>
