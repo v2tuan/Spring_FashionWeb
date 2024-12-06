@@ -1,6 +1,5 @@
 package com.fashionweb.Entity;
 
-import com.fashionweb.Enum.ProductStatus;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -24,7 +23,7 @@ public class Product {
     private Double regular;
     private Double promo;
     private Boolean status;
-    private Integer totalQuantity;
+    private Integer totalQuantity;  // null, chưa dùng
 
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ProdImage> images;

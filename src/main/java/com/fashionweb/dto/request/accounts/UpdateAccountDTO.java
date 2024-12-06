@@ -1,7 +1,6 @@
 package com.fashionweb.dto.request.accounts;
 
 import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -12,7 +11,7 @@ import org.springframework.web.multipart.MultipartFile;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class AccountDTO {
+public class UpdateAccountDTO {
     @Email
     private String email;
     private String avatar;
@@ -21,6 +20,5 @@ public class AccountDTO {
     private String phone;
     private String gender;
     private String enabled;
-
     private MultipartFile file;
 }

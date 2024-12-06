@@ -69,7 +69,12 @@ public class AccountService implements IAccountService {
         if (accounts.size() > 1 || (accounts.size() == 1 && !accounts.get(0).getAccId().equals(account.getAccId()))) {
             throw new RuntimeException("Email đã tồn tại trên một tài khoản khác...");
         }
+        // lưu lại tên ảnh cũ
+        String avater = account.getAvatar();
         accountMapper.updateAccount(account, accountDTO);
+        if(accountDTO.getAvatar() == null) {
+            account.setAvatar(avater);
+        }
         return iAccountRepository.save(account);
     }
 

@@ -363,7 +363,6 @@
 
                 const idupdate = document.getElementById("idaddressupdate");
                 let idaddr = idupdate.value
-                alert(idaddr)
                 // Hiển thị spinner khi bắt đầu xử lý
                 const spinner = new bootstrap.Modal(document.getElementById('loadingSpinner'));
                 spinner.show();
@@ -388,8 +387,6 @@
                     console.error('Token không tồn tại trong localStorage!');
                     return;
                 }
-
-                alert(JSON.stringify(formDataJson));
 
                 // Gửi request bằng AJAX
                 $.ajax({

@@ -1,32 +1,19 @@
 package com.fashionweb.Controllers.admin;
 
-import com.fashionweb.Entity.Category;
-import com.fashionweb.Entity.Product;
+import com.fashionweb.Entity.*;
 import com.fashionweb.dto.request.product.ProductDTO;
-import com.fashionweb.mapper.ProductMapper;
-import com.fashionweb.service.IBrandService;
-import com.fashionweb.service.ICategoryService;
-import com.fashionweb.service.IProductService;
-import com.fashionweb.service.ISubcategoryService;
-import com.fashionweb.service.Impl.BrandService;
-import com.fashionweb.service.Impl.CategoryService;
-import com.fashionweb.service.Impl.ProductService;
-import com.fashionweb.service.Impl.SubcategoryService;
+import com.fashionweb.service.Impl.*;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.ui.ModelMap;
-import org.springframework.validation.BindingResult;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @Controller
@@ -46,22 +33,73 @@ public class ProductController {
     private SubcategoryService SubcategoryService;
 
     @Autowired
-    private ISubcategoryService iSubcategoryService;
-
-    @Autowired
-    private ProductMapper productMapper;
-    @Autowired
     private BrandService brandService;
+    @Autowired
+    private SizeService sizeService;
+    @Autowired
+    private SubcategoryService subcategoryService;
 
-//    // Hi?n th? danh s�ch s?n ph?m
-//    @GetMapping("/productlist")
-//    public String showProductList(Model model) {
-//        List<Product> products = productService.getAllProducts();
-//        model.addAttribute("product", new Product());
-//        return "admin/product_list";
-//    }
+    public List<Map<String, Object>> simplifiedImages(List<ProdImage> images) {
+        return images.stream().map(item -> {
+            Map<String, Object> items = new HashMap<>();
+            items.put("imgId", item.getProductImageId());
+            return items;
+        }).toList();
+    }
 
-    // Hi?n th? form th�m s?n ph?m m?i
+    public List<Map<String, Object>> simplifiedSizes(List<Size> sizes) {
+        return sizes.stream().map(item -> {
+            Map<String, Object> items = new HashMap<>();
+            items.put("sizeId", item.getId());
+            return items;
+        }).toList();
+    }
+
+    public List<Map<String, Object>> simplifiedReviews(List<ProdReview> reviews) {
+        return reviews.stream().map(item -> {
+            Map<String, Object> items = new HashMap<>();
+            items.put("reviewId", item.getReviewId());
+            return items;
+        }).toList();
+    }
+
+    public List<Map<String, Object>> simplifiedProduct(List<Product> products) {
+        return products.stream().map(item -> {
+            Map<String, Object> items = new HashMap<>();
+            items.put("id", item.getProdId());
+            items.put("name", item.getProdName());
+            items.put("description", item.getDescription());
+            items.put("regular", item.getRegular());
+            items.put("promo", item.getPromo());
+            items.put("status", item.getStatus());
+            items.put("totalQuantity", item.getTotalQuantity());
+            items.put("imgIds", simplifiedImages(item.getImages()));
+            items.put("createDate", item.getCreateDate());
+            items.put("brandId", item.getBrand().getBrandId());
+            items.put("subCatId", item.getSubcategory().getSubCateId());
+            items.put("sizeIds", simplifiedSizes(item.getSizes()));
+            items.put("reviewIds", simplifiedReviews(item.getProductReviews()));
+            return items;
+        }).toList();
+    }
+
+    @GetMapping("/products")
+    @ResponseBody
+    ResponseEntity<?> getProducts(){
+        List<Product> products = productService.getAllProducts();
+
+        List<Map<String, Object>> validatedProducts = simplifiedProduct(products);
+
+        return ResponseEntity.ok(validatedProducts);
+    }
+
+    @GetMapping("/productlist")
+    String showProductList(Model model) {
+        model.addAttribute("subcategories", SubcategoryService.getAll());
+
+        return "admin/product_list";
+    }
+
     @GetMapping("/addproduct")
     public String AddProductForm(Model model) {
         List<Category> categories = CategoryService.findAll();
@@ -74,30 +112,42 @@ public class ProductController {
         return "admin/addOrEditProduct";
     }
 
-
     @PostMapping("/createproduct")
     @ResponseBody
-    public ResponseEntity<?> createProduct(@RequestBody ProductDTO productDto) {
-        Product product = productMapper.toProduct(productDto);
+    public ResponseEntity<?> createProduct(@RequestBody @Valid ProductDTO productDto) {
+        Product product = new Product();
 
+        Optional<Brand> brnd = brandService.findById(productDto.getBrandId());
+        Optional<Subcategory> subcat = subcategoryService.getById(productDto.getSubCateId());
+        if (brnd.isPresent() && subcat.isPresent()){
+            product.setProdName(productDto.getProdName());
+            product.setDescription(productDto.getDescription());
+            product.setRegular(productDto.getRegular());
+            product.setPromo(productDto.getPromo());
+            product.setStatus(productDto.getStatus());
+            product.setCreateDate(java.sql.Date.valueOf(LocalDate.now()));
+            product.setBrand(brnd.get());
+            product.setSubcategory(subcat.get());
 
-        productService.createProduct(product);
-        return ResponseEntity.ok("Thêm sản phẩm thành công");
+            productService.createProduct(product);
+
+            return ResponseEntity.ok("Thêm sản phẩm thành công");
+        }
+        else {
+            return ResponseEntity.badRequest().body("Thêm sản phẩm thất bại");
+        }
     }
 
-
-
-//    // X? l� x�a s?n ph?m
-//    @PostMapping("/deleteproduct/{id}")
-//    public String deleteProduct(@PathVariable Long id, Model model) {
-//        boolean isDeleted = productService.deleteProduct(id);
-//        if (isDeleted) {
-//            model.addAttribute("message", "Xóa sản phẩm thành công!");
-//        } else {
-//            model.addAttribute("error", "X�a s?n ph?m th?t b?i!");
-//        }
-//        return "redirect:/admin/productlist"; // Quay l?i danh s�ch s?n ph?m
-//    }
+    @PostMapping("/deleteproduct/{id}")
+    public String deleteProduct(@PathVariable Long id, Model model) {
+        boolean isDeleted = productService.deleteProduct(id);
+        if (isDeleted) {
+            model.addAttribute("message", "Đã xóa sản phẩm");
+        } else {
+            model.addAttribute("error", "Xóa sản phẩm thất bại");
+        }
+        return "redirect:/admin/productlist";
+    }
 
     @GetMapping("/orderlist")
     String order_list(){

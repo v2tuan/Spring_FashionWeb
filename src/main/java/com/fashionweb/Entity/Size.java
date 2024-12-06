@@ -18,7 +18,7 @@ public class Size {
     @EmbeddedId
     private SizeId id;
 
-    private String description;
+    private String description; // null, chưa cần
     private Integer quantity;
 
     @ManyToOne

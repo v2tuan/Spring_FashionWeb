@@ -87,18 +87,19 @@
                                     <aside class="col-lg-4">
                                         <div class="text-lg-center">
                                             <div class="mx-auto">
-                                                <!--                                                <img class="mb-9 rounded-pill lazy-image" src="#"-->
-                                                <!--                                                     data-src="assets//images/dashboard/avatar-1.png"-->
-                                                <!--                                                     alt="User Photo" height="196" width="196">-->
+                                                <img id="images" class="mb-9 rounded-pill lazy-image" src=""
+
+                                                     alt="User Photo" height="196" width="196">
 
                                                 <svg class="mb-9 rounded-pill lazy-image" id="avatar_2" alt="User Photo"
-                                                     height="196" width="196"></svg>
+                                                     height="196" width="196" style="display: none"></svg>
 
                                             </div>
                                             <div>
-                                                <a
-                                                        class="btn border hover-white bg-hover-primary border-hover-primary"
-                                                        href="#"><i class="fas fa-cloud-upload"></i> Upload </a>
+                                                <label for="file-upload" class="upload-btn">
+                                                    <i class="fas fa-cloud-upload-alt"></i> Upload
+                                                </label>
+                                                <input name="file" accept="image/*" onchange="chooseFile(this)" type="file" id="file-upload" style="display: none;"/>
                                             </div>
                                         </div>
                                     </aside>
@@ -159,6 +160,8 @@
     </div>
 
     <script>
+        document.getElementById("avatar_2").style.display = "none";
+
         document.addEventListener('DOMContentLoaded', function () {
             // Display user information after successful login
             $.ajax({
@@ -173,12 +176,20 @@
                     }
                 },
                 success: function (data) {
-                    alert(data.email);
 
                     $('#full-name').val(data.fullname);
                     $('#email').val(data.email);
                     $('#address').val(data.address);
                     $('#phone').val(data.phone);
+                    if(data.avatar){
+                        // Thay đổi thuộc tính src của thẻ img
+                        $('#images').attr('src', `/home/files/${data.avatar}`);
+                        document.getElementById("avatar_2").style.display = "none";
+                    }
+                    else{
+                        document.getElementById("images").style.display = "none";
+                    }
+
                 },
                 error: function (e) {
                     // Handle errors
@@ -195,17 +206,20 @@
 
                 e.preventDefault(); // Ngăn form submit mặc định
 
-                // Lấy dữ liệu từ form và chuyển thành JSON
-                const formDataArray = $('#FormUpDateInfo').serializeArray(); // Lấy dữ liệu dạng mảng
-                const formDataJson = {};
+                var formData = new FormData(this); // Lấy dữ liệu từ form
 
-// Duyệt qua từng phần tử trong mảng để tạo đối tượng JSON
-                formDataArray.forEach(field => {
-                    // Nếu trường có giá trị thì thêm vào đối tượng JSON
-                    if (field.value) {
-                        formDataJson[field.name] = field.value;
-                    }
-                });
+
+//                 // Lấy dữ liệu từ form và chuyển thành JSON
+//                 const formDataArray = $('#FormUpDateInfo').serializeArray(); // Lấy dữ liệu dạng mảng
+//                 const formDataJson = {};
+//
+// // Duyệt qua từng phần tử trong mảng để tạo đối tượng JSON
+//                 formDataArray.forEach(field => {
+//                     // Nếu trường có giá trị thì thêm vào đối tượng JSON
+//                     if (field.value) {
+//                         formDataJson[field.name] = field.value;
+//                     }
+//                 });
 
                 // Lấy token từ localStorage
                 const token = localStorage.getItem("token");
@@ -222,9 +236,10 @@
                 $.ajax({
                     url: `/account/${id}`, // URL server xử lý
                     type: 'PUT',          // Loại request
-                    dataType: "json",
-                    contentType: "application/json; charset=utf-8",
-                    data: JSON.stringify(formDataJson),       // Dữ liệu từ form
+                    // dataType: "json",
+                    processData: false,  // Không xử lý dữ liệu
+                    contentType: false,  // Không thiết lập content type
+                    data: formData,       // Dữ liệu từ form
                     headers: {
                         'Authorization': `Bearer ${token}` // Đính kèm JWT vào header
                     },
@@ -233,7 +248,7 @@
                         alert('Response: ' + response.body)
                         console.log('Response:', response); // Xử lý thành công
                     },
-                    error: function(xhr, status, error) {
+                    error: function (xhr, status, error) {
                         spinner.hide(); // Ẩn spinner sau khi xử lý thành công
                         // Nếu có lỗi, thông báo cho người dùng
                         alert('Lỗi: ' + xhr.responseJSON.body);
@@ -241,8 +256,47 @@
                 });
             });
         });
+
+
+        function chooseFile(input) {
+            const reader = new FileReader();
+            reader.onload = function (e) {
+                document.getElementById('images').src = e.target.result;
+            }
+            reader.readAsDataURL(input.files[0]);
+        }
+
     </script>
 
+
+    <style>
+        .upload-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 10px 20px;
+            border: 1px solid #6c757d;
+            border-radius: 5px;
+            background-color: #fff;
+            color: #6c757d;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .upload-btn i {
+            margin-right: 8px;
+        }
+
+        .upload-btn:hover {
+            background-color: #4e7661;
+            color: #fff;
+            /*border-color: #0d6efd;*/
+        }
+
+        img {
+            object-fit: cover; /* Đảm bảo ảnh không méo, vừa khung */
+        }
+    </style>
 
 </main>
 

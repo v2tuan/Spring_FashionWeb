@@ -91,3 +91,27 @@ function removeSize(button) {
     // Xóa hàng size
     $(button).closest('.row').remove();
 }
+
+function submitForm(status) {
+    const form = document.getElementById("productForm");
+    const formData = new FormData(form);
+
+    // Add status to the form data
+    formData.append("status", status);
+
+    // Handle file uploads
+    const files = document.getElementById("imageInput").files;
+    Array.from(files).forEach((file, index) => {
+        const ext = file.name.split('.').pop();
+        formData.append(`file${index}`, new File([file], `id${index + 1}.${ext}`, { type: file.type }));
+    });
+
+    // Submit form using AJAX (example)
+    fetch(form.action, {
+        method: "POST",
+        body: formData,
+    })
+        .then(response => response.json())
+        .then(data => console.log("Success:", data))
+        .catch(error => console.error("Error:", error));
+}
