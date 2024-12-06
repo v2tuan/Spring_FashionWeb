@@ -1,17 +1,23 @@
 package com.fashionweb.Controllers;
 
 import com.fashionweb.Entity.Discount;
+import com.fashionweb.Entity.Order;
+import com.fashionweb.dto.request.discount.DiscountDTO;
 import com.fashionweb.service.IDiscountService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.jaxb.SpringDataJaxb;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-@RestController
-@RequestMapping("/api/discounts")
+@Controller
+@RequestMapping("/admin")
 public class DiscountController {
     @Autowired
     private IDiscountService discountService;
@@ -24,12 +30,37 @@ public class DiscountController {
     }
 
     // Get all discounts
-    @GetMapping
+    @GetMapping("/discounts")
     public ResponseEntity<List<Discount>> getAllDiscounts() {
         List<Discount> discounts = discountService.findAll();
         return ResponseEntity.ok(discounts);
     }
 
+    public List<Long> getOrderList(List<Order> orders){
+        return orders.stream().map(Order::getOrderId).toList();
+    }
+
+    public List<DiscountDTO> discountDTOS(List<Discount> discounts){
+        return discounts.stream().map(discount -> {
+            DiscountDTO discountDTO = new DiscountDTO();
+            discountDTO.setDiscountId(discount.getDiscountId());
+            discountDTO.setVoucher(discount.getVoucher());
+            discountDTO.setDescription(discount.getDescription());
+            discountDTO.setDiscountPercentage(discount.getDiscountPercentage());
+            discountDTO.setStartDate(discount.getStartDate());
+            discountDTO.setEndDate(discount.getEndDate());
+            discountDTO.setCreateDate(discount.getCreateDate());
+            discountDTO.setOrderIds(getOrderList(discount.getOrders()));
+            return discountDTO;
+        }).toList();
+    }
+
+    // Get all discounts
+    @GetMapping("/discountlist")
+    String showAllDiscount(Model model) {
+        model.addAttribute("discounts", discountDTOS(discountService.findAll()));
+        return "admin/discount";
+    }
 
     @PutMapping("/{id}")
     public ResponseEntity<Discount> updateDiscount(@PathVariable Long id, @RequestBody Discount discountDetails) {
