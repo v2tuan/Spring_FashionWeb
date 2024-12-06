@@ -90,10 +90,10 @@ public class AccountController {
         if(file.getOriginalFilename() != ""){
 
         // Tạo tên file duy nhất hoặc từ một ID nào đó
-        String fileName = storageService.getStorageFileName(file, accountDTO.getAvatar());
+        String fileName = storageService.getStorageFileName(file, String.valueOf(System.currentTimeMillis()));
         // Lưu file vào hệ thống
         storageService.store(file, fileName);
-            accountDTO.setAvatar(fileName);
+        accountDTO.setAvatar(fileName);
         }
         accountService.updateAccount(id, accountDTO);
         return new ResponseEntity<Response>(new Response(true, "Thành công", "Update thanh cong"), HttpStatus.OK);

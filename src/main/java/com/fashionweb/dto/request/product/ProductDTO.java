@@ -26,5 +26,6 @@ public class ProductDTO {
     private Long subCateId;
 
     private List<String> images;
+    private MultipartFile[] files;
     private SizeDTO[] sizes;
 }

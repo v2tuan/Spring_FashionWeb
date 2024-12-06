@@ -28,7 +28,6 @@ function handleFileSelect(event) {
         };
         reader.readAsDataURL(file);
     });
-
 }
 
 function renderImages() {
@@ -97,6 +96,15 @@ function removeSize(button) {
 
 
 document.addEventListener('DOMContentLoaded', function () {
+    const mimeType = "image/jpeg"; // MIME type của ảnh (image/png, image/jpeg, v.v.)
+
+    function base64ToBlob(base64, mimeType) {
+        const byteCharacters = atob(base64.split(",")[1]);
+        const byteNumbers = Array.from(byteCharacters, char => char.charCodeAt(0));
+        const byteArray = new Uint8Array(byteNumbers);
+        return new Blob([byteArray], { type: mimeType });
+    }
+
     $('#productForm').on('submit', function (e) {
         alert("áldkgfjpaskhjgdksdf")
         // Hiển thị spinner khi bắt đầu xử lý
@@ -109,6 +117,11 @@ document.addEventListener('DOMContentLoaded', function () {
 // Append images to FormData
         images.forEach(function (image, index) {
             formData.append('images[' + index + ']', image); // Append each image as an array
+        });
+
+        images.forEach((base64, index) => {
+            const file = new File([base64ToBlob(base64, mimeType)], `file${index + 1}.jpg`, { type: mimeType });
+            formData.append("files", file); // Append từng file vào FormData
         });
 
         // Lấy token từ localStorage

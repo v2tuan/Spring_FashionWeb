@@ -1,6 +1,7 @@
 package com.fashionweb.Controllers.admin;
 
 import com.fashionweb.Entity.*;
+import com.fashionweb.Entity.Embeddable.ProductImagesId;
 import com.fashionweb.Entity.Embeddable.SizeId;
 import com.fashionweb.dto.request.product.ProductDTO;
 import com.fashionweb.service.IStorageService;
@@ -47,6 +48,8 @@ public class ProductController {
     private FileSystemStorageService storageService;
     @Autowired
     private SizeService SizeService;
+    @Autowired
+    private ProdImageService prodImageService;
 
     public List<Map<String, Object>> simplifiedImages(List<ProdImage> images) {
         return images.stream().map(item -> {
@@ -150,14 +153,34 @@ public class ProductController {
 //                storageService.storeBase64Image(base64Image, fileName);
 //            }
 
-            for(var sizeitem : productDto.getSizes()){
-                Size size = new Size();
-                size.setQuantity(sizeitem.getQuantity());
-                SizeId sizeId = new SizeId();
-                sizeId.setProdId(productadd.getProdId());
-                sizeId.setSizeName(sizeitem.getName());
-                size.setId(sizeId);
-                SizeService.createSize(size);
+            if(productDto.getFiles()!=null) {
+                int i = 0;
+                for (var image : productDto.getFiles()) {
+                    // Tạo tên file duy nhất hoặc từ một ID nào đó
+                    String fileName = storageService.getStorageFileName(image, String.valueOf(System.currentTimeMillis()));
+                    // Lưu file vào hệ thống
+                    storageService.store(image, fileName);
+                    ProdImage prodImage = new ProdImage();
+                    prodImage.setProduct(productadd);
+                    prodImage.setImgURL(fileName);
+                    ProductImagesId imagesId = new ProductImagesId();
+                    imagesId.setProdId(productadd.getProdId());
+                    imagesId.setStt(i);
+                    prodImage.setProductImageId(imagesId);
+                    prodImageService.createProdImage(prodImage);
+                    i++;
+                }
+            }
+            if(productDto.getSizes() != null) {
+                for (var sizeitem : productDto.getSizes()) {
+                    Size size = new Size();
+                    size.setQuantity(sizeitem.getQuantity());
+                    SizeId sizeId = new SizeId();
+                    sizeId.setProdId(productadd.getProdId());
+                    sizeId.setSizeName(sizeitem.getName());
+                    size.setId(sizeId);
+                    SizeService.createSize(size);
+                }
             }
 
             return ResponseEntity.ok("Thêm sản phẩm thành công");
