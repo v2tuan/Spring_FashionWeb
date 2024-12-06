@@ -10,6 +10,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Product2DTO {
+    private Long prodId;
     private String prodName;
     private String description;
     private Double regular;
@@ -19,4 +20,5 @@ public class Product2DTO {
     private Long brandId;
     private Long subCateId;
     private List<String> imgURLs;
+    private List<SizeDTO> sizeDTOs;
 }

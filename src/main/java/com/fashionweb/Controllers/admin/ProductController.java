@@ -1,7 +1,6 @@
 package com.fashionweb.Controllers.admin;
 
 import com.fashionweb.Entity.*;
-import com.fashionweb.Entity.Embeddable.ProdReviewsId;
 import com.fashionweb.Entity.Embeddable.ProductImagesId;
 import com.fashionweb.Entity.Embeddable.SizeId;
 import com.fashionweb.dto.request.product.ProductDTO;
@@ -14,9 +13,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.ZoneId;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -30,6 +29,12 @@ public class ProductController {
     BrandService brandService;
     @Autowired
     SubcategoryService subcategoryService;
+    @Autowired
+    private FileSystemStorageService storageService;
+    @Autowired
+    private SizeService sizeService;
+    @Autowired
+    private ProdImageService prodImageService;
 
     public String getImgName(List<ProdImage> images) {
         if (images == null || images.isEmpty()) {
@@ -39,33 +44,6 @@ public class ProductController {
         }
 
         return images.getFirst().getImgURL();
-    }
-    @Autowired
-    private FileSystemStorageService storageService;
-    @Autowired
-    private SizeService SizeService;
-    @Autowired
-    private ProdImageService prodImageService;
-
-    public List<String> simplifiedImages(List<ProdImage> images) {
-        if (images == null || images.isEmpty()) {
-            List<String> list = new ArrayList<>();
-            list.add("default");
-            return list;
-        }
-
-        return images.stream().map(img -> {
-            if (img == null || img.getImgURL() == null) return "default";
-            else return img.getImgURL();
-        }).toList();
-    }
-
-    public List<SizeId> simplifiedSizes(List<Size> sizes) {
-        return sizes.stream().map(Size::getId).toList();
-    }
-
-    public List<ProdReviewsId> simplifiedReviews(List<ProdReview> reviews) {
-        return reviews.stream().map(ProdReview::getReviewId).toList();
     }
 
     public List<ProductListDTO> simplifiedProduct(List<Product> products) {
@@ -77,7 +55,7 @@ public class ProductController {
             productListDTO.setRegular(product.getRegular());
             productListDTO.setPromo(product.getPromo());
             productListDTO.setStatus(product.getStatus() != null && product.getStatus());
-            productListDTO.setCreateDate(product.getCreateDate());
+            productListDTO.setCreateDate(new SimpleDateFormat("yyyy-MM-dd").format(product.getCreateDate()));
             productListDTO.setImgURL(getImgName(product.getImages()));
             productListDTO.setBrandId(product.getBrand().getBrandId());
             productListDTO.setSubCateId(product.getSubcategory().getSubCateId());
@@ -173,7 +151,7 @@ public class ProductController {
                     sizeId.setProdId(productadd.getProdId());
                     sizeId.setSizeName(sizeitem.getName());
                     size.setId(sizeId);
-                    SizeService.createSize(size);
+                    sizeService.createSize(size);
                 }
             }
 
@@ -183,15 +161,15 @@ public class ProductController {
         }
     }
 
-    @GetMapping("/editproduct/{prodId}")
+    @GetMapping("/editproduct/id={prodId}")
     public String EditProductForm(@PathVariable("prodId") Long prodId, Model model) {
         List<Brand> Brands = brandService.getAll();
         List<Subcategory> Subcategories = subcategoryService.getAll();
+        Product product = productService.getProduct(prodId).get();
 
         model.addAttribute("brands", Brands);
         model.addAttribute("subcategories", Subcategories);
-        model.addAttribute("product", new Product());
-        model.addAttribute("prodId", prodId);
+        model.addAttribute("product", productService.product2DTO(product));
 
         return "admin/editProduct";
     }

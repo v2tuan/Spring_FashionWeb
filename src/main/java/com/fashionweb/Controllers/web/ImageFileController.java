@@ -21,6 +21,10 @@ public class ImageFileController {
     @GetMapping("/{filename}")
     public ResponseEntity<Resource> serveFile(@PathVariable String filename) {
         try {
+            if (filename.contains(".")) {
+                filename = filename.substring(0, filename.lastIndexOf("."));
+            }
+
             Resource file = storageService.loadAsResource(filename + ".jpg");
             String contentType = Files.probeContentType(Paths.get(file.getURI()));
 
