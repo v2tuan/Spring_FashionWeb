@@ -841,9 +841,9 @@ th:fragment="header">
                         <a href="#"
                            class="dropdown-toggle text-heading pr-3 pr-sm-6 d-flex align-items-center justify-content-end dropdown px-5 d-none d-xl-inline-block"
                            data-bs-toggle="dropdown">
-<!--                            <img src="/assets/images/dashboard/avatar-2.png" alt="Ronald Hunter"-->
-<!--                                 class="rounded-circle" width="35">-->
-                            <svg class="rounded-circle" alt="Ronald Hunter" id="avatar" width="35" height="35"></svg>
+                            <img id="avatar_small"
+                                 class="rounded-circle" width="35">
+<!--                            <svg class="rounded-circle" alt="Ronald Hunter" id="avatar" width="35" height="35"></svg>-->
                         </a>
                         <div class="dropdown-menu dropdown-menu-end w-100">
                             <a class="dropdown-item" href="/home/profile">My Profile</a>
@@ -861,6 +861,33 @@ th:fragment="header">
             localStorage.clear(); // Xóa localStorage
             window.location.href = "/home"; // Chuyển hướng đến trang login
         }
+        document.addEventListener('DOMContentLoaded', function () {
+            $.ajax({
+                type: 'GET', // HTTP method
+                url: '/api/me', // API endpoint
+                dataType: 'json', // Expected response data type
+                contentType: 'application/json; charset=utf-8', // Content type
+                beforeSend: function (xhr) {
+                    // Add authorization header if token exists in localStorage
+                    if (localStorage.token) {
+                        xhr.setRequestHeader('Authorization', 'Bearer ' + localStorage.token);
+                    }
+                },
+                success: function (data) {
+                    if (data.avatar) {
+                        // Thay đổi thuộc tính src của thẻ img
+                        $('#avatar_small').attr('src', `/home/files/${data.avatar}`);
+                    }
+
+                },
+                error: function (e) {
+                    // Handle errors
+                    const json = e.responseText;
+                    alert("Sorry, you are not logged in.");
+                    console.error(json);
+                }
+            });
+        });
     </script>
 
     <style>
@@ -868,6 +895,12 @@ th:fragment="header">
             border-radius: 50%; /* Makes the SVG element circular */
             border: 1px solid #000; /* Adds a black border of 2px thickness */
             padding: 3px; /* Optional: adds space between the border and the content */
+        }
+
+        #avatar_small {
+            height: 35px;
+            width: 35px !important;
+            object-fit: cover; /* Đảm bảo ảnh không méo, vừa khung */
         }
     </style>
 </header>

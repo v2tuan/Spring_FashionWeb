@@ -30,7 +30,7 @@ public class WebSecurityConfig {
                             .requestMatchers("/assets/**", "/cdn.jsdelivr.net/**", "/cdnjs.cloudflare.com/**").permitAll()
                             .requestMatchers("/register", "/login/**").permitAll()
                             .requestMatchers("/api/**").permitAll() // Cho phép tất cả truy cập vào các API
-                            .requestMatchers("/home/**").permitAll()
+                            .requestMatchers("/home/**").hasAnyRole(Role.USER.name(), Role.ADMIN.name())
                             .requestMatchers("/forgotpassword/**").permitAll()
                             .requestMatchers("/403").permitAll()
                             .anyRequest().hasAnyRole(Role.USER.name(), Role.ADMIN.name());

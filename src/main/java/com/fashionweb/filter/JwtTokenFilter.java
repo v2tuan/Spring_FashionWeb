@@ -28,10 +28,11 @@ public class JwtTokenFilter extends OncePerRequestFilter {
     private final UserDetailsService userDetailsService;
     private final JwtTokenUtil jwtTokenUtil;
 
+    // nhung yeu cau o day da pulic r ne khong duoc cau hinh phan quyen nua
     private static final List<EndpointMethod> BYPASS_ENDPOINTS = List.of(
             new EndpointMethod("/login", "GET"),
             new EndpointMethod("/register", "GET"),
-            new EndpointMethod("/home/**", "GET"),
+//            new EndpointMethod("/home", "GET"),
             new EndpointMethod("/assets/**", "GET"),
             new EndpointMethod("/cdn.jsdelivr.net/**", "GET"),
             new EndpointMethod("/cdnjs.cloudflare.com/**", "GET"),
