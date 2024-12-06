@@ -41,4 +41,4 @@ jwt:
   expiration: 3600  # 1 hour
 
 storage:
-  location: D:\\Upload
+  location: C:\\Upload
