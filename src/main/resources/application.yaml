@@ -7,9 +7,11 @@ spring:
       password: # Để trống để Spring Boot tự tạo mật khẩu ngẫu nhiên
 
   datasource:
-    url: jdbc:mysql://fashionista.clcm6y6k0f9i.ap-southeast-2.rds.amazonaws.com:3306/fashionista?useSSL=false&serverTimezone=UTC
-    username: admin
-    password: 987654321
+
+#    jdbc:mysql://localhost:3306/fashionista
+      url: jdbc:mysql://fashionista.clcm6y6k0f9i.ap-southeast-2.rds.amazonaws.com:3306/fashionista?useSSL=false&serverTimezone=UTC
+      username: admin
+      password: 987654321
 
   jpa:
     hibernate:
@@ -39,4 +41,4 @@ jwt:
   expiration: 3600  # 1 hour
 
 storage:
-  location: C:\\Upload
+  location: D:\\Upload
