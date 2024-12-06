@@ -35,21 +35,21 @@
             <div class="card-header bg-transparent px-0 pt-0 pb-7">
                 <div class="row align-items-center justify-content-between">
                     <div class="row col-md-6" style="margin-left: 0; margin-bottom: 5px">
-<!--                        <select class="form-select" id="categorySelect">-->
-<!--                                <option selected="" data-select2-id="3">All Categories</option>-->
-<!--                                <th:block th:each="category : ${categories}">-->
-<!--                                    <option th:value="${category.categoryId}" th:text="${category.cateName}"></option>-->
-<!--                                </th:block>-->
-<!--                            </select>-->
-<!--                        </div>-->
-<!--                    <div class="row col-md-3">-->
-                            <select class="form-select" id="subcategorySelect">
-                                <option selected="" data-select2-id="3">All Subcategories</option>
-                                <th:block th:each="subcategory : ${subcategories}">
-                                    <option th:value="${subcategory.subCateId}"
-                                            th:text="${subcategory.subCateName}"></option>
-                                </th:block>
-                            </select>
+                        <!--                        <select class="form-select" id="categorySelect">-->
+                        <!--                                <option selected="" data-select2-id="3">All Categories</option>-->
+                        <!--                                <th:block th:each="category : ${categories}">-->
+                        <!--                                    <option th:value="${category.categoryId}" th:text="${category.cateName}"></option>-->
+                        <!--                                </th:block>-->
+                        <!--                            </select>-->
+                        <!--                        </div>-->
+                        <!--                    <div class="row col-md-3">-->
+                        <select class="form-select" id="subcategorySelect">
+                            <option selected="" data-select2-id="3">All Subcategories</option>
+                            <th:block th:each="subcategory : ${subcategories}">
+                                <option th:value="${subcategory.subCateId}"
+                                        th:text="${subcategory.subCateName}"></option>
+                            </th:block>
+                        </select>
                     </div>
                     <div class="col-md-6" style="margin-bottom: 5px">
                         <div class="row justify-content-end flex-nowrap d-flex">
@@ -91,7 +91,8 @@
                                     </a>
                                     <a href="home/product-detail"
                                        th:title="${product.getProdName()}" class="ms-6">
-                                        <p class="fw-semibold text-body-emphasis mb-0" th:text="${product.getProdName()}"></p>
+                                        <p class="fw-semibold text-body-emphasis mb-0"
+                                           th:text="${product.getProdName()}"></p>
                                     </a>
                                 </div>
                             </td>
@@ -101,18 +102,22 @@
 
 
                             <td>
-                                <span class="badge rounded-lg rounded-pill alert py-3 px-4 mb-0 alert-success border-0 text-capitalize fs-12" th:text="${product.getStatus() ? 'Active' : 'Disabled'}"></span>
-                            </td>
+                                <span th:if="${product.getStatus() == true}"
+                                      class="badge rounded-lg rounded-pill alert py-3 px-4 mb-0 alert-success border-0 text-capitalize fs-12">Active</span>
+                                <span th:if="${product.getStatus() == false}"
+                                      class="badge rounded-lg rounded-pill alert py-3 px-4 mb-0 alert-danger border-0 text-capitalize fs-12">Disabled</span>
+                                <span th:if="${product.getStatus() == null}"
+                                      class="badge rounded-lg rounded-pill alert py-3 px-4 mb-0 alert-secondary border-0 text-capitalize fs-12">Unknown</span></td>
 
 
                             <td th:text="${product.getCreateDate()}"></td>
 
                             <td class="text-center">
                                 <div class="d-flex flex-nowrap justify-content-center">
-                                    <a th:href="@{admin/addproduct}"
+                                    <a th:href="@{editproduct/{prodId}(prodId=${product.getProdId()})}"
                                        class="btn btn-primary py-4 px-5 btn-xs fs-13px me-4"><i
                                             class="far fa-pen me-2"></i> Edit</a>
-                                    <a th:href="@{admin/deleteproduct/{prodId}(prodId=${product.getProdId()})}"
+                                    <a th:href="@{deleteproduct/{prodId}(prodId=${product.getProdId()})}"
                                        class="btn btn-outline-primary btn-hover-bg-danger btn-hover-border-danger btn-hover-text-light py-4 px-5 fs-13px btn-xs me-4"><i
                                             class="far fa-trash me-2"></i> Delete</a>
                                 </div>

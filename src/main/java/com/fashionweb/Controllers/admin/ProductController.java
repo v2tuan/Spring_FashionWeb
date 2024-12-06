@@ -3,7 +3,7 @@ package com.fashionweb.Controllers.admin;
 import com.fashionweb.Entity.*;
 import com.fashionweb.Entity.Embeddable.ProdReviewsId;
 import com.fashionweb.Entity.Embeddable.SizeId;
-import com.fashionweb.dto.request.product.ProductDTO;
+import com.fashionweb.dto.request.product.Product2DTO;
 import com.fashionweb.dto.request.product.ProductListDTO;
 import com.fashionweb.service.Impl.*;
 import jakarta.validation.Valid;
@@ -23,23 +23,11 @@ import java.util.Optional;
 public class ProductController {
 
     @Autowired
-    private ProductService productService;
-
+    ProductService productService;
     @Autowired
-    private CategoryService CategoryService;
-
+    BrandService brandService;
     @Autowired
-    private BrandService BrandService;
-
-    @Autowired
-    private SubcategoryService SubcategoryService;
-
-    @Autowired
-    private BrandService brandService;
-    @Autowired
-    private SizeService sizeService;
-    @Autowired
-    private SubcategoryService subcategoryService;
+    SubcategoryService subcategoryService;
 
     public String getImgName(List<ProdImage> images) {
         if (images == null || images.isEmpty()) {
@@ -92,45 +80,49 @@ public class ProductController {
     @GetMapping("/products")
     @ResponseBody
     ResponseEntity<?> getProducts() {
-        List<Product> products = productService.getAllProducts();
+        List<Product> Products = productService.getAllProducts();
+        List<ProductListDTO> ProductLists = simplifiedProduct(Products);
 
-        return ResponseEntity.ok(simplifiedProduct(products));
+        return ResponseEntity.ok(ProductLists);
     }
 
     @GetMapping("/productlist")
     String showProductList(Model model) {
-        List<ProductListDTO> p = simplifiedProduct(productService.getAllProducts());
-        model.addAttribute("subcategories", SubcategoryService.getAll());
-        model.addAttribute("products", simplifiedProduct(productService.getAllProducts()));
+        List<Subcategory> Subcategories = subcategoryService.getAll();
+        List<Product> Products = productService.getAllProducts();
+
+        List<ProductListDTO> ProductLists = simplifiedProduct(Products);
+        model.addAttribute("subcategories", Subcategories);
+        model.addAttribute("products", ProductLists);
 
         return "admin/product_list";
     }
 
     @GetMapping("/addproduct")
     public String AddProductForm(Model model) {
-        List<Category> categories = CategoryService.findAll();
+        List<Brand> Brands = brandService.getAll();
+        List<Subcategory> Subcategories = subcategoryService.getAll();
 
-        model.addAttribute("categories", categories);
-        model.addAttribute("brands", BrandService.getAll());
-        model.addAttribute("subcategories", SubcategoryService.getAll());
-
+        model.addAttribute("brands", Brands);
+        model.addAttribute("subcategories", Subcategories);
         model.addAttribute("product", new Product());
+
         return "admin/addOrEditProduct";
     }
 
     @PostMapping("/createproduct")
     @ResponseBody
-    public ResponseEntity<?> createProduct(@RequestBody @Valid ProductDTO productDto) {
+    public ResponseEntity<?> createProduct(@RequestBody @Valid Product2DTO product2Dto) {
         Product product = new Product();
 
-        Optional<Brand> brnd = brandService.findById(productDto.getBrandId());
-        Optional<Subcategory> subcat = subcategoryService.getById(productDto.getSubCateId());
+        Optional<Brand> brnd = brandService.findById(product2Dto.getBrandId());
+        Optional<Subcategory> subcat = subcategoryService.getById(product2Dto.getSubCateId());
         if (brnd.isPresent() && subcat.isPresent()) {
-            product.setProdName(productDto.getProdName());
-            product.setDescription(productDto.getDescription());
-            product.setRegular(productDto.getRegular());
-            product.setPromo(productDto.getPromo());
-            product.setStatus(productDto.getStatus());
+            product.setProdName(product2Dto.getProdName());
+            product.setDescription(product2Dto.getDescription());
+            product.setRegular(product2Dto.getRegular());
+            product.setPromo(product2Dto.getPromo());
+            product.setStatus(product2Dto.getStatus());
             product.setCreateDate(java.sql.Date.valueOf(LocalDate.now()));
             product.setBrand(brnd.get());
             product.setSubcategory(subcat.get());
@@ -141,6 +133,19 @@ public class ProductController {
         } else {
             return ResponseEntity.badRequest().body("Thêm sản phẩm thất bại");
         }
+    }
+
+    @GetMapping("/editproduct/{prodId}")
+    public String EditProductForm(@PathVariable("prodId") Long prodId, Model model) {
+        List<Brand> Brands = brandService.getAll();
+        List<Subcategory> Subcategories = subcategoryService.getAll();
+
+        model.addAttribute("brands", Brands);
+        model.addAttribute("subcategories", Subcategories);
+        model.addAttribute("product", new Product());
+        model.addAttribute("prodId", prodId);
+
+        return "admin/editProduct";
     }
 
     @PostMapping("/deleteproduct/{id}")
