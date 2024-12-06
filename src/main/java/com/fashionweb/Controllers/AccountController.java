@@ -7,6 +7,7 @@ import com.fashionweb.dto.request.VerifyAccountDTO;
 import com.fashionweb.dto.request.accounts.AccountDTO;
 import com.fashionweb.dto.request.accounts.RegisterAccountDTO;
 import com.fashionweb.dto.response.AuthenticationResponse;
+import com.fashionweb.mapper.IAccountMapper;
 import com.fashionweb.service.AuthenticationService;
 import com.fashionweb.service.IStorageService;
 import com.fashionweb.service.Impl.AccountService;
@@ -27,17 +28,19 @@ public class AccountController {
     private AuthenticationService authenticationService;
     @Autowired
     private IStorageService storageService;
+    @Autowired
+    IAccountMapper accountMapper;
 
 
     @GetMapping("/me")
-    Account getMyInfo() {
+    AccountDTO getMyInfo() {
         var context = SecurityContextHolder.getContext();
         String email = context.getAuthentication().getName();
 
         Account account = accountService.getAccounts(email).orElseThrow(
                 () -> new RuntimeException("Không tìm thấy người dùng"));
 
-        return account;
+        return accountMapper.toAccountDTO(account);
 
 //        return "web/my_profile";
     }
@@ -85,11 +88,12 @@ public class AccountController {
     ResponseEntity<?> updateAccount(@PathVariable long id, @ModelAttribute @Valid AccountDTO accountDTO){
         MultipartFile file = accountDTO.getFile();
         if(file.getOriginalFilename() != ""){
-        accountDTO.setAvatar(String.valueOf(System.currentTimeMillis()));
+
         // Tạo tên file duy nhất hoặc từ một ID nào đó
-        String fileName = storageService.getStorageFileName(file, accountDTO.getAvatar());
+        String fileName = storageService.getStorageFileName(file, String.valueOf(System.currentTimeMillis()));
         // Lưu file vào hệ thống
         storageService.store(file, fileName);
+        accountDTO.setAvatar(fileName);
         }
         accountService.updateAccount(id, accountDTO);
         return new ResponseEntity<Response>(new Response(true, "Thành công", "Update thanh cong"), HttpStatus.OK);
