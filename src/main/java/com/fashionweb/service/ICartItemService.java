@@ -15,8 +15,8 @@ public interface ICartItemService {
     void addCartItem(CartItem cartDetail);
     Optional<CartItem> getCartItemById(CartItemsId cartItemsId);
     void updateCartItem(CartItem cartDetail);
-    void deleteCartItem(CartItemsId id);
     void deleteCart(Long accId);
+    void removeCartItem(CartItemsId cartItemsId);
     List<Product> getProductsInCartByAccId(Long accId);
 
 }
