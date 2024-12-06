@@ -32,6 +32,7 @@ public class WebSecurityConfig {
                             .requestMatchers("/api/**").permitAll() // Cho phép tất cả truy cập vào các API
                             .requestMatchers("/home/**").permitAll()
                             .requestMatchers("/forgotpassword/**").permitAll()
+                            .requestMatchers("/403").permitAll()
                             .anyRequest().hasAnyRole(Role.USER.name(), Role.ADMIN.name());
                 });
         return http.build();
