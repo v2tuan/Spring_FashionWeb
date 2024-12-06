@@ -63,4 +63,8 @@ public class ProdReviewService implements IProdReviewService {
     public List<ProdReview> findById(ProdReviewsId id) {
         return iProdReviewRepository.findByReviewId(id);
     }
+
+    public Double averageRating(Long prodId) {
+        return 0.0;
+    }
 }

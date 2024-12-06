@@ -5,6 +5,7 @@ import com.fashionweb.Entity.ProdImage;
 import com.fashionweb.Entity.ProdReview;
 import com.fashionweb.Entity.Product;
 import com.fashionweb.dto.request.product.Product2DTO;
+import com.fashionweb.dto.request.product.ProductGridDTO;
 import com.fashionweb.repository.IProductRepository;
 import com.fashionweb.service.IProductService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -82,6 +83,16 @@ public class ProductService implements IProductService {
         return iProductRepository.findAllBySubcategoryCategoryCategoryId(cateId);
     }
 
+    public String getImgName(List<ProdImage> images) {
+        if (images == null || images.isEmpty()) {
+            return "default";
+        } else if (images.getFirst().getImgURL() == null) {
+            return "default";
+        }
+
+        return images.getFirst().getImgURL();
+    }
+
     public List<String> simplifiedImages(List<ProdImage> images) {
         if (images == null || images.isEmpty()) {
             List<String> list = new ArrayList<>();
@@ -94,8 +105,6 @@ public class ProductService implements IProductService {
             else return img.getImgURL();
         }).toList();
     }
-
-
 
     public List<ProdReviewsId> simplifiedReviews(List<ProdReview> reviews) {
         return reviews.stream().map(ProdReview::getReviewId).toList();
@@ -115,5 +124,37 @@ public class ProductService implements IProductService {
         product2DTO.setImgURLs(simplifiedImages(product.getImages()));
         product2DTO.setSizeDTOs(sizeService.sizeDTOs(product.getSizes()));
         return product2DTO;
+    }
+
+    public ProductGridDTO productGridDTO(Product product) {
+        boolean isSale;
+        int percent;
+        if (product.getPromo() == null || product.getPromo().equals(product.getRegular())) {
+            isSale = false;
+            percent = 0;
+        }
+        else {
+            isSale = true;
+            percent = (int) ((1 - product.getPromo()/product.getRegular())*100);
+        }
+
+        double rating = 0.0;
+
+
+        return new ProductGridDTO(
+                product.getProdId(),
+                product.getProdName(),
+                product.getRegular(),
+                product.getPromo(),
+                product.getStatus(),
+                (product.getCreateDate()),
+                isSale,
+                percent,
+                product.getBrand().getBrandId(),
+                product.getSubcategory().getSubCateId(),
+                this.getImgName(product.getImages()),
+                null,
+                null
+        );
     }
 }

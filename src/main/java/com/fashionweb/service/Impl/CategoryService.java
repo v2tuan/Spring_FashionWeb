@@ -2,6 +2,7 @@ package com.fashionweb.service.Impl;
 
 import com.fashionweb.Entity.Category;
 import com.fashionweb.Entity.Subcategory;
+import com.fashionweb.dto.request.category.CategoryGridDTO;
 import com.fashionweb.repository.ICategoryRepository;
 import com.fashionweb.repository.IProductRepository;
 import com.fashionweb.repository.ISubcategoryRepository;
@@ -11,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class CategoryService implements ICategoryService {
@@ -64,6 +66,20 @@ public class CategoryService implements ICategoryService {
     @Override
     public List<Subcategory> findSubcategoriesByCategoryId(Long cateId) {
         return subcategoryRepos.findAllByCategoryCategoryId(cateId);
+    }
+
+    public CategoryGridDTO categoryGridDTO(Category category) {
+        return new CategoryGridDTO(
+            category.getCategoryId(),
+            category.getCateName(),
+            this.findSubcategoriesByCategoryId(category.getCategoryId())
+                    .stream()
+                    .collect(Collectors.toMap(Subcategory::getSubCateId, Subcategory::getSubCateName))
+        );
+    }
+
+    public List<CategoryGridDTO> categoryGridDTOs(List<Category> categories) {
+        return categories.stream().map(this::categoryGridDTO).collect(Collectors.toList());
     }
 
 }

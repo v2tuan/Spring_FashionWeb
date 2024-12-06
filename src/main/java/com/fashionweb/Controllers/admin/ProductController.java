@@ -36,16 +36,6 @@ public class ProductController {
     @Autowired
     private ProdImageService prodImageService;
 
-    public String getImgName(List<ProdImage> images) {
-        if (images == null || images.isEmpty()) {
-            return "default";
-        } else if (images.getFirst().getImgURL() == null) {
-            return "default";
-        }
-
-        return images.getFirst().getImgURL();
-    }
-
     public List<ProductListDTO> simplifiedProduct(List<Product> products) {
         return products.stream().map(product -> {
             ProductListDTO productListDTO = new ProductListDTO();
@@ -56,7 +46,7 @@ public class ProductController {
             productListDTO.setPromo(product.getPromo());
             productListDTO.setStatus(product.getStatus() != null && product.getStatus());
             productListDTO.setCreateDate(new SimpleDateFormat("yyyy-MM-dd").format(product.getCreateDate()));
-            productListDTO.setImgURL(getImgName(product.getImages()));
+            productListDTO.setImgURL(productService.getImgName(product.getImages()));
             productListDTO.setBrandId(product.getBrand().getBrandId());
             productListDTO.setSubCateId(product.getSubcategory().getSubCateId());
             return productListDTO;

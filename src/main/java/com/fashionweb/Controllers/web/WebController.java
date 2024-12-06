@@ -1,16 +1,11 @@
 package com.fashionweb.Controllers.web;
 
-import com.fashionweb.Entity.Account;
-import com.fashionweb.Entity.Address;
-import com.fashionweb.Model.Response;
 import com.fashionweb.service.IStorageService;
 import com.fashionweb.service.Impl.AccountService;
 import com.fashionweb.service.Impl.AddressService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,7 +15,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.List;
 
 @Controller
 @RequestMapping("/home")
@@ -42,11 +36,6 @@ public class WebController {
 
     @GetMapping("/user-login")
     String userLogin() { return "web/user-login"; }
-
-    @GetMapping("/shop")
-    String shop() {
-        return "web/shop/shop_content";
-    }
 
     @GetMapping("/product-detail")
     String productDetail() {
@@ -102,9 +91,6 @@ public class WebController {
         }
         return "web/manager_address";
     }
-
-
-
 
     @GetMapping("/files/{filename}")
     public ResponseEntity<Resource> serveFile(@PathVariable String filename) {
