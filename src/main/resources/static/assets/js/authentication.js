@@ -125,7 +125,7 @@ function verificationCode(){
 
     // Sử dụng $.ajax() để gửi yêu cầu
     $.ajax({
-        url: '/account/verify',  // Địa chỉ controller của bạn
+        url: '/api/verify',  // Địa chỉ controller của bạn
         type: 'POST',  // Phương thức HTTP (POST)
         contentType: 'application/json',  // Định dạng dữ liệu là JSON
         data: JSON.stringify(data),  // Chuyển đổi dữ liệu thành chuỗi JSON
@@ -137,7 +137,7 @@ function verificationCode(){
             modal.hide();
             spinner.hide(); // Ẩn spinner sau khi xử lý thành công
             alert(response);
-            window.location.href = "/home/user-login";
+            window.location.href = "/login";
         },
         error: function(xhr, status, error) {
             spinner.hide(); // Ẩn spinner sau khi xử lý thành công
@@ -182,7 +182,7 @@ document.getElementById('btn-verificationCode').addEventListener('click', functi
 
     // Sử dụng $.ajax() để gửi yêu cầu
     $.ajax({
-        url: '/account/verify',  // Địa chỉ controller của bạn
+        url: '/api/verify',  // Địa chỉ controller của bạn
         type: 'POST',  // Phương thức HTTP (POST)
         contentType: 'application/json',  // Định dạng dữ liệu là JSON
         data: JSON.stringify(data),  // Chuyển đổi dữ liệu thành chuỗi JSON
@@ -194,7 +194,7 @@ document.getElementById('btn-verificationCode').addEventListener('click', functi
             modal.hide();
             spinner.hide(); // Ẩn spinner sau khi xử lý thành công
             alert(response);
-            window.location.href = "/home/user-login";
+            window.location.href = "/login";
         },
         error: function(xhr, status, error) {
             spinner.hide(); // Ẩn spinner sau khi xử lý thành công
@@ -237,38 +237,3 @@ function register(){
         }
     });
 }
-
-// Nhan nut dang ki
-document.getElementById('registerButton').addEventListener('click', function () {
-    const email = document.getElementById("email").value;
-    const password = document.getElementById("password").value;
-    // Dữ liệu cần gửi
-    const data = {
-        email: email,  // Thay thế bằng thông tin cần gửi
-        password: password
-    };
-
-    // Hiển thị spinner khi bắt đầu xử lý
-    const spinner = new bootstrap.Modal(document.getElementById('loadingSpinner'));
-    spinner.show();
-
-    // Sử dụng $.ajax() để gửi yêu cầu
-    $.ajax({
-        url: '/account/signup',  // Địa chỉ controller của bạn
-        type: 'POST',  // Phương thức HTTP (POST)
-        contentType: 'application/json',  // Định dạng dữ liệu là JSON
-        data: JSON.stringify(data),  // Chuyển đổi dữ liệu thành chuỗi JSON
-        success: function(response) {
-            spinner.hide(); // Ẩn spinner sau khi xử lý thành công
-            // Nếu thành công, mở modal và bắt đầu đếm ngược
-            const modal = new bootstrap.Modal(document.getElementById('verificationModal'));
-            modal.show();
-            startCountdown(response.verificationCodeExpiresAt);
-        },
-        error: function(xhr, status, error) {
-            spinner.hide(); // Ẩn spinner sau khi xử lý thành công
-            // Nếu có lỗi, thông báo cho người dùng
-            alert(xhr.responseJSON.body);
-        }
-    });
-});

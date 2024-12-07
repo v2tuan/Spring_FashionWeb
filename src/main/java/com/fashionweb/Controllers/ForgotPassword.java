@@ -23,7 +23,7 @@ public class ForgotPassword {
     @Autowired
     private AuthenticationService authenticationService;
 
-    @GetMapping("/sendcodeforgotpassword")
+    @PostMapping("forgotpassword/sendcode")
     public String sendcodeforgotpassword(@RequestParam String email, Model model) {
         try {
 
@@ -43,7 +43,7 @@ public class ForgotPassword {
         }
     }
 
-    @PostMapping("/sendcodeforgotpassword/verifycode")
+    @PostMapping("forgotpassword/sendcode/verifycode")
     public String verifycode(@RequestBody VerifyAccountDTO verifyAccountDTO, Model model) {
         Account account = authenticationService.verifyUser(verifyAccountDTO);
         //return ResponseEntity.ok("Account verified successfully");
@@ -55,7 +55,7 @@ public class ForgotPassword {
 //        return "redirect:/home";
     }
 
-    @PostMapping("/sendcodeforgotpassword/verifycode/resetpass")
+    @PostMapping("forgotpassword/sendcode/verifycode/resetpass")
     @ResponseBody
     public void resetPassword(@RequestBody RegisterAccountDTO registerAccountDTO, Model model) {
         Account account = authenticationService.resetPassword(registerAccountDTO);

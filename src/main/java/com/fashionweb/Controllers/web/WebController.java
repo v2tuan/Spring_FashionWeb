@@ -1,5 +1,9 @@
 package com.fashionweb.Controllers.web;
 
+import com.fashionweb.Entity.Account;
+import com.fashionweb.Entity.Address;
+import com.fashionweb.Enum.Role;
+import com.fashionweb.Model.Response;
 import com.fashionweb.service.IStorageService;
 import com.fashionweb.service.Impl.AccountService;
 import com.fashionweb.service.Impl.AddressService;
@@ -15,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.Optional;
 
 @Controller
 @RequestMapping("/home")
@@ -27,7 +32,17 @@ public class WebController {
     private IStorageService storageService;
 
     @GetMapping
-    String home() {
+    String home(Model model) {
+        var context = SecurityContextHolder.getContext();
+        String email = context.getAuthentication().getName();
+
+        Optional<Account> account = accountService.getAccounts(email);
+
+        if (account.isPresent()) {
+            // Đẩy dữ liệu vào model
+            model.addAttribute("avatar", account.get().getAvatar());
+        }
+
         return "web/home";
     }
 
@@ -53,30 +68,8 @@ public class WebController {
         return "web/my_profile";
     }
 
-    @GetMapping("/forgotpassword")
-    String forgotPassword(){
-        return "web/forgot-password";
-    }
-
-    @GetMapping("/forgotpassword/verifycode")
-    String forgotPasswordVerifyCode(){
-        return "web/forgot-password-verify-code";
-    }
-
-    @GetMapping("/forgotpassword/verifycode/resetpassword")
-    String resetPassword(){
-        return "web/reset-password";
-    }
-
     @GetMapping("/managerAddress")
     String managerAddress(Model model){
-//        var context = SecurityContextHolder.getContext();
-//        String email = context.getAuthentication().getName();
-//
-//        Account account = accountService.getAccounts(email).orElseThrow(
-//                () -> new RuntimeException("Không tìm thấy người dùng"));
-//        List<Address> addressList = addressService.findAddressByAccount(account);
-//        model.addAttribute("addresses", addressList);
         return "web/manager_address";
     }
 

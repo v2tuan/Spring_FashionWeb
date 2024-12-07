@@ -1,69 +1,48 @@
 package com.fashionweb.Config;
 
-import com.fashionweb.Entity.Account;
-import com.fashionweb.service.Impl.AccountService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
+import com.fashionweb.repository.IAccountRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
-import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.oauth2.jose.jws.MacAlgorithm;
-import org.springframework.security.oauth2.jwt.JwtDecoder;
-import org.springframework.security.oauth2.jwt.NimbusJwtDecoder;
-import org.springframework.security.web.SecurityFilterChain;
-
-import javax.crypto.spec.SecretKeySpec;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.AuthenticationProvider;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Configuration
-@EnableWebSecurity
+
+@RequiredArgsConstructor
 public class SecurityConfig {
-    @Autowired
-    AccountService accountService;
-
-    private final String[] PUBLIC_ENDPOINTS = {"/account",
-            "/auth/token", "/auth/introspect"
-    };
-
-    @Value("${jwt.signerKey}")
-    private String signerKey;
-
+    private final IAccountRepository accountRepository;
+    //user's detail object
     @Bean
-    public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
-        httpSecurity.authorizeHttpRequests(request ->
-                request.requestMatchers(HttpMethod.POST, PUBLIC_ENDPOINTS).permitAll()
-                        .requestMatchers(HttpMethod.GET, "/home").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/home/user-login", "/home/user-register").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/home/shop").permitAll()
-                        .requestMatchers(HttpMethod.POST, "/account").permitAll()
-                        .requestMatchers(HttpMethod.POST, "/account/signup", "/account/login","/account/verify").permitAll()
-                        .requestMatchers("/assets/**", "/cdn.jsdelivr.net/**", "/cdnjs.cloudflare.com/**").permitAll() // Cho phép truy cập tài nguyên tĩnh
-                .anyRequest().permitAll());
-
-        httpSecurity.oauth2ResourceServer(oauth2 ->
-             oauth2.jwt(jwtConfigurer -> jwtConfigurer.decoder(jwtDecoder()))
-        );
-
-        httpSecurity.csrf(AbstractHttpConfigurer::disable);
-
-        // Cấu hình form login
-        httpSecurity.formLogin(form -> form.loginPage("/home/user-login")
-                .defaultSuccessUrl("/home", true)  // Khi đăng nhập thành công sẽ chuyển hướng đến trang chủ
-                .failureUrl("/home/user-login?error=true")  // Khi đăng nhập thất bại
-                .permitAll());
-
-        return httpSecurity.build();
+    public UserDetailsService userDetailsService() {
+        return identifier -> accountRepository
+                .findAccountByEmail(identifier)
+                .orElseThrow(() ->
+                        new RuntimeException(
+                                "Cannot find user"));
     }
 
     @Bean
-    JwtDecoder jwtDecoder(){
-        SecretKeySpec secretKeySpec = new SecretKeySpec(signerKey.getBytes(), "HS512");
-        return NimbusJwtDecoder
-                .withSecretKey(secretKeySpec)
-                .macAlgorithm(MacAlgorithm.HS512)
-                .build();
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
+
+    @Bean
+    public AuthenticationProvider authenticationProvider() {
+        DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
+        authProvider.setUserDetailsService(userDetailsService());
+        authProvider.setPasswordEncoder(passwordEncoder());
+        return authProvider;
+    }
+    @Bean
+    public AuthenticationManager authenticationManager(
+            AuthenticationConfiguration config
+    ) throws Exception {
+        return config.getAuthenticationManager();
     }
 }
