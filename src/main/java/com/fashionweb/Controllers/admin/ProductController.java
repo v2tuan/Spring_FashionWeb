@@ -11,6 +11,10 @@ import com.fashionweb.dto.request.product.ProductListDTO;
 import com.fashionweb.service.Impl.*;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -52,13 +56,29 @@ public class ProductController {
     }
 
     @GetMapping("/productlist")
-    String showProductList(Model model) {
+    String showProductList(@RequestParam(value = "page", defaultValue = "0") int page,
+                           @RequestParam(value = "size", defaultValue = "10") int size,
+                           Model model) {
+        Pageable pageable = PageRequest.of(page, size);
+        Page<ProductListDTO> ProductLists = productService.findAllProductListPageable(pageable);
         List<SubcategoryListDTO> Subcategories = subcategoryService.findAllSubcategoryList();
-        List<ProductListDTO> ProductLists = productService.findAllProductList();
         model.addAttribute("subcategories", Subcategories);
-        model.addAttribute("products", ProductLists);
+        model.addAttribute("products", ProductLists.getContent());
+        model.addAttribute("currentPage", page);
+        model.addAttribute("totalPages", ProductLists.getTotalPages());
 
         return "admin/product_list";
+    }
+
+    @GetMapping("/paginatedproducts")
+    @ResponseBody
+    public ResponseEntity<Page<ProductListDTO>> getPaginatedProducts(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(defaultValue = "prodName") String sortBy) {
+        Pageable pageable = PageRequest.of(page, size, Sort.by(sortBy));
+
+        return ResponseEntity.ok(productService.findAllProductListPageable(pageable));
     }
 
     @GetMapping("/addproduct")

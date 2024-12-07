@@ -43,13 +43,22 @@
                         <!--                            </select>-->
                         <!--                        </div>-->
                         <!--                    <div class="row col-md-3">-->
-                        <select class="form-select" id="subcategorySelect">
+                        <select class="form-select" id="subcategorySelect" onchange="filterProducts()">
                             <option selected="" data-select2-id="3">All Subcategories</option>
                             <th:block th:each="subcategory : ${subcategories}">
                                 <option th:value="${subcategory.subCateId}"
                                         th:text="${subcategory.subCateName}"></option>
                             </th:block>
                         </select>
+                        <script>
+                            function filterProducts() {
+                                const selectedSubcategoryId = document.getElementById('subcategorySelect').value;
+
+                                if (selectedSubcategoryId) {
+                                    window.location.href = '/products?subcategoryId=' + selectedSubcategoryId;
+                                }
+                            }
+                        </script>
                     </div>
                     <div class="col-md-6" style="margin-bottom: 5px">
                         <div class="row justify-content-end flex-nowrap d-flex">
@@ -132,17 +141,23 @@
         </div>
 
         <nav aria-label="Page navigation example" class="mt-6 mb-4">
-            <ul class="pagination justify-content-start">
-                <li class="page-item active mx-3"><a class="page-link" href="#">01</a></li>
-                <li class="page-item mx-3"><a class="page-link" href="#">02</a></li>
-                <li class="page-item mx-3"><a class="page-link" href="#">03</a></li>
-                <li class="page-item mx-3"><a class="page-link dot" href="#">...</a></li>
-                <li class="page-item mx-3"><a class="page-link" href="#">16</a></li>
-                <li class="page-item mx-3">
-                    <a class="page-link" href="#"><i class="far fa-chevron-right"></i></a>
+            <ul class="pagination justify-content-center">
+                <li th:class="${currentPage == 0 ? 'page-item disabled' : 'page-item'}">
+                    <a th:href="@{/admin/productlist(page=${currentPage - 1})}" class="page-link">&lt;</a>
+                </li>
+
+                <th:block th:each="pageNumber : ${#numbers.sequence(0, totalPages - 1)}">
+                    <li th:class="${pageNumber == currentPage ? 'page-item active' : 'page-item'}">
+                        <a th:href="@{/admin/productlist(page=${pageNumber})}" class="page-link" th:text="${pageNumber + 1}"></a>
+                    </li>
+                </th:block>
+
+                <li th:class="${currentPage == totalPages - 1 ? 'page-item disabled' : 'page-item'}">
+                    <a th:href="@{/admin/productlist(page=${currentPage + 1})}" class="page-link">&gt;</a>
                 </li>
             </ul>
         </nav>
+
     </div>
     <footer class="pt-6 pb-10 footer-dashboard mt-auto">
         <div class="row">

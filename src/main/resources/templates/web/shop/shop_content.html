@@ -25,7 +25,7 @@
     <section class="container container-xxl">
         <div class="tool-bar mb-11 align-items-center justify-content-between d-lg-flex">
             <div class="tool-bar-left mb-6 mb-lg-0 fs-18px">We found <span
-                    class="text-body-emphasis fw-semibold">95</span> products available for you</div>
+                    class="text-body-emphasis fw-semibold" th:text="${prodCount}"></span> products available for you</div>
             <div class="tool-bar-right align-items-center d-flex ">
                 <ul class="list-unstyled d-flex align-items-center list-inline me-lg-7 me-0 mb-0 ">
                     <li class="list-inline-item me-7">
@@ -280,25 +280,31 @@
                         </div>
                     </th:block>
                 </div>
-                <nav class="d-flex mt-13 pt-3 justify-content-center" aria-label="pagination"
-                     data-animate="fadeInUp">
+                <nav class="d-flex mt-13 pt-3 justify-content-center" aria-label="pagination" data-animate="fadeInUp">
                     <ul class="pagination m-0">
+                        <!-- Previous Page Link -->
                         <li class="page-item">
                             <a class="page-link rounded-circle d-flex align-items-center justify-content-center"
-                               href="#" aria-label="Previous">
+                               th:href="@{/home/shop(page=${currentPage - 1})}" aria-label="Previous"
+                               th:classappend="${currentPage == 0} ? 'disabled'">
                                 <svg class="icon">
                                     <use xlink:href="#icon-angle-double-left"></use>
                                 </svg>
                             </a>
                         </li>
-                        <li class="page-item"><a class="page-link" href="#">1</a></li>
-                        <li class="page-item active"><a class="page-link" href="#">2</a></li>
-                        <li class="page-item"><a class="page-link" href="#">3</a></li>
-                        <li class="page-item"><a class="page-link" href="#">...</a></li>
-                        <li class="page-item"><a class="page-link" href="#">6</a></li>
+
+                        <!-- Page Number Links -->
+                        <th:block th:each="pageNum : ${#numbers.sequence(0, totalPages - 1)}">
+                            <li class="page-item" th:class="${pageNum == currentPage} ? 'active'">
+                                <a class="page-link" th:href="@{/home/shop(page=${pageNum})}" th:text="${pageNum + 1}"></a>
+                            </li>
+                        </th:block>
+
+                        <!-- Next Page Link -->
                         <li class="page-item">
                             <a class="page-link rounded-circle d-flex align-items-center justify-content-center"
-                               href="#" aria-label="Next">
+                               th:href="@{/home/shop(page=${currentPage + 1})}" aria-label="Next"
+                               th:classappend="${currentPage == totalPages - 1} ? 'disabled'">
                                 <svg class="icon">
                                     <use xlink:href="#icon-angle-double-right"></use>
                                 </svg>
@@ -306,6 +312,7 @@
                         </li>
                     </ul>
                 </nav>
+
             </div>
             <div class="col-lg-3 d-lg-block d-none">
                 <div class="position-sticky top-0">

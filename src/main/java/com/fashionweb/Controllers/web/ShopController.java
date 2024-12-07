@@ -6,6 +6,10 @@ import com.fashionweb.service.Impl.CategoryService;
 import com.fashionweb.service.Impl.ProductService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -67,14 +71,31 @@ public class ShopController {
     }
 
     @GetMapping
-    String shop(Model model) {
+    String shop(@RequestParam(value = "page", defaultValue = "0") int page,
+                @RequestParam(value = "size", defaultValue = "16") int size,
+                Model model) {
         List<CategoryGridDTO> categoryGridDTOs = categoryService.categoryGridDTOs(categoryService.findAll());
-        List<ProductGridDTO> productGridDTOs = productService.findAllProductGrid(true);
+        Pageable pageable = PageRequest.of(page, size);
+        Page<ProductGridDTO> productGridDTOs = productService.findAllProductGridPageable(true, pageable);
 
         model.addAttribute("categories", categoryGridDTOs);
-        model.addAttribute("products", productGridDTOs);
+        model.addAttribute("products", productGridDTOs.getContent());
+        model.addAttribute("prodCount", productGridDTOs.getTotalElements());
+        model.addAttribute("currentPage", page);
+        model.addAttribute("totalPages", productGridDTOs.getTotalPages());
 
         return "web/shop/shop_content";
+    }
+
+    @GetMapping("/paginatedproducts")
+    @ResponseBody
+    ResponseEntity<Page<ProductGridDTO>> getPaginatedProducts(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "16") int size,
+            @RequestParam(defaultValue = "prodName") String sortBy) {
+        Pageable pageable = PageRequest.of(page, size, Sort.by(sortBy));
+
+        return ResponseEntity.ok(productService.findAllProductGridPageable(true, pageable));
     }
 
     @GetMapping("/product-detail/id={prodId}")
