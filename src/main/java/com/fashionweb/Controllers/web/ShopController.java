@@ -11,6 +11,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -44,6 +45,25 @@ public class ShopController {
     @ResponseBody
     ResponseEntity<?> getProductDetail(@RequestBody @Valid Long prodId) {
         return ResponseEntity.ok(productService.findProductDetailByProdId(prodId));
+    }
+
+    public List<List<ProductGridDTO>> groupedProductGrids(List<ProductGridDTO> productGridDTOs, int groupSize) {
+        List<List<ProductGridDTO>> result = new ArrayList<>();
+        List<ProductGridDTO> tempGroup = new ArrayList<>();
+
+        for (ProductGridDTO product : productGridDTOs) {
+            tempGroup.add(product);
+            if (tempGroup.size() == groupSize) {
+                result.add(new ArrayList<>(tempGroup));
+                tempGroup.clear();
+            }
+        }
+
+        if (!tempGroup.isEmpty()) {
+            result.add(new ArrayList<>(tempGroup));
+        }
+
+        return result;
     }
 
     @GetMapping

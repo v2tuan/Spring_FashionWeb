@@ -175,10 +175,20 @@ public class ProductService implements IProductService {
     public Optional<ProductDetailDTO> findProductDetailByProdId(Long prodId) {
         Optional<ProductDetailDTO> productDetailDTO = iProductRepository.fetchProductDetailById(prodId);
         if (productDetailDTO.isPresent()) {
-            Long pId = productDetailDTO.get().getProdId();
             productDetailDTO.get().setImgURL(prodImageService.findImageNamesByProdId(prodId));
             productDetailDTO.get().setSizeDTOs(sizeService.findSizeDTOsByProdId(prodId));
             return productDetailDTO;
+        }
+
+        return Optional.empty();
+    }
+
+    public Optional<Product2DTO> findProduct2DTOByProdId(Long prodId) {
+        Optional<Product2DTO> product2DTO = iProductRepository.fetchProduct2DTOById(prodId);
+        if (product2DTO.isPresent()) {
+            product2DTO.get().setImgURLs(prodImageService.findImageNamesByProdId(prodId));
+            product2DTO.get().setSizeDTOs(sizeService.findSizeDTOsByProdId(prodId));
+            return product2DTO;
         }
 
         return Optional.empty();

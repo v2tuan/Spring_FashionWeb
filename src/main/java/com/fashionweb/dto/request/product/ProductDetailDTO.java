@@ -13,6 +13,7 @@ import java.util.List;
 public class ProductDetailDTO {
     private Long prodId;
     private String prodName;
+    private String description;
     private Double regular;
     private Double promo;
     private Date createDate;

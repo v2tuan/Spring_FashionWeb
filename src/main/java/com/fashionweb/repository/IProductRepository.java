@@ -1,6 +1,7 @@
 package com.fashionweb.repository;
 
 import com.fashionweb.Entity.Product;
+import com.fashionweb.dto.request.product.Product2DTO;
 import com.fashionweb.dto.request.product.ProductDetailDTO;
 import com.fashionweb.dto.request.product.ProductGridDTO;
 import com.fashionweb.dto.request.product.ProductListDTO;
@@ -59,6 +60,7 @@ public interface IProductRepository extends JpaRepository<Product, Long> {
     SELECT new com.fashionweb.dto.request.product.ProductDetailDTO(
         p.prodId,
         p.prodName,
+        p.description,
         p.regular,
         p.promo,
         p.createDate,
@@ -74,5 +76,20 @@ public interface IProductRepository extends JpaRepository<Product, Long> {
     FROM Product p WHERE p.prodId = :prodId""")
     Optional<ProductDetailDTO> fetchProductDetailById(@Param("prodId") Long prodId);
 
+    @Query("""
+    SELECT new com.fashionweb.dto.request.product.Product2DTO(
+        p.prodId,
+        p.prodName,
+        p.description,
+        p.regular,
+        p.promo,
+        p.status,
+        p.brand.brandId,
+        p.subcategory.subCateId,
+        null,
+        null
+    )
+    FROM Product p WHERE p.prodId = :prodId""")
+    Optional<Product2DTO> fetchProduct2DTOById(@Param("prodId") Long prodId);
 }
     

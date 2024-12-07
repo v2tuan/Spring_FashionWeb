@@ -3,7 +3,9 @@ package com.fashionweb.Controllers.admin;
 import com.fashionweb.Entity.*;
 import com.fashionweb.Entity.Embeddable.ProductImagesId;
 import com.fashionweb.Entity.Embeddable.SizeId;
+import com.fashionweb.dto.request.BrandDTO;
 import com.fashionweb.dto.request.category.SubcategoryListDTO;
+import com.fashionweb.dto.request.product.Product2DTO;
 import com.fashionweb.dto.request.product.ProductDTO;
 import com.fashionweb.dto.request.product.ProductListDTO;
 import com.fashionweb.service.Impl.*;
@@ -36,28 +38,17 @@ public class ProductController {
     @Autowired
     private ProdImageService prodImageService;
 
-    public List<ProductListDTO> simplifiedProduct(List<Product> products) {
-        return products.stream().map(product -> {
-            ProductListDTO productListDTO = new ProductListDTO();
-            productListDTO.setProdId(product.getProdId());
-            productListDTO.setProdName(product.getProdName());
-            productListDTO.setDescription(product.getDescription());
-            productListDTO.setRegular(product.getRegular());
-            productListDTO.setPromo(product.getPromo());
-            productListDTO.setStatus(product.getStatus() != null && product.getStatus());
-            productListDTO.setCreateDate(product.getCreateDate());
-            productListDTO.setImgURL(productService.getImgName(product.getImages()));
-            productListDTO.setBrandId(product.getBrand().getBrandId());
-            productListDTO.setSubCateId(product.getSubcategory().getSubCateId());
-            return productListDTO;
-        }).toList();
-    }
-
     @GetMapping("/products")
     @ResponseBody
     ResponseEntity<?> getProducts() {
         List<ProductListDTO> ProductLists = productService.findAllProductList();
         return ResponseEntity.ok(ProductLists);
+    }
+
+    @GetMapping("/objects")
+    @ResponseBody
+    ResponseEntity<?> getObjects() {
+        return ResponseEntity.ok(brandService.getBrandDTOs());
     }
 
     @GetMapping("/productlist")
@@ -72,7 +63,7 @@ public class ProductController {
 
     @GetMapping("/addproduct")
     public String AddProductForm(Model model) {
-        List<Brand> Brands = brandService.getAll();
+        List<BrandDTO> Brands = brandService.getBrandDTOs();
         List<SubcategoryListDTO> Subcategories = subcategoryService.findAllSubcategoryList();
 
         model.addAttribute("brands", Brands);
@@ -149,13 +140,13 @@ public class ProductController {
 
     @GetMapping("/editproduct/id={prodId}")
     public String EditProductForm(@PathVariable("prodId") Long prodId, Model model) {
-        List<Brand> Brands = brandService.getAll();
-        List<Subcategory> Subcategories = subcategoryService.getAll();
-        Product product = productService.getProduct(prodId).get();
+        List<BrandDTO> Brands = brandService.getBrandDTOs();
+        List<SubcategoryListDTO> Subcategories = subcategoryService.findAllSubcategoryList();
+        Product2DTO product = productService.findProduct2DTOByProdId(prodId).get();
 
         model.addAttribute("brands", Brands);
         model.addAttribute("subcategories", Subcategories);
-        model.addAttribute("product", productService.product2DTO(product));
+        model.addAttribute("product", product);
 
         return "admin/editProduct";
     }

@@ -62,221 +62,223 @@
     <div class="container container-xxl pb-16 pb-lg-18">
         <div class="row">
             <div class="col-lg-9 order-lg-1">
-                <div class="row gy-11" th:each="product : ${products}">
-                    <div class="col-sm-6 col-lg-4 col-xl-3" th:if="${product.isSale}">
-                        <div class="card card-product grid-2 bg-transparent border-0" data-animate="fadeInUp">
-                            <figure class="card-img-top position-relative mb-7 overflow-hidden">
-                                <a href="/home/product-detail" class="hover-zoom-in d-block"
-                                   th:title="${product.prodName}">
-                                    <img src="#" th:data-src="@{/files/{filename}(filename=${product.imgURL})}"
-                                         class="img-fluid lazy-image w-100" th:alt="${product.prodName}" width="330"
-                                         height="440">
-                                </a>
-                                <div class="position-absolute product-flash z-index-2 "><span
-                                        class="badge badge-product-flash on-sale bg-primary" th:text="'-' + ${product.percent} + '%'"></span></div>
-                                <div class="position-absolute d-flex z-index-2 product-actions  vertical"><a
-                                        class="text-body-emphasis bg-body bg-dark-hover text-light-hover rounded-circle square product-action shadow-sm quick-view sm"
-                                        href="#" data-bs-toggle="tooltip" data-bs-placement="left"
-                                        data-bs-title="Quick View">
+                <div class="row gy-11">
+                    <th:block th:each="product : ${products}">
+                        <div class="col-sm-6 col-lg-4 col-xl-3" th:if="${product.isSale}">
+                            <div class="card card-product grid-2 bg-transparent border-0" data-animate="fadeInUp">
+                                <figure class="card-img-top position-relative mb-7 overflow-hidden">
+                                    <a href="/home/product-detail" class="hover-zoom-in d-block"
+                                       th:title="${product.prodName}">
+                                        <img src="#" th:data-src="@{/files/{filename}(filename=${product.imgURL})}"
+                                             class="img-fluid lazy-image w-100" th:alt="${product.prodName}" width="330"
+                                             height="440">
+                                    </a>
+                                    <div class="position-absolute product-flash z-index-2 "><span
+                                            class="badge badge-product-flash on-sale bg-primary" th:text="'-' + ${product.percent} + '%'"></span></div>
+                                    <div class="position-absolute d-flex z-index-2 product-actions  vertical"><a
+                                            class="text-body-emphasis bg-body bg-dark-hover text-light-hover rounded-circle square product-action shadow-sm quick-view sm"
+                                            href="#" data-bs-toggle="tooltip" data-bs-placement="left"
+                                            data-bs-title="Quick View">
 											<span data-bs-toggle="modal" data-bs-target="#quickViewModal"
                                                   class="d-flex align-items-center justify-content-center">
 												<svg class="icon icon-eye-light">
 													<use xlink:href="#icon-eye-light"></use>
 												</svg>
 											</span>
-                                </a>
-                                    <a class="text-body-emphasis bg-body bg-dark-hover text-light-hover rounded-circle square product-action shadow-sm wishlist sm"
-                                       href="#" data-bs-toggle="tooltip" data-bs-placement="left"
-                                       data-bs-title="Add To Wishlist">
-                                        <svg class="icon icon-star-light">
-                                            <use xlink:href="#icon-star-light"></use>
-                                        </svg>
                                     </a>
-                                    <a class="text-body-emphasis bg-body bg-dark-hover text-light-hover rounded-circle square product-action shadow-sm compare sm"
-                                       href="compare.html" data-bs-toggle="tooltip" data-bs-placement="left"
-                                       data-bs-title="Compare">
-                                        <svg class="icon icon-arrows-left-right-light">
-                                            <use xlink:href="#icon-arrows-left-right-light"></use>
-                                        </svg>
-                                    </a>
-                                </div><a href="#"
-                                         class="btn btn-add-to-cart btn-dark btn-hover-bg-primary btn-hover-border-primary position-absolute z-index-2 text-nowrap btn-sm px-6 py-3 lh-2">Add
-                                To Cart</a>
-                            </figure>
-                            <div class="card-body text-center p-0">
+                                        <a class="text-body-emphasis bg-body bg-dark-hover text-light-hover rounded-circle square product-action shadow-sm wishlist sm"
+                                           href="#" data-bs-toggle="tooltip" data-bs-placement="left"
+                                           data-bs-title="Add To Wishlist">
+                                            <svg class="icon icon-star-light">
+                                                <use xlink:href="#icon-star-light"></use>
+                                            </svg>
+                                        </a>
+                                        <a class="text-body-emphasis bg-body bg-dark-hover text-light-hover rounded-circle square product-action shadow-sm compare sm"
+                                           href="compare.html" data-bs-toggle="tooltip" data-bs-placement="left"
+                                           data-bs-title="Compare">
+                                            <svg class="icon icon-arrows-left-right-light">
+                                                <use xlink:href="#icon-arrows-left-right-light"></use>
+                                            </svg>
+                                        </a>
+                                    </div><a href="#"
+                                             class="btn btn-add-to-cart btn-dark btn-hover-bg-primary btn-hover-border-primary position-absolute z-index-2 text-nowrap btn-sm px-6 py-3 lh-2">Add
+                                    To Cart</a>
+                                </figure>
+                                <div class="card-body text-center p-0">
 
 									<span class="d-flex align-items-center price text-body-emphasis fw-bold justify-content-center mb-3 fs-6">
 										<del class=" text-body fw-500 me-4 fs-13px" th:text="'$'+${product.regular}"></del>
 										<ins class="text-decoration-none" th:text="'$'+${product.promo}"></ins></span>
 
-                                <h4 class="product-title card-title text-primary-hover text-body-emphasis fs-15px fw-500 mb-3">
-                                    <a class="text-decoration-none text-reset" href="/home/product-detail" th:text="${product.prodName}"></a></h4>
-                                <div class="d-flex align-items-center fs-12px justify-content-center">
-                                    <div class="rating">
-                                        <div class="empty-stars">
+                                    <h4 class="product-title card-title text-primary-hover text-body-emphasis fs-15px fw-500 mb-3">
+                                        <a class="text-decoration-none text-reset" href="/home/product-detail" th:text="${product.prodName}"></a></h4>
+                                    <div class="d-flex align-items-center fs-12px justify-content-center">
+                                        <div class="rating">
+                                            <div class="empty-stars">
                                             <span class="star">
 													<svg class="icon star-o">
 														<use xlink:href="#star-o"></use>
 													</svg>
 												</span>
-                                            <span class="star">
+                                                <span class="star">
 													<svg class="icon star-o">
 														<use xlink:href="#star-o"></use>
 													</svg>
 												</span>
-                                            <span class="star">
+                                                <span class="star">
 													<svg class="icon star-o">
 														<use xlink:href="#star-o"></use>
 													</svg>
 												</span>
-                                            <span class="star">
+                                                <span class="star">
 													<svg class="icon star-o">
 														<use xlink:href="#star-o"></use>
 													</svg>
 												</span>
-                                            <span class="star">
+                                                <span class="star">
 													<svg class="icon star-o">
 														<use xlink:href="#star-o"></use>
 													</svg>
 												</span>
-                                        </div>
-                                        <div class="filled-stars" style="width: ${product.rating*20}%;">
+                                            </div>
+                                            <div class="filled-stars" style="width: ${product.rating*20}%;">
                                             <span class="star">
 													<svg class="icon star text-primary">
 														<use xlink:href="#star"></use>
 													</svg>
 												</span>
-                                            <span class="star">
+                                                <span class="star">
 													<svg class="icon star text-primary">
 														<use xlink:href="#star"></use>
 													</svg>
 												</span>
-                                            <span class="star">
+                                                <span class="star">
 													<svg class="icon star text-primary">
 														<use xlink:href="#star"></use>
 													</svg>
 												</span>
-                                            <span class="star">
+                                                <span class="star">
 													<svg class="icon star text-primary">
 														<use xlink:href="#star"></use>
 													</svg>
 												</span>
-                                            <span class="star">
+                                                <span class="star">
 													<svg class="icon star text-primary">
 														<use xlink:href="#star"></use>
 													</svg>
 												</span>
-                                        </div>
-                                    </div><span class="reviews ms-4 pt-3 fs-14px" th:text="${product.reviewCount}+' reviews'"></span>
+                                            </div>
+                                        </div><span class="reviews ms-4 pt-3 fs-14px" th:text="${product.reviewCount}+' reviews'"></span>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="col-sm-6 col-lg-4 col-xl-3" th:unless="${product.isSale}">
-                        <div class="card card-product grid-2 bg-transparent border-0" data-animate="fadeInUp">
-                            <figure class="card-img-top position-relative mb-7 overflow-hidden">
-                                <a href="/home/product-detail" class="hover-zoom-in d-block"
-                                   th:title="${product.prodName}">
-                                    <img src="#" th:data-src="@{/files/{filename}(filename=${product.imgURL})}"
-                                         class="img-fluid lazy-image w-100" alt="Perfecting Facial Oil" width="330"
-                                         height="440">
-                                </a>
-                                <div class="position-absolute d-flex z-index-2 product-actions vertical"><a
-                                        class="text-body-emphasis bg-body bg-dark-hover text-light-hover rounded-circle square product-action shadow-sm quick-view sm"
-                                        href="#" data-bs-toggle="tooltip" data-bs-placement="left"
-                                        data-bs-title="Quick View">
+                        <div class="col-sm-6 col-lg-4 col-xl-3" th:unless="${product.isSale}">
+                            <div class="card card-product grid-2 bg-transparent border-0" data-animate="fadeInUp">
+                                <figure class="card-img-top position-relative mb-7 overflow-hidden">
+                                    <a href="/home/product-detail" class="hover-zoom-in d-block"
+                                       th:title="${product.prodName}">
+                                        <img src="#" th:data-src="@{/files/{filename}(filename=${product.imgURL})}"
+                                             class="img-fluid lazy-image w-100" alt="Perfecting Facial Oil" width="330"
+                                             height="440">
+                                    </a>
+                                    <div class="position-absolute d-flex z-index-2 product-actions vertical"><a
+                                            class="text-body-emphasis bg-body bg-dark-hover text-light-hover rounded-circle square product-action shadow-sm quick-view sm"
+                                            href="#" data-bs-toggle="tooltip" data-bs-placement="left"
+                                            data-bs-title="Quick View">
 											<span data-bs-toggle="modal" data-bs-target="#quickViewModal"
                                                   class="d-flex align-items-center justify-content-center">
 												<svg class="icon icon-eye-light">
 													<use xlink:href="#icon-eye-light"></use>
 												</svg>
 											</span>
-                                </a>
-                                    <a class="text-body-emphasis bg-body bg-dark-hover text-light-hover rounded-circle square product-action shadow-sm wishlist sm"
-                                       href="#" data-bs-toggle="tooltip" data-bs-placement="left"
-                                       data-bs-title="Add To Wishlist">
-                                        <svg class="icon icon-star-light">
-                                            <use xlink:href="#icon-star-light"></use>
-                                        </svg>
                                     </a>
-                                    <a class="text-body-emphasis bg-body bg-dark-hover text-light-hover rounded-circle square product-action shadow-sm compare sm"
-                                       href="compare.html" data-bs-toggle="tooltip" data-bs-placement="left"
-                                       data-bs-title="Compare">
-                                        <svg class="icon icon-arrows-left-right-light">
-                                            <use xlink:href="#icon-arrows-left-right-light"></use>
-                                        </svg>
-                                    </a>
-                                </div><a href="#"
-                                         class="btn btn-add-to-cart btn-dark btn-hover-bg-primary btn-hover-border-primary position-absolute z-index-2 text-nowrap btn-sm px-6 py-3 lh-2">Add
-                                To Cart</a>
-                            </figure>
-                            <div class="card-body text-center p-0">
+                                        <a class="text-body-emphasis bg-body bg-dark-hover text-light-hover rounded-circle square product-action shadow-sm wishlist sm"
+                                           href="#" data-bs-toggle="tooltip" data-bs-placement="left"
+                                           data-bs-title="Add To Wishlist">
+                                            <svg class="icon icon-star-light">
+                                                <use xlink:href="#icon-star-light"></use>
+                                            </svg>
+                                        </a>
+                                        <a class="text-body-emphasis bg-body bg-dark-hover text-light-hover rounded-circle square product-action shadow-sm compare sm"
+                                           href="compare.html" data-bs-toggle="tooltip" data-bs-placement="left"
+                                           data-bs-title="Compare">
+                                            <svg class="icon icon-arrows-left-right-light">
+                                                <use xlink:href="#icon-arrows-left-right-light"></use>
+                                            </svg>
+                                        </a>
+                                    </div><a href="#"
+                                             class="btn btn-add-to-cart btn-dark btn-hover-bg-primary btn-hover-border-primary position-absolute z-index-2 text-nowrap btn-sm px-6 py-3 lh-2">Add
+                                    To Cart</a>
+                                </figure>
+                                <div class="card-body text-center p-0">
 
-									<span class="d-flex align-items-center price text-body-emphasis fw-bold justify-content-center mb-3 fs-6" th:text="'$'+${product.regular}"></span>
+                                    <span class="d-flex align-items-center price text-body-emphasis fw-bold justify-content-center mb-3 fs-6" th:text="'$'+${product.regular}"></span>
 
-                                <h4 class="product-title card-title text-primary-hover text-body-emphasis fs-15px fw-500 mb-3">
-                                    <a class="text-decoration-none text-reset" href="/home/product-detail" th:text="${product.prodName}"></a></h4>
-                                <div class="d-flex align-items-center fs-12px justify-content-center">
-                                    <div class="rating">
-                                        <div class="empty-stars">
+                                    <h4 class="product-title card-title text-primary-hover text-body-emphasis fs-15px fw-500 mb-3">
+                                        <a class="text-decoration-none text-reset" href="/home/product-detail" th:text="${product.prodName}"></a></h4>
+                                    <div class="d-flex align-items-center fs-12px justify-content-center">
+                                        <div class="rating">
+                                            <div class="empty-stars">
 												<span class="star">
 													<svg class="icon star-o">
 														<use xlink:href="#star-o"></use>
 													</svg>
 												</span>
-                                            <span class="star">
+                                                <span class="star">
 													<svg class="icon star-o">
 														<use xlink:href="#star-o"></use>
 													</svg>
 												</span>
-                                            <span class="star">
+                                                <span class="star">
 													<svg class="icon star-o">
 														<use xlink:href="#star-o"></use>
 													</svg>
 												</span>
-                                            <span class="star">
+                                                <span class="star">
 													<svg class="icon star-o">
 														<use xlink:href="#star-o"></use>
 													</svg>
 												</span>
-                                            <span class="star">
+                                                <span class="star">
 													<svg class="icon star-o">
 														<use xlink:href="#star-o"></use>
 													</svg>
 												</span>
-                                        </div>
-                                        <div class="filled-stars" style="width: ${product.rating * 20}%;">
+                                            </div>
+                                            <div class="filled-stars" style="width: ${product.rating * 20}%;">
                                             <span class="star">
 													<svg class="icon star text-primary">
 														<use xlink:href="#star"></use>
 													</svg>
 												</span>
-                                            <span class="star">
+                                                <span class="star">
 													<svg class="icon star text-primary">
 														<use xlink:href="#star"></use>
 													</svg>
 												</span>
-                                            <span class="star">
+                                                <span class="star">
 													<svg class="icon star text-primary">
 														<use xlink:href="#star"></use>
 													</svg>
 												</span>
-                                            <span class="star">
+                                                <span class="star">
 													<svg class="icon star text-primary">
 														<use xlink:href="#star"></use>
 													</svg>
 												</span>
-                                            <span class="star">
+                                                <span class="star">
 													<svg class="icon star text-primary">
 														<use xlink:href="#star"></use>
 													</svg>
 												</span>
-                                        </div>
-                                    </div><span class="reviews ms-4 pt-3 fs-14px" th:text="${product.reviewCount}+' reviews'"></span>
+                                            </div>
+                                        </div><span class="reviews ms-4 pt-3 fs-14px" th:text="${product.reviewCount}+' reviews'"></span>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    </th:block>
                 </div>
                 <nav class="d-flex mt-13 pt-3 justify-content-center" aria-label="pagination"
                      data-animate="fadeInUp">
