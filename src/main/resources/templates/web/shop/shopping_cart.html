@@ -147,7 +147,7 @@
                 // Hiển thị thông tin giỏ hàng sau khi người dùng đăng nhập thành công
                 $.ajax({
                     type: 'GET', // Phương thức HTTP
-                    url: '/api/cart-items', // API endpoint lấy danh sách sản phẩm trong giỏ hàng
+                    url: '/account/cart-items', // API endpoint lấy danh sách sản phẩm trong giỏ hàng
                     dataType: 'json', // Kiểu dữ liệu phản hồi
                     contentType: 'application/json; charset=utf-8', // Kiểu dữ liệu gửi đi
                     beforeSend: function (xhr) {
@@ -364,7 +364,7 @@
 
                     $.ajax({
                         type: 'PUT',
-                        url: `/api/cart-items/update/${prodId}/${sizeName}`,
+                        url: `/account/cart-items/update/${prodId}/${sizeName}`,
                         contentType: 'application/json; charset=utf-8',
                         dataType: 'json',
                         data: JSON.stringify(cartItemDTO),
@@ -402,7 +402,7 @@
                         // Gọi API để xóa sản phẩm khỏi giỏ hàng trên server
                         $.ajax({
                             type: 'DELETE',
-                            url: `/api/cart-items/remove/${prodId}/${sizeName}`,
+                            url: `/account/cart-items/remove/${prodId}/${sizeName}`,
                             beforeSend: function(xhr) {
                                 if (localStorage.token) {
                                     xhr.setRequestHeader('Authorization', 'Bearer ' + localStorage.token);
@@ -433,7 +433,7 @@
                 // Gửi yêu cầu xóa tất cả sản phẩm trong giỏ hàng
                 $.ajax({
                     type: 'DELETE',
-                    url: '/api/cart-items/removeAll', // URL API xóa tất cả sản phẩm
+                    url: '/account/cart-items/removeAll', // URL API xóa tất cả sản phẩm
                     beforeSend: function(xhr) {
                         // Gửi token xác thực trong header nếu có
                         if (localStorage.token) {
@@ -459,7 +459,7 @@
 
                     // Gửi yêu cầu AJAX đến server để áp dụng mã giảm giá
                     $.ajax({
-                        url: "/api/cart-items/apply-coupon",  // URL gửi yêu cầu
+                        url: "/account/cart-items/apply-coupon",  // URL gửi yêu cầu
                         type: "POST",
                         contentType: "application/json",  // Chỉ định loại dữ liệu gửi là JSON
                         dataType: "json",  // Dữ liệu trả về là JSON
@@ -536,7 +536,7 @@
                 // Gửi yêu cầu Checkout
                 $.ajax({
                     type: 'POST',
-                    url: '/api/orders/checkout', // Endpoint cho API checkout
+                    url: '/account/orders/checkout', // Endpoint cho API checkout
                     contentType: 'application/json; charset=utf-8',
                     data: JSON.stringify(orderDTO), // Không cần truyền accountId nữa
                     beforeSend: function (xhr) {

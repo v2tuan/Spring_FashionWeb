@@ -26,7 +26,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/api/cart-items")
+@RequestMapping("/account/cart-items")
 public class CartItemController {
     @Autowired
     private ICartItemService cartItemService;
