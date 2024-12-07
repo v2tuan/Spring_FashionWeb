@@ -4,10 +4,7 @@ import com.fashionweb.Entity.*;
 import com.fashionweb.Entity.Embeddable.OrderItemsId;
 import com.fashionweb.Enum.OrderStatus;
 import com.fashionweb.dto.request.OrderDTO;
-import com.fashionweb.repository.IAccountRepository;
-import com.fashionweb.repository.IAddressRepository;
-import com.fashionweb.repository.IOrderItemRepository;
-import com.fashionweb.repository.IOrderRepository;
+import com.fashionweb.repository.*;
 import com.fashionweb.service.IOrderService;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,6 +29,8 @@ public class OrderService implements IOrderService {
     @Autowired
     private IAddressRepository addressRepository;
 
+    @Autowired
+    private IDiscountRepository discountRepository;
 
     @Override
     public <S extends Order> S save(S order) {
@@ -99,6 +98,10 @@ public class OrderService implements IOrderService {
         order.setTotal(orderDTO.getItems().stream()
                 .mapToDouble(item -> item.getPrice() * item.getQuantity())
                 .sum());
+
+        if (discount != null && discount.getDiscountPercentage() != null) {
+            order.setTotal(order.getTotal() - (order.getTotal() * discount.getDiscountPercentage() / 100));
+        }
 
         Order savedOrder = orderRepository.save(order);
 

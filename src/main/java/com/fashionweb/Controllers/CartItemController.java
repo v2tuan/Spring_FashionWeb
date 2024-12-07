@@ -3,11 +3,14 @@ package com.fashionweb.Controllers;
 import com.fashionweb.Entity.Account;
 import com.fashionweb.Entity.CartItem;
 import com.fashionweb.Entity.Embeddable.CartItemsId;
+import com.fashionweb.Entity.ProdImage;
 import com.fashionweb.Model.Response;
 import com.fashionweb.dto.request.CartItemDTO;
+import com.fashionweb.dto.request.discount.DiscountDTO;
 import com.fashionweb.mapper.ICartItemMapper;
 import com.fashionweb.service.ICartItemService;
 import com.fashionweb.service.Impl.AccountService;
+import com.fashionweb.service.Impl.ProdImageService;
 import com.fashionweb.service.Impl.ProductService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,6 +39,9 @@ public class CartItemController {
 
     @Autowired
     private ProductService productService;
+
+    @Autowired
+    private ProdImageService prodImageService;
 
     @PostMapping("/add")
     public ResponseEntity<?> addCartItem(@RequestBody @Valid CartItemDTO cartItemDTO) {
@@ -101,7 +107,7 @@ public class CartItemController {
                         var product = productService.getProduct(item.getId().getProdId());
                         product.ifPresent(p -> {
                             itemDetails.put("productName", p.getProdName());
-                            itemDetails.put("productImage", p.getImages());
+                            itemDetails.put("productImage", prodImageService.findImageNamesByProdId(item.getId().getProdId()).getFirst());
                         });
 
                         return itemDetails;
@@ -198,5 +204,17 @@ public class CartItemController {
 
         // Trả về phản hồi thành công
         return new ResponseEntity<>(new Response(true, "Thành công", "Đã xóa tất cả sản phẩm trong giỏ hàng."), HttpStatus.OK);
+    }
+
+    @PostMapping("/apply-coupon")
+    public ResponseEntity<?> applyCoupon(@RequestBody Map<String, String> body) {
+        try {
+
+            String couponCode = body.get("couponCode");  // Lấy mã coupon từ JSON
+            DiscountDTO discountDetails = cartItemService.getDiscountDetail(couponCode);  // Lấy tỷ lệ giảm giá
+            return ResponseEntity.ok(discountDetails);  // Trả về tỷ lệ giảm giá
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Invalid coupon code");
+        }
     }
 }

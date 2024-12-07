@@ -53,31 +53,34 @@
                 <div class="col-lg-4 pt-2">
                     <h4 class="fs-24 mb-6">Coupon Discount</h4>
                     <p class="mb-7">Enter you coupon code if you have one.</p>
-                    <form>
-                        <input type="text" class="form-control mb-7" placeholder="Enter coupon code here">
+                    <form id="coupon-form" action="javascript:void(0);">
+                        <input type="text" id="couponCode" class="form-control mb-7" placeholder="Enter coupon code here" required>
                         <button type="submit" class="btn btn-dark btn-hover-bg-primary btn-hover-border-primary">
                             Apply coupon
                         </button>
                     </form>
+                    <div id="discount-info" style="display: none;">
+                        <p>Discount Applied: <span id="discount-amount"></span>%</p>
+                    </div>
                 </div>
                 <div class="col-lg-4 pt-lg-2 pt-10">
-                    <h4 class="fs-24 mb-6">Shipping Caculator</h4>
+                    <h4 class="fs-24 mb-6">Delivery Address</h4>
                     <form>
-                        <div class="d-flex mb-5">
-                            <div class="form-check me-6 me-lg-9">
-                                <input class="form-check-input form-check-input-body-emphasis" type="radio" name="flexRadioDefault" id="flexRadioDefault1">
-                                <label class="form-check-label" for="flexRadioDefault1">
-                                    Free shipping
-                                </label>
-                            </div>
-                            <div class="form-check">
-                                <input class="form-check-input form-check-input-body-emphasis" type="radio" name="flexRadioDefault" id="flexRadioDefault2"
-                                       checked>
-                                <label class="form-check-label" for="flexRadioDefault2">
-                                    Flat rate: $75
-                                </label>
-                            </div>
-                        </div>
+<!--                        <div class="d-flex mb-5">-->
+<!--                            <div class="form-check me-6 me-lg-9">-->
+<!--                                <input class="form-check-input form-check-input-body-emphasis" type="radio" name="flexRadioDefault" id="flexRadioDefault1">-->
+<!--                                <label class="form-check-label" for="flexRadioDefault1">-->
+<!--                                    Free shipping-->
+<!--                                </label>-->
+<!--                            </div>-->
+<!--                            <div class="form-check">-->
+<!--                                <input class="form-check-input form-check-input-body-emphasis" type="radio" name="flexRadioDefault" id="flexRadioDefault2"-->
+<!--                                       checked>-->
+<!--                                <label class="form-check-label" for="flexRadioDefault2">-->
+<!--                                    Flat rate: $75-->
+<!--                                </label>-->
+<!--                            </div>-->
+<!--                        </div>-->
 <!--                        <div class="dropdown bg-body-secondary rounded mb-7">-->
 <!--                            <a href="#"-->
 <!--                               class="form-select text-body-emphasis dropdown-toggle d-flex justify-content-between align-items-center text-decoration-none text-secondary position-relative d-block"-->
@@ -115,20 +118,20 @@
                         <div class="card-body px-9 pt-6">
                             <div class="d-flex align-items-center justify-content-between mb-5">
                                 <span>Subtotal:</span>
-                                <span class="d-block ml-auto text-body-emphasis fw-bold">$99.00</span>
+                                <span class="d-block ml-auto text-body-emphasis fw-bold subtotal-value">0.00 VND</span>
                             </div>
                             <div class="d-flex align-items-center justify-content-between">
-                                <span>Shipping:</span>
-                                <span class="d-block ml-auto text-body-emphasis fw-bold">$0</span>
+                                <span>Percentage Discount:</span>
+                                <span class="percent-disc d-block ml-auto text-body-emphasis fw-bold">0 %</span>
                             </div>
                         </div>
                         <div class="card-footer bg-transparent px-0 pt-5 pb-7 mx-9">
                             <div class="d-flex align-items-center justify-content-between fw-bold mb-7">
-                                <span class="text-secondary text-body-emphasis">Total pricre:</span>
-                                <span class="d-block ml-auto text-body-emphasis fs-4 fw-bold">$99.00</span>
+                                <span class="text-secondary text-body-emphasis">Total price:</span>
+                                <span class="d-block ml-auto text-body-emphasis fs-4 fw-bold total-price">0.00 VND</span>
                             </div>
-                            <a href="check_out.html"
-                               class="btn w-100 btn-dark btn-hover-bg-primary btn-hover-border-primary"
+                            <a
+                               class="btn w-100 btn-dark btn-hover-bg-primary btn-hover-border-primary checkout"
                                title="Check Out">Check Out</a>
                         </div>
                     </div>
@@ -136,8 +139,10 @@
             </div>
         </div>
     </section>
+
     <script>
         document.addEventListener('DOMContentLoaded', function () {
+            discountId = null;
             function loadCartItems() {
                 // Hiển thị thông tin giỏ hàng sau khi người dùng đăng nhập thành công
                 $.ajax({
@@ -167,17 +172,14 @@
 
                         cartItems.forEach(function (item) {
                             const cartItem = `
-                            <tr class="cart-item-row position-relative" data-prod-id="${item.id.prodId}" data-size-name="${item.id.sizeName}">
+                            <tr class="cart-item-row position-relative" data-prod-id="${item.id.prodId}" data-size-name="${item.id.sizeName}" data-price="${item.price.toFixed(2)}">
                                 <th scope="row" class="pe-5 ps-8 py-7 shop-product">
                                     <div class="d-flex align-items-center">
                                         <div class="form-check">
-
-                                            <input class="form-check-input rounded-0" type="checkbox" name="check-product"
-                                                   value="checkbox">
-
+                                            <input class="form-check-input rounded-0" type="checkbox" name="check-product" value="checkbox">
                                         </div>
                                         <div class="ms-6 me-7">
-                                            <img src="${item.productImage}" class="lazy-image" width="75" height="100" alt="${item.productName}" />
+                                            <img src="/home/files/${item.productImage}" class="lazy-image" width="75" height="100" alt="${item.productName}" />
                                         </div>
                                         <div class="">
                                             <p class="fw-500 mb-1 text-body-emphasis">${item.productName}</p>
@@ -215,6 +217,8 @@
 
                         attachQuantityEventListeners();
                         attachRemoveItemEventListeners();
+                        attachCheckboxEventListeners();
+                        updateSubtotal();
                     },
 
                     error: function (e) {
@@ -225,6 +229,59 @@
                     }
                 });
             }
+
+            function attachCheckboxEventListeners() {
+                // Lắng nghe sự kiện thay đổi checkbox
+                const checkboxes = document.querySelectorAll('input[name="check-product"]');
+                checkboxes.forEach(function(checkbox) {
+                    checkbox.addEventListener('change', function() {
+                        updateSubtotal(); // Cập nhật lại subtotal khi trạng thái checkbox thay đổi
+                    });
+                });
+            }
+
+            function updateSubtotal() {
+                let subtotal = 0;
+
+                // Lặp qua tất cả các sản phẩm trong giỏ hàng
+                document.querySelectorAll('.cart-item-row').forEach(row => {
+                    const checkbox = row.querySelector('input[name="check-product"]'); // Lấy checkbox trong dòng sản phẩm
+                    const priceText = row.querySelector('#total-price').textContent; // Lấy giá trị tổng giá của sản phẩm
+                    const price = parseFloat(priceText.replace(' VND', '').replace(',', '').trim());  // Lấy giá trị sản phẩm sau khi loại bỏ 'VND' và dấu phẩy
+
+                    // Kiểm tra nếu checkbox được chọn
+                    if (checkbox && checkbox.checked) {
+                        subtotal += price;  // Cộng giá trị sản phẩm vào Subtotal
+                    }
+                });
+
+                // Cập nhật giá trị Subtotal vào phần tử HTML
+                const subtotalElement = document.querySelector('.subtotal-value');
+                if (subtotalElement) {
+                    subtotalElement.textContent = `${subtotal.toFixed(2)} VND`;
+                }
+                updateTotalPrice();
+            }
+
+            function updateTotalPrice() {
+                // Lấy giá trị Subtotal từ phần tử HTML
+                const subtotalElement = document.querySelector('.subtotal-value');
+                let subtotal = parseFloat(subtotalElement.textContent.replace(' VND', '').trim());
+
+                // Lấy giá trị tỷ lệ giảm giá từ phần tử HTML (với class .percent-disc)
+                const discountElement = document.querySelector('.percent-disc');
+                let discount = parseFloat(discountElement.textContent.replace('%', '').trim());
+
+                // Tính toán giá trị Total Price: Subtotal - (Subtotal * Discount / 100)
+                let totalPrice = subtotal - (subtotal * discount / 100);
+
+                // Cập nhật giá trị Total Price vào phần tử HTML
+                const totalPriceElement = document.querySelector('.total-price');
+                if (totalPriceElement) {
+                    totalPriceElement.textContent = `${totalPrice.toFixed(2)} VND`;
+                }
+            }
+
             function attachQuantityEventListeners() {
                 // Tăng giảm số lượng khi nhấn vào dấu cộng (+) hoặc trừ (-)
                 const increaseButtons = document.querySelectorAll('.shop-up');
@@ -292,7 +349,6 @@
             function updateCartItem(cartItemRow) {
                 return new Promise(function(resolve, reject) {
                     if (!cartItemRow) {
-                        console.error('Không tìm thấy dòng sản phẩm.');
                         return reject('Không tìm thấy dòng sản phẩm.'); // Trả về lỗi nếu không có dữ liệu hợp lệ
                     }
 
@@ -395,6 +451,112 @@
                     }
                 });
             });
+            $(document).ready(function() {
+                $("#coupon-form").submit(function(event) {
+                    event.preventDefault(); // Ngừng hành động mặc định của form (reload trang)
+
+                    var couponCode = $("#couponCode").val(); // Lấy mã coupon từ input
+
+                    // Gửi yêu cầu AJAX đến server để áp dụng mã giảm giá
+                    $.ajax({
+                        url: "/api/cart-items/apply-coupon",  // URL gửi yêu cầu
+                        type: "POST",
+                        contentType: "application/json",  // Chỉ định loại dữ liệu gửi là JSON
+                        dataType: "json",  // Dữ liệu trả về là JSON
+                        data: JSON.stringify({ couponCode: couponCode }),  // Dữ liệu cần gửi (mã coupon)
+                        success: function(data) {
+                            discountId = data.discountId;
+                            $(".percent-disc").text(data.discountPercentage + ' %');
+                            updateTotalPrice();
+                        },
+                        error: function(xhr, status, error) {
+                            alert("Invalid coupon code or error occurred!");
+                        }
+                    });
+                });
+            });
+
+            $(document).ready(function() {
+                // Giả sử bạn có giá trị Subtotal và Percentage Discount từ các phần tử HTML
+                var subtotal = parseFloat($('.subtotal-value').text().replace(' VND', '').trim()); // Lấy giá trị subtotal từ HTML
+                var discount = parseFloat($('.percent-disc').text().replace('%', '').trim()); // Lấy giá trị discount từ HTML
+
+                // Tính toán giá trị Total Price
+                var totalPrice = subtotal - (subtotal * discount / 100);
+
+                // Cập nhật giá trị Total Price vào phần tử HTML
+                $('.total-price').text(totalPrice.toFixed(2) + ' VND'); // Cập nhật giá trị Total Price
+            });
+
+            function getSelectedAddressId() {
+                const selectedRadio = document.querySelector('input[name="flexRadioDefault"]:checked');
+                return selectedRadio ? parseInt(selectedRadio.value, 10) : null;
+            }
+            document.querySelector('.checkout').addEventListener('click', function () {
+                checkoutOrder();
+            });
+
+            function checkoutOrder() {
+                const selectedAddressId = getSelectedAddressId();
+
+                if (!selectedAddressId) {
+                    console.log(selectedAddressId);
+                    alert('Vui lòng chọn địa chỉ giao hàng.');
+                    return;
+                }
+
+                const selectedItems = []; // Lấy danh sách sản phẩm được chọn
+                document.querySelectorAll('.cart-item-row').forEach(row => {
+                    const checkbox = row.querySelector('input[name="check-product"]');
+                    if (checkbox && checkbox.checked) {
+                        const prodId = row.dataset.prodId;
+                        const sizeName = row.dataset.sizeName;
+                        const quantity = parseInt(row.querySelector('input[name="number[]"]').value, 10); // Đảm bảo số nguyên
+                        const price = parseFloat(row.dataset.price);
+
+                        selectedItems.push({
+                            sizeName: sizeName,
+                            prodId: prodId,
+                            quantity: quantity,
+                            price: price,
+                        });
+                    }
+                });
+
+                if (selectedItems.length === 0) {
+                    alert('Vui lòng chọn sản phẩm để đặt hàng.');
+                    return;
+                }
+                const orderDTO = {
+                    discountId: discountId,
+                    addressId: selectedAddressId,
+                    items: selectedItems,
+                };
+
+                // Gửi yêu cầu Checkout
+                $.ajax({
+                    type: 'POST',
+                    url: '/api/orders/checkout', // Endpoint cho API checkout
+                    contentType: 'application/json; charset=utf-8',
+                    data: JSON.stringify(orderDTO), // Không cần truyền accountId nữa
+                    beforeSend: function (xhr) {
+                        // Thêm header Authorization nếu có token trong localStorage
+                        if (localStorage.token) {
+                            xhr.setRequestHeader('Authorization', 'Bearer ' + localStorage.token);
+                        }
+                    },
+                    success: function (response) {
+                        alert('Đơn hàng đã được tạo thành công!'); // Thông báo thành công
+                        loadCartItems(); // Cập nhật lại giỏ hàng
+                    },
+                    error: function (error) {
+                        console.error('Lỗi khi đặt hàng:', error);
+                        console.log('Lỗi chi tiết:', error.responseText);
+                        alert('Đã xảy ra lỗi. Vui lòng thử lại sau.');
+                    },
+                });
+            }
+
 
             // Gọi hàm loadCartItems khi trang đã được tải
             loadCartItems();
@@ -430,6 +592,10 @@
                         addressData.forEach(function (address) {
                             const addressItem = `
                         <div class="list-group-item d-flex justify-content-between align-items-start py-10">
+                            <div class="form-check">
+                                <input class="form-check-input form-check-input-body-emphasis" type="radio" name="flexRadioDefault" id="address-${address.id}"
+                    value="${address.id}">
+                            </div>
                             <div>
                                 <h6 class="mb-6">${address.fullName}</h6>
                                 <p class="mb-2 small">
@@ -439,18 +605,15 @@
                                 <p class="mb-3 small">${address.addr}</p>
                             </div>
                             <div class="d-flex align-items-center">
-                                <button
-                                    class="btn btn-sm btn-outline-secondary me-1 edit-button"
+                                <div
+                                    class="address-data text-primary"
                                     data-bs-toggle="modal"
                                     data-bs-target="#editAddressModal"
                                     data-id="${address.id}"
                                     data-fullname="${address.fullName}"
                                     data-phone="${address.phone}"
-                                    data-addr="${address.addr}">Cập nhật</button>
-                                    <button type="submit" class="btn btn-sm btn-outline-danger">Chọn</button>
-                                <form action="/home/deladdr/${address.id}" method="POST" onsubmit="return confirm('Bạn có chắc chắn muốn xóa địa chỉ này không?')">
-                                    <button type="submit" class="btn btn-sm btn-outline-danger">Xóa</button>
-                                </form>
+                                    data-addr="${address.addr}">
+                                </div>
                             </div>
                         </div>
                     `;
@@ -460,7 +623,6 @@
                     error: function (e) {
                         // Handle errors
                         const json = e.responseText;
-                        alert("Sorry, you are not logged in.");
                         console.error(json);
                     }
                 });
@@ -469,6 +631,8 @@
             // Call the function to load address
             loadAddress(); // Make sure this line is added to trigger loading addresses
         });
+
+
     </script>
 </main>
 </html>

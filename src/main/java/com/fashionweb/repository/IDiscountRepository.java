@@ -11,4 +11,5 @@ import java.util.Optional;
 public interface IDiscountRepository extends JpaRepository<Discount, Long> {
     Optional<Discount> findByStartDate(Date startDate);
     Optional<Discount> findByEndDate(Date endDate);
+    Optional<Discount> findByVoucher(String voucher);
 }
