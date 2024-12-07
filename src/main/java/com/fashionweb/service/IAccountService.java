@@ -3,6 +3,9 @@ package com.fashionweb.service;
 import com.fashionweb.Entity.Account;
 import com.fashionweb.Entity.CartItem;
 import com.fashionweb.dto.request.accounts.AccountDTO;
+import com.fashionweb.dto.response.AccountResponse;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 import java.util.Optional;
@@ -17,4 +20,5 @@ public interface IAccountService {
     List<CartItem> cart(Long accountId);
     public String login(String identifier, String password) throws Exception;
     public Account getAccountFromToken();
+    Page<AccountResponse> findAllAccounts(Pageable pageable);
 }
