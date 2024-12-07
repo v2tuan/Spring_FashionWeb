@@ -1,15 +1,13 @@
 package com.fashionweb.Controllers.web;
 
 import com.fashionweb.Entity.Account;
-import com.fashionweb.Entity.Address;
-import com.fashionweb.Enum.Role;
-import com.fashionweb.Model.Response;
 import com.fashionweb.service.IStorageService;
 import com.fashionweb.service.Impl.AccountService;
 import com.fashionweb.service.Impl.AddressService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
