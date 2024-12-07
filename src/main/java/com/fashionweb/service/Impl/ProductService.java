@@ -5,6 +5,7 @@ import com.fashionweb.Entity.ProdImage;
 import com.fashionweb.Entity.ProdReview;
 import com.fashionweb.Entity.Product;
 import com.fashionweb.dto.request.product.Product2DTO;
+import com.fashionweb.dto.request.product.ProductDetailDTO;
 import com.fashionweb.dto.request.product.ProductGridDTO;
 import com.fashionweb.dto.request.product.ProductListDTO;
 import com.fashionweb.repository.IProductRepository;
@@ -25,6 +26,8 @@ public class ProductService implements IProductService {
     private SizeService sizeService;
     @Autowired
     private ProdReviewService prodReviewService;
+    @Autowired
+    private ProdImageService prodImageService;
 
     @Override
     public List<Product> getAllProducts() {
@@ -167,5 +170,17 @@ public class ProductService implements IProductService {
 
     public List<ProductListDTO> findAllProductList() {
         return iProductRepository.fetchProductList();
+    }
+
+    public Optional<ProductDetailDTO> findProductDetailByProdId(Long prodId) {
+        Optional<ProductDetailDTO> productDetailDTO = iProductRepository.fetchProductDetailById(prodId);
+        if (productDetailDTO.isPresent()) {
+            Long pId = productDetailDTO.get().getProdId();
+            productDetailDTO.get().setImgURL(prodImageService.findImageNamesByProdId(prodId));
+            productDetailDTO.get().setSizeDTOs(sizeService.findSizeDTOsByProdId(prodId));
+            return productDetailDTO;
+        }
+
+        return Optional.empty();
     }
 }

@@ -66,4 +66,8 @@ public class SizeService implements ISizeService {
     public List<SizeDTO> sizeDTOs(List<Size> sizes) {
         return sizes.stream().map(this::sizeDTO).toList();
     }
+
+    public List<SizeDTO> findSizeDTOsByProdId(Long prodId) {
+        return iSizeRepository.fetchSizeDTOs(prodId);
+    }
 }

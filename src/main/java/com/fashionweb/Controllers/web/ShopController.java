@@ -4,14 +4,12 @@ import com.fashionweb.dto.request.category.CategoryGridDTO;
 import com.fashionweb.dto.request.product.ProductGridDTO;
 import com.fashionweb.service.Impl.CategoryService;
 import com.fashionweb.service.Impl.ProductService;
-import com.fashionweb.service.Impl.SubcategoryService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -22,29 +20,30 @@ public class ShopController {
     @Autowired
     CategoryService categoryService;
     @Autowired
-    SubcategoryService subcategoryService;
-    @Autowired
     ProductService productService;
 
     @GetMapping("/categories")
     @ResponseBody
     ResponseEntity<?> getCategories() {
-        List<CategoryGridDTO> categoryGridDTOs = categoryService.categoryGridDTOs(categoryService.findAll());
-        return ResponseEntity.ok(categoryGridDTOs);
+        return ResponseEntity.ok(categoryService.categoryGridDTOs(categoryService.findAll()));
     }
 
     @GetMapping("/subcategories")
     @ResponseBody
     ResponseEntity<?> getSubcategories() {
-        List<CategoryGridDTO> categoryGridDTOs = categoryService.categoryGridDTOs(categoryService.findAll());
-        return ResponseEntity.ok(categoryGridDTOs);
+        return ResponseEntity.ok(categoryService.categoryGridDTOs(categoryService.findAll()));
     }
 
     @GetMapping("/products")
     @ResponseBody
     ResponseEntity<?> getProducts() {
-        List<ProductGridDTO> productGridDTOs = productService.findAllProductGrid(true);
-        return ResponseEntity.ok(productGridDTOs);
+        return ResponseEntity.ok(productService.findAllProductGrid(true));
+    }
+
+    @GetMapping("/productDetail")
+    @ResponseBody
+    ResponseEntity<?> getProductDetail(@RequestBody @Valid Long prodId) {
+        return ResponseEntity.ok(productService.findProductDetailByProdId(prodId));
     }
 
     @GetMapping
@@ -58,8 +57,9 @@ public class ShopController {
         return "web/shop/shop_content";
     }
 
-    @GetMapping("/product-detail")
-    String productDetail() {
+    @GetMapping("/product-detail/id={prodId}")
+    String productDetail(@PathVariable Long prodId, Model model) {
+        model.addAttribute("products", productService.findProductDetailByProdId(prodId));
         return "web/shop/product_detail";
     }
 
