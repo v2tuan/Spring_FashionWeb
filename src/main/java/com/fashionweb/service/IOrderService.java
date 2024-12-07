@@ -1,6 +1,7 @@
 package com.fashionweb.service;
 
 import com.fashionweb.Entity.Order;
+import com.fashionweb.dto.request.OrderDTO;
 
 import java.util.Date;
 import java.util.List;
@@ -13,4 +14,5 @@ public interface IOrderService {
     void deleteById(Long orderId);
     Optional<Order> findByCreateDate(Date createDate);
     Optional<Order> findByStatus(String status);
+    Order createOrder(OrderDTO orderDTO);
 }

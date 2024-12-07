@@ -57,27 +57,40 @@ public class CartItemService implements ICartItemService {
 
     @Override
     public void updateCartItem(CartItem cartItem) {
-        if (cartItemRepos.existsById(cartItem.getId())) {
+        // Check if the CartItem exists in the repository
+        Optional<CartItem> existingCartItem = cartItemRepos.findById(cartItem.getId());
+
+        if (existingCartItem.isEmpty()) {
             throw new RuntimeException("Không tìm thấy 'Cart' với id(" + cartItem.getId().getAccId() + ", "
-                                                                        + cartItem.getId().getProdId() + ", "
-                                                                        + cartItem.getId().getSizeName()
-                                                                        + ")");
+                    + cartItem.getId().getProdId() + ", "
+                    + cartItem.getId().getSizeName() + ")");
         }
+
+        // If found, save the updated CartItem
         cartItemRepos.save(cartItem);
     }
 
-    @Override
+
     public void deleteCartItem(CartItemsId id) {
-        cartItemRepos.deleteCartItemById(id);
+
+    }
+
+    @Override
+    public void removeCartItem(CartItemsId cartItemsId) {
+        Optional<CartItem> cartItem = cartItemRepos.findById(cartItemsId);
+        if (cartItem.isPresent()) {
+            cartItemRepos.delete(cartItem.get());
+        } else {
+            throw new RuntimeException("Không tìm thấy sản phẩm trong giỏ hàng");
+        }
     }
 
     @Override
     public void deleteCart(Long accId) {
-        if (cartItemRepos.existsById(accId)) {
-            throw new RuntimeException("Không tìm thấy 'Cart' với cartId(" + accId + ")");
+        List<CartItem> cartItems = cartItemRepos.findAllByAccountAccId(accId);
+        for (CartItem cartItem : cartItems) {
+            cartItemRepos.delete(cartItem);
         }
-
-        cartItemRepos.deleteById(accId);
     }
 
     @Override
