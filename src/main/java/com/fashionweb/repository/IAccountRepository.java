@@ -7,6 +7,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -18,8 +19,18 @@ public interface IAccountRepository extends JpaRepository<Account, Long> {
     Optional<Account> findAccountByEmail(String email);
     List<Account> findByEmail(String email);
 
-    @Query("SELECT new com.fashionweb.dto.response.AccountResponse(a.accId, a.email, a.avatar, a.fullname, a.enabled, a.gender, a.createDate, a.role) FROM Account a")
-    Page<AccountResponse> findAllAccount(Pageable pageable);
+    @Query("SELECT new com.fashionweb.dto.response.AccountResponse(a.accId, a.email, a.avatar, a.fullname, a.enabled, a.gender, a.createDate, a.role) " +
+            "FROM Account a " +
+            "WHERE (:fullname IS NULL OR a.fullname LIKE %:fullname%) " +
+            "AND (:enabled IS NULL OR a.enabled = :enabled) " +
+            "AND (:role IS NULL OR a.role = :role) " +
+            "ORDER BY a.createDate DESC")
+    Page<AccountResponse> findAllAccount(@Param("fullname") String fullname,
+                                         @Param("enabled") Boolean enabled,
+                                         @Param("role") String role,
+                                         Pageable pageable);
+
+
 
 
 

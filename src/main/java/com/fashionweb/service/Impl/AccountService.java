@@ -13,6 +13,7 @@ import com.fashionweb.util.JwtTokenUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.repository.query.Param;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -148,7 +149,7 @@ public class AccountService implements IAccountService {
     }
 
     @Override
-    public Page<AccountResponse> findAllAccounts(Pageable pageable) {
-        return iAccountRepository.findAllAccount(pageable);
+    public Page<AccountResponse> findAllAccounts(String fullname, Boolean enabled, String role, Pageable pageable) {
+        return iAccountRepository.findAllAccount(fullname, enabled, role,pageable);
     }
 }

@@ -20,5 +20,5 @@ public interface IAccountService {
     List<CartItem> cart(Long accountId);
     public String login(String identifier, String password) throws Exception;
     public Account getAccountFromToken();
-    Page<AccountResponse> findAllAccounts(Pageable pageable);
+    public Page<AccountResponse> findAllAccounts(String fullname, Boolean enabled, String role, Pageable pageable);
 }
