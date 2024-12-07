@@ -11,11 +11,13 @@ import com.fashionweb.mapper.IAccountMapper;
 import com.fashionweb.service.AuthenticationService;
 import com.fashionweb.service.IStorageService;
 import com.fashionweb.service.Impl.AccountService;
+import com.fashionweb.service.Impl.AddressService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -30,49 +32,23 @@ public class AccountController {
     private IStorageService storageService;
     @Autowired
     IAccountMapper accountMapper;
+    @Autowired
+    AddressService addressService;
 
 
-    @GetMapping("/me")
-    AccountDTO getMyInfo() {
-        var context = SecurityContextHolder.getContext();
-        String email = context.getAuthentication().getName();
 
-        Account account = accountService.getAccounts(email).orElseThrow(
-                () -> new RuntimeException("Không tìm thấy người dùng"));
 
-        return accountMapper.toAccountDTO(account);
-
-//        return "web/my_profile";
-    }
-
-    @PostMapping("/signup")
-    public ResponseEntity<Account> register(@RequestBody RegisterAccountDTO registerAccountDTO) {
-        Account account = authenticationService.signup(registerAccountDTO);
-        return ResponseEntity.ok(account);
-    }
-
-    @PostMapping("/login")
-    public ResponseEntity<AuthenticationResponse> authenticate(@RequestBody AuthenticationRequestDTO authenticationRequestDTO){
-        AuthenticationResponse authenticationResponse = authenticationService.authenticate(authenticationRequestDTO);
-        return ResponseEntity.ok(authenticationResponse);
-    }
-
-    @PostMapping("/verify")
-    public ResponseEntity<?> verifyUser(@RequestBody VerifyAccountDTO verifyAccountDTO) {
-
-            authenticationService.verifyUser(verifyAccountDTO);
-            return ResponseEntity.ok("Account verified successfully");
-    }
-
-    @PostMapping("/resend")
-    public ResponseEntity<?> resendVerificationCode(@RequestParam String email) {
-        try {
-            authenticationService.resendVerificationCode(email);
-            return ResponseEntity.ok("Verification code sent");
-        } catch (RuntimeException e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
-        }
-    }
+//    @PostMapping("/signup")
+//    public ResponseEntity<Account> register(@RequestBody RegisterAccountDTO registerAccountDTO) {
+//        Account account = authenticationService.signup(registerAccountDTO);
+//        return ResponseEntity.ok(account);
+//    }
+//
+//    @PostMapping("/login")
+//    public ResponseEntity<AuthenticationResponse> authenticate(@RequestBody AuthenticationRequestDTO authenticationRequestDTO){
+//        AuthenticationResponse authenticationResponse = authenticationService.authenticate(authenticationRequestDTO);
+//        return ResponseEntity.ok(authenticationResponse);
+//    }
 
     @GetMapping
     ResponseEntity<?> getAllAccount(){
@@ -84,8 +60,10 @@ public class AccountController {
         return accountService.createAccount(accountDTO);
     }
 
-    @PutMapping("/{id}")
-    ResponseEntity<?> updateAccount(@PathVariable long id, @ModelAttribute @Valid AccountDTO accountDTO){
+    @PutMapping
+    ResponseEntity<?> updateAccount(@ModelAttribute @Valid AccountDTO accountDTO){
+        Account account = accountService.getAccountFromToken();
+        Long id = account.getAccId();
         MultipartFile file = accountDTO.getFile();
         if(file.getOriginalFilename() != ""){
 
@@ -104,4 +82,24 @@ public class AccountController {
         accountService.deleteAccount(id);
         return new ResponseEntity<Response>(new Response(true, "Thành công", "Xoa thanh cong"), HttpStatus.OK);
     }
+
+
+    @GetMapping("/profile")
+    String profile(){
+        return "web/my_profile";
+    }
+
+    @GetMapping("/managerAddress")
+    String managerAddress(Model model){
+        return "web/manager_address";
+    }
+
+    @PostMapping("/deladdr/{id}")
+    String deleteAccount(@PathVariable long id, Model model){
+        if (addressService.deleteAddress(id)) {
+            model.addAttribute("errorMessage", "Xóa thành công");
+        }
+        return "web/manager_address";
+    }
+
 }

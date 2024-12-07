@@ -37,7 +37,8 @@ server:
   port: 8091
 
 jwt:
-  signerKey: "1TjXchw5FloESb63Kc+DFhTARvpWL4jUGCwfGWxuG5SIf/1y/LgJxHnMqaF6A/ij"
+  secretKey: TaqlmGv1iEDMRiFp/pHuID1+T84IABfuA0xXh4GhiUI=
+  expiration: 3600  # 1 hour
 
 storage:
   location: C:\\Upload
