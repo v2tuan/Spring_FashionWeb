@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
 import java.util.Optional;
@@ -51,7 +52,7 @@ public class DiscountController {
     }
 
     @PostMapping("/creatediscount")
-    public ResponseEntity<?> createDiscount(@ModelAttribute @Valid DiscountDTO discountDTO) {
+    public String createDiscount(@ModelAttribute @Valid DiscountDTO discountDTO, RedirectAttributes redirectAttributes) {
         Discount discount = new Discount();
         discount.setVoucher(discountDTO.getVoucher());
         discount.setDescription(discountDTO.getDescription());
@@ -59,8 +60,12 @@ public class DiscountController {
         discount.setStartDate(discountDTO.getStartDate());
         discount.setEndDate(discountDTO.getEndDate());
         discount.setCreateDate(discountDTO.getCreateDate());
+
         discountService.save(discount);
-        return ResponseEntity.ok("Thêm mã giảm giá thành công");
+
+        redirectAttributes.addFlashAttribute("message", "Thêm mã giảm giá thành công!");
+
+        return "redirect:/admin/discountlist";
     }
 
 
@@ -86,8 +91,9 @@ public class DiscountController {
     }
 
     @PostMapping("/updatediscount/{id}")
-    public ResponseEntity<?> updateDiscount(@PathVariable Long id,
-                                            @ModelAttribute @Valid DiscountDTO discountDTO) {
+    public String updateDiscount(@PathVariable Long id,
+                                 @ModelAttribute @Valid DiscountDTO discountDTO,
+                                 RedirectAttributes redirectAttributes) {
         Optional<Discount> optionalDiscount = discountService.findById(id);
         if (optionalDiscount.isPresent()) {
             Discount discount = optionalDiscount.get();
@@ -98,24 +104,30 @@ public class DiscountController {
             discount.setEndDate(discountDTO.getEndDate());
             discount.setCreateDate(discountDTO.getCreateDate());
 
-            Discount updatedDiscount = discountService.save(discount);
-            return ResponseEntity.ok("Cập nhật mã giảm giá thành công");
+            discountService.save(discount);
+
+            redirectAttributes.addFlashAttribute("message", "Cập nhật mã giảm giá thành công!");
+
+            return "redirect:/admin/discountlist";
         } else {
-            return ResponseEntity.status(404).body("Không tìm thấy mã giảm giá");
+            redirectAttributes.addFlashAttribute("error", "Không tìm thấy mã giảm giá cần cập nhật!");
+
+            return "redirect:/admin/discountlist";
         }
     }
 
 
     @GetMapping("/deletediscount/{id}")
-    @ResponseBody
-    public ResponseEntity<?> deleteDiscount(@PathVariable Long id) {
+    public String deleteDiscount(@PathVariable Long id, RedirectAttributes redirectAttributes) {
         Optional<Discount> optionalDiscount = discountService.findById(id);
         if (optionalDiscount.isPresent()) {
             discountService.deleteById(id);
-            return ResponseEntity.ok("Xóa mã giảm giá thành công");
+            redirectAttributes.addFlashAttribute("message", "Xóa mã giảm giá thành công!");
         } else {
-            return ResponseEntity.status(404).body("Không tìm thấy mã giảm giá");
+            redirectAttributes.addFlashAttribute("error", "Không tìm thấy mã giảm giá để xóa!");
         }
+        return "redirect:/admin/discountlist";
     }
+
 
 }

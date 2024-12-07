@@ -11,10 +11,12 @@ import java.util.List;
 @Repository
 public interface IProdImageRepository extends JpaRepository<ProdImage, Long> {
     List<ProdImage> findByProductProdId(Long prodId);  // Tìm các hình ảnh liên quan đến sản phẩm
+
     @Query("""
     SELECT pi.imgURL
     FROM ProdImage pi
     WHERE pi.product.prodId = :prodId
     ORDER BY pi.productImageId.stt ASC""")
     List<String> fetchImageNamesByProdId(@Param("prodId") Long prodId);
+
 }
