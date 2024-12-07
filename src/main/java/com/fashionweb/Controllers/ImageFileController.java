@@ -1,8 +1,9 @@
-package com.fashionweb.Controllers.web;
+package com.fashionweb.Controllers;
 
 import com.fashionweb.service.IStorageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,8 +19,17 @@ public class ImageFileController {
     @Autowired
     private IStorageService storageService;
 
+    @GetMapping("/")
+    public ResponseEntity<Resource> serveDefaultFile() {
+        return serveFile("default");
+    }
+
     @GetMapping("/{filename}")
     public ResponseEntity<Resource> serveFile(@PathVariable String filename) {
+        return serveFileInternal(filename);
+    }
+
+    private ResponseEntity<Resource> serveFileInternal(String filename) {
         try {
             if (filename.contains(".")) {
                 filename = filename.substring(0, filename.lastIndexOf("."));
@@ -27,12 +37,15 @@ public class ImageFileController {
 
             Resource file = storageService.loadAsResource(filename + ".jpg");
             String contentType = Files.probeContentType(Paths.get(file.getURI()));
+            if (contentType == null) {
+                contentType = "image/jpeg";
+            }
 
             return ResponseEntity.ok()
-                    .header("Content-Type", contentType != null ? contentType : "application/octet-stream")
+                    .header("Content-Type", contentType)
                     .body(file);
         } catch (Exception e) {
-            return ResponseEntity.status(404).body(null); // Trả về 404 nếu không tìm thấy file
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
         }
     }
 }

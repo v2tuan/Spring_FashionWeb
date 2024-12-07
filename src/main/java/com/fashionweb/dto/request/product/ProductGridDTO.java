@@ -14,7 +14,6 @@ public class ProductGridDTO {
     private String prodName;
     private Double regular;
     private Double promo;
-    private Boolean status;
     private Date createDate;
     private Boolean isSale;
     private Integer percent;
@@ -22,5 +21,5 @@ public class ProductGridDTO {
     private Long subCateId;
     private String imgURL;
     private Double rating;
-    private Integer reviewCount;
+    private Long reviewCount;
 }

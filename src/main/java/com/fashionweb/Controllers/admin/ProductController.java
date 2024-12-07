@@ -3,6 +3,7 @@ package com.fashionweb.Controllers.admin;
 import com.fashionweb.Entity.*;
 import com.fashionweb.Entity.Embeddable.ProductImagesId;
 import com.fashionweb.Entity.Embeddable.SizeId;
+import com.fashionweb.dto.request.category.SubcategoryListDTO;
 import com.fashionweb.dto.request.product.ProductDTO;
 import com.fashionweb.dto.request.product.ProductListDTO;
 import com.fashionweb.service.Impl.*;
@@ -13,7 +14,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.List;
@@ -45,7 +45,7 @@ public class ProductController {
             productListDTO.setRegular(product.getRegular());
             productListDTO.setPromo(product.getPromo());
             productListDTO.setStatus(product.getStatus() != null && product.getStatus());
-            productListDTO.setCreateDate(new SimpleDateFormat("yyyy-MM-dd").format(product.getCreateDate()));
+            productListDTO.setCreateDate(product.getCreateDate());
             productListDTO.setImgURL(productService.getImgName(product.getImages()));
             productListDTO.setBrandId(product.getBrand().getBrandId());
             productListDTO.setSubCateId(product.getSubcategory().getSubCateId());
@@ -56,18 +56,14 @@ public class ProductController {
     @GetMapping("/products")
     @ResponseBody
     ResponseEntity<?> getProducts() {
-        List<Product> Products = productService.getAllProducts();
-        List<ProductListDTO> ProductLists = simplifiedProduct(Products);
-
+        List<ProductListDTO> ProductLists = productService.findAllProductList();
         return ResponseEntity.ok(ProductLists);
     }
 
     @GetMapping("/productlist")
     String showProductList(Model model) {
-        List<Subcategory> Subcategories = subcategoryService.getAll();
-        List<Product> Products = productService.getAllProducts();
-
-        List<ProductListDTO> ProductLists = simplifiedProduct(Products);
+        List<SubcategoryListDTO> Subcategories = subcategoryService.findAllSubcategoryList();
+        List<ProductListDTO> ProductLists = productService.findAllProductList();
         model.addAttribute("subcategories", Subcategories);
         model.addAttribute("products", ProductLists);
 
@@ -77,7 +73,7 @@ public class ProductController {
     @GetMapping("/addproduct")
     public String AddProductForm(Model model) {
         List<Brand> Brands = brandService.getAll();
-        List<Subcategory> Subcategories = subcategoryService.getAll();
+        List<SubcategoryListDTO> Subcategories = subcategoryService.findAllSubcategoryList();
 
         model.addAttribute("brands", Brands);
         model.addAttribute("subcategories", Subcategories);

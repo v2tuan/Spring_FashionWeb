@@ -6,6 +6,7 @@ import com.fashionweb.Entity.ProdReview;
 import com.fashionweb.Entity.Product;
 import com.fashionweb.dto.request.product.Product2DTO;
 import com.fashionweb.dto.request.product.ProductGridDTO;
+import com.fashionweb.dto.request.product.ProductListDTO;
 import com.fashionweb.repository.IProductRepository;
 import com.fashionweb.service.IProductService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +23,8 @@ public class ProductService implements IProductService {
     private IProductRepository iProductRepository;
     @Autowired
     private SizeService sizeService;
+    @Autowired
+    private ProdReviewService prodReviewService;
 
     @Override
     public List<Product> getAllProducts() {
@@ -138,23 +141,31 @@ public class ProductService implements IProductService {
             percent = (int) ((1 - product.getPromo()/product.getRegular())*100);
         }
 
-        double rating = 0.0;
-
-
         return new ProductGridDTO(
                 product.getProdId(),
                 product.getProdName(),
                 product.getRegular(),
                 product.getPromo(),
-                product.getStatus(),
                 (product.getCreateDate()),
                 isSale,
                 percent,
                 product.getBrand().getBrandId(),
                 product.getSubcategory().getSubCateId(),
                 this.getImgName(product.getImages()),
-                null,
-                null
+                prodReviewService.averageRatingByProdId(product.getProdId()),
+                prodReviewService.reviewCountByProdId(product.getProdId())
         );
+    }
+
+    public List<ProductGridDTO> productGridDTOs(List<Product> products) {
+        return products.stream().filter(product -> Boolean.TRUE.equals(product.getStatus())).map(this::productGridDTO).toList();
+    }
+
+    public List<ProductGridDTO> findAllProductGrid(boolean status) {
+        return iProductRepository.fetchProductGrid(status);
+    }
+
+    public List<ProductListDTO> findAllProductList() {
+        return iProductRepository.fetchProductList();
     }
 }

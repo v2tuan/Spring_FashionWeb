@@ -63,7 +63,6 @@ public class CategoryService implements ICategoryService {
         categoryRepos.deleteById(id);
     }
 
-    @Override
     public List<Subcategory> findSubcategoriesByCategoryId(Long cateId) {
         return subcategoryRepos.findAllByCategoryCategoryId(cateId);
     }
@@ -72,9 +71,7 @@ public class CategoryService implements ICategoryService {
         return new CategoryGridDTO(
             category.getCategoryId(),
             category.getCateName(),
-            this.findSubcategoriesByCategoryId(category.getCategoryId())
-                    .stream()
-                    .collect(Collectors.toMap(Subcategory::getSubCateId, Subcategory::getSubCateName))
+            subcategoryRepos.fetchSubcategoryList(category.getCategoryId())
         );
     }
 

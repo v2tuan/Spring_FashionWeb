@@ -1,14 +1,13 @@
 package com.fashionweb.dto.request.category;
 
 import lombok.AllArgsConstructor;
+import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.List;
-
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class CategoryGridDTO {
-    public Long cateId;
-    public String cateName;
-    public List<SubcategoryListDTO> subcates;
+public class SubcategoryListDTO {
+    private Long subCateId;
+    private String subCateName;
 }

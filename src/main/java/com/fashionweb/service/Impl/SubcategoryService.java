@@ -1,6 +1,7 @@
 package com.fashionweb.service.Impl;
 
 import com.fashionweb.Entity.Subcategory;
+import com.fashionweb.dto.request.category.SubcategoryListDTO;
 import com.fashionweb.repository.ISubcategoryRepository;
 import com.fashionweb.service.ISubcategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,5 +52,9 @@ public class SubcategoryService implements ISubcategoryService {
         }
 
         subcategoryRepos.deleteById(id);
+    }
+
+    public List<SubcategoryListDTO> findAllSubcategoryList(){
+        return subcategoryRepos.fetchSubcategoryListByCatId();
     }
 }

@@ -1,6 +1,7 @@
 package com.fashionweb.Controllers.web;
 
 import com.fashionweb.dto.request.category.CategoryGridDTO;
+import com.fashionweb.dto.request.product.ProductGridDTO;
 import com.fashionweb.service.Impl.CategoryService;
 import com.fashionweb.service.Impl.ProductService;
 import com.fashionweb.service.Impl.SubcategoryService;
@@ -42,12 +43,17 @@ public class ShopController {
     @GetMapping("/products")
     @ResponseBody
     ResponseEntity<?> getProducts() {
-        List<CategoryGridDTO> categoryGridDTOs = categoryService.categoryGridDTOs(categoryService.findAll());
-        return ResponseEntity.ok(categoryGridDTOs);
+        List<ProductGridDTO> productGridDTOs = productService.findAllProductGrid(true);
+        return ResponseEntity.ok(productGridDTOs);
     }
 
     @GetMapping
     String shop(Model model) {
+        List<CategoryGridDTO> categoryGridDTOs = categoryService.categoryGridDTOs(categoryService.findAll());
+        List<ProductGridDTO> productGridDTOs = productService.findAllProductGrid(true);
+
+        model.addAttribute("categories", categoryGridDTOs);
+        model.addAttribute("products", productGridDTOs);
 
         return "web/shop/shop_content";
     }
