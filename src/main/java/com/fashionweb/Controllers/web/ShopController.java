@@ -58,4 +58,9 @@ public class ShopController {
         return "web/shop/shop_content";
     }
 
+    @GetMapping("/product-detail")
+    String productDetail() {
+        return "web/shop/product_detail";
+    }
+
 }
