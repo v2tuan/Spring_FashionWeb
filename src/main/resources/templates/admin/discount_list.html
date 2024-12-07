@@ -5,8 +5,17 @@
 
 <main id="content" class="wrapper layout-page" th:fragment="content">
   <div class="container mt-5">
-    <div class="row mb-9 align-items-center justify-content-between">
 
+    <div th:if="${message}" class="alert alert-success alert-dismissible fade show" role="alert">
+      <p th:text="${message}"></p>
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+    <div th:if="${error}" class="alert alert-danger alert-dismissible fade show" role="alert">
+      <p th:text="${error}"></p>
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+
+    <div class="row mb-9 align-items-center justify-content-between">
       <div class="col-md-6 mb-8 mb-md-0">
         <h2 class="fs-4 mb-0">Discount List</h2>
       </div>
@@ -14,7 +23,6 @@
         <a th:href="@{/admin/adddiscount}" class="btn btn-primary">
           Create new
         </a>
-
       </div>
     </div>
 
@@ -49,80 +57,5 @@
       </tbody>
     </table>
   </div>
-
-<!--  &lt;!&ndash; Add Discount Modal &ndash;&gt;-->
-<!--  <div class="modal fade" id="addDiscountModal" tabindex="-1" aria-labelledby="addDiscountModalLabel" aria-hidden="true">-->
-<!--    <div class="modal-dialog">-->
-<!--      <div class="modal-content">-->
-<!--        <div class="modal-header">-->
-<!--          <h5 class="modal-title" id="addDiscountModalLabel">Add Discount</h5>-->
-<!--          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>-->
-<!--        </div>-->
-<!--        <div class="modal-body">-->
-<!--          <form id="addDiscountForm" th:action="@{/admin/discount/create}" method="post">-->
-<!--            <div class="mb-3">-->
-<!--              <label for="voucher" class="form-label">Voucher</label>-->
-<!--              <input type="text" class="form-control" id="voucher" name="voucher" required>-->
-<!--            </div>-->
-<!--            <div class="mb-3">-->
-<!--              <label for="description" class="form-label">Description</label>-->
-<!--              <input type="text" class="form-control" id="description" name="description" required>-->
-<!--            </div>-->
-<!--            <div class="mb-3">-->
-<!--              <label for="discountPercentage" class="form-label">Discount Percentage</label>-->
-<!--              <input type="number" class="form-control" id="discountPercentage" name="discountPercentage" required>-->
-<!--            </div>-->
-<!--            <div class="mb-3">-->
-<!--              <label for="startDate" class="form-label">Start Date</label>-->
-<!--              <input type="date" class="form-control" id="startDate" name="startDate" required>-->
-<!--            </div>-->
-<!--            <div class="mb-3">-->
-<!--              <label for="endDate" class="form-label">End Date</label>-->
-<!--              <input type="date" class="form-control" id="endDate" name="endDate" required>-->
-<!--            </div>-->
-<!--            <button type="submit" class="btn btn-primary">Save Discount</button>-->
-<!--          </form>-->
-<!--        </div>-->
-<!--      </div>-->
-<!--    </div>-->
-<!--  </div>-->
-
-<!--  &lt;!&ndash; Edit Discount Modal &ndash;&gt;-->
-<!--  <div class="modal fade" id="editDiscountModal" tabindex="-1" aria-labelledby="editDiscountModalLabel" aria-hidden="true">-->
-<!--    <div class="modal-dialog">-->
-<!--      <div class="modal-content">-->
-<!--        <div class="modal-header">-->
-<!--          <h5 class="modal-title" id="editDiscountModalLabel">Edit Discount</h5>-->
-<!--          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>-->
-<!--        </div>-->
-<!--        <div class="modal-body">-->
-<!--          <form id="editDiscountForm" th:action="@{/discounts/{id}(id=${discount.id})}" method="post">-->
-<!--            <input type="hidden" id="editDiscountId" name="id">-->
-<!--            <div class="mb-3">-->
-<!--              <label for="editVoucher" class="form-label">Voucher</label>-->
-<!--              <input type="text" class="form-control" id="editVoucher" name="voucher" required>-->
-<!--            </div>-->
-<!--            <div class="mb-3">-->
-<!--              <label for="editDescription" class="form-label">Description</label>-->
-<!--              <input type="text" class="form-control" id="editDescription" name="description" required>-->
-<!--            </div>-->
-<!--            <div class="mb-3">-->
-<!--              <label for="editDiscountPercentage" class="form-label">Discount Percentage</label>-->
-<!--              <input type="number" class="form-control" id="editDiscountPercentage" name="discountPercentage" required>-->
-<!--            </div>-->
-<!--            <div class="mb-3">-->
-<!--              <label for="editStartDate" class="form-label">Start Date</label>-->
-<!--              <input type="date" class="form-control" id="editStartDate" name="startDate" required>-->
-<!--            </div>-->
-<!--            <div class="mb-3">-->
-<!--              <label for="editEndDate" class="form-label">End Date</label>-->
-<!--              <input type="date" class="form-control" id="editEndDate" name="endDate" required>-->
-<!--            </div>-->
-<!--            <button type="submit" class="btn btn-primary">Update Discount</button>-->
-<!--          </form>-->
-<!--        </div>-->
-<!--      </div>-->
-<!--    </div>-->
-<!--  </div>-->
 </main>
 
