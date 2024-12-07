@@ -149,7 +149,7 @@ public class AccountService implements IAccountService {
     }
 
     @Override
-    public Page<AccountResponse> findAllAccounts(String fullname, Boolean enabled, String role, Pageable pageable) {
+    public Page<AccountResponse> findAllAccounts(String fullname, Boolean enabled, Role role, Pageable pageable) {
         return iAccountRepository.findAllAccount(fullname, enabled, role,pageable);
     }
 }

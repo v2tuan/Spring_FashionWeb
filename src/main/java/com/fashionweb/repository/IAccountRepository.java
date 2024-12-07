@@ -1,6 +1,7 @@
 package com.fashionweb.repository;
 
 import com.fashionweb.Entity.Account;
+import com.fashionweb.Enum.Role;
 import com.fashionweb.dto.request.accounts.AccountDTO;
 import com.fashionweb.dto.response.AccountResponse;
 import org.springframework.data.domain.Page;
@@ -23,15 +24,10 @@ public interface IAccountRepository extends JpaRepository<Account, Long> {
             "FROM Account a " +
             "WHERE (:fullname IS NULL OR a.fullname LIKE %:fullname%) " +
             "AND (:enabled IS NULL OR a.enabled = :enabled) " +
-            "AND (:role IS NULL OR a.role = :role) " +
-            "ORDER BY a.createDate DESC")
+            "AND (:role IS NULL OR a.role = :role) ")
+//            "ORDER BY a.createDate DESC")
     Page<AccountResponse> findAllAccount(@Param("fullname") String fullname,
                                          @Param("enabled") Boolean enabled,
-                                         @Param("role") String role,
+                                         @Param("role") Role role,
                                          Pageable pageable);
-
-
-
-
-
 }

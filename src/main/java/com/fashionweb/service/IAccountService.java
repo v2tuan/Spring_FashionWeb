@@ -2,6 +2,7 @@ package com.fashionweb.service;
 
 import com.fashionweb.Entity.Account;
 import com.fashionweb.Entity.CartItem;
+import com.fashionweb.Enum.Role;
 import com.fashionweb.dto.request.accounts.AccountDTO;
 import com.fashionweb.dto.response.AccountResponse;
 import org.springframework.data.domain.Page;
@@ -20,5 +21,5 @@ public interface IAccountService {
     List<CartItem> cart(Long accountId);
     public String login(String identifier, String password) throws Exception;
     public Account getAccountFromToken();
-    public Page<AccountResponse> findAllAccounts(String fullname, Boolean enabled, String role, Pageable pageable);
+    public Page<AccountResponse> findAllAccounts(String fullname, Boolean enabled, Role role, Pageable pageable);
 }
