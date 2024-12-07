@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -58,8 +59,9 @@ public class ShopController {
         return "web/shop/shop_content";
     }
 
-    @GetMapping("/product-detail")
-    String productDetail() {
+    @GetMapping("/product-detail/id={prodId}")
+    String productDetail(@PathVariable Long prodId, Model model) {
+        model.addAttribute("products", productService.getProduct(prodId));
         return "web/shop/product_detail";
     }
 
