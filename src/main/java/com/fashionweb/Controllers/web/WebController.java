@@ -37,10 +37,6 @@ public class WebController {
     @GetMapping("/user-login")
     String userLogin() { return "web/user-login"; }
 
-    @GetMapping("/product-detail")
-    String productDetail() {
-        return "web/shop/product_detail";
-    }
 
     @GetMapping("/check-out")
     String checkOut() {
