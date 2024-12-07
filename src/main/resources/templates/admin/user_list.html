@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{admin/admin_layout.html}">
+
+<main id="content" class="bg-body-tertiary-01 d-flex flex-column main-content" th:fragment="content">
+    <div class="dashboard-page-content">
+
+        <div class="row mb-9 align-items-center justify-content-between">
+
+            <div class="col-sm-6 mb-8 mb-sm-0">
+                <h2 class="fs-4 mb-0">User List</h2>
+            </div>
+            <div class="col-sm-6 d-flex flex-wrap justify-content-sm-end">
+
+            </div>
+        </div>
+
+
+        <div class="card mb-4 rounded-4 p-7">
+            <div class="card-header bg-transparent px-0 pt-0 pb-7">
+                <div class="row align-items-center justify-content-between">
+                    <div class="col-md-4 col-12 mr-auto mb-md-0 mb-6">
+                        <input type="text" placeholder="Search..."
+                               class="form-control bg-input border-0">
+                    </div>
+                    <div class="col-md-8">
+                        <div class="row justify-content-end flex-nowrap d-flex">
+                            <!-- <div class="col-lg-3 col-md-6 col-6">
+                                <select class="form-select">
+                                    <option>Show 20</option>
+                                    <option>Show 30</option>
+                                    <option>Show 40</option>
+                                </select>
+                            </div> -->
+                            <div class="col-lg-3 col-md-6 col-6">
+                                <select class="form-select">
+                                    <option>Role: all</option>
+                                    <option>Admin</option>
+                                    <option>Manager</option>
+                                    <option>User</option>
+                                </select>
+                            </div>
+
+                            <div class="col-lg-3 col-md-6 col-6">
+                                <select class="form-select">
+                                    <option>Status: all</option>
+                                    <option>Active</option>
+                                    <option>Disabled</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="card-body px-0 pt-7 pb-0">
+                <div class="table-responsive">
+                    <table class="table table-hover align-middle table-nowrap mb-0 table-borderless">
+                        <thead class="table-light">
+                        <tr>
+                            <th class="align-middle" scope="col">User
+                            </th>
+                            <th class="align-middle" scope="col">Role
+                            </th>
+                            <th class="align-middle" scope="col">Email
+                            </th>
+                            <th class="align-middle" scope="col">Status
+                            </th>
+                            <th class="align-middle" scope="col">Registered
+                            </th>
+                            <th class="align-middle text-center" scope="col">Action
+                            </th>
+
+                        </tr>
+                        </thead>
+                        <tbody>
+
+                        <!-- Duyệt qua danh sách sản phẩm -->
+                        <tr th:each="account : ${account}">
+                            <td>
+                                <div class="d-flex align-items-center flex-nowrap">
+                                    <img th:src="@{/home/files/{filename}(filename=${account.avatar != null ? account.avatar : 'default-avatar.jpg'})}"
+                                         alt="Mary Monasa" width="60" height="60"
+                                         class="lazy-image rounded-pill"
+                                         style="object-fit: cover">
+                                    <div class="ms-5">
+                                        <a href="dashboard/sellers-profile.html"
+                                           title="Mary Monasa" th:text="${account.fullname}"></a>
+                                        <span class="d-block fs-13px text-muted">Account
+                                                                ID#<span th:text="${account.accId}"></span></span>
+                                    </div>
+                                </div>
+                            </td>
+
+                            <div>
+                                <div th:if="${account.role == T(com.fashionweb.Enum.Role).ADMIN}">
+
+                                    <td>
+                                        <span class="badge rounded-lg rounded-pill alert py-3 px-4 mb-0 alert-primary border-0 text-capitalize fs-12">ADMIN</span>
+                                    </td>
+                                </div>
+                                <div th:if="${account.role == T(com.fashionweb.Enum.Role).MANAGER}">
+                                    <td>
+                                        <span class="badge rounded-lg rounded-pill alert py-3 px-4 mb-0 alert-dark border-0 text-capitalize fs-12">MANAGER</span>
+                                    </td>
+                                </div>
+                                <div th:if="${account.role == T(com.fashionweb.Enum.Role).USER}">
+                                    <td>
+                                        <span class="badge rounded-lg rounded-pill alert py-3 px-4 mb-0 alert-info border-0 text-capitalize fs-12">USER</span>
+                                    </td>
+                                </div>
+                            </div>
+
+                            <td th:text="${account.email}"></td>
+                            <div>
+                                <div th:if="${account.enabled}">
+                                    <td>
+                                        <span class="badge rounded-lg rounded-pill alert py-3 px-4 mb-0 alert-success border-0 text-capitalize fs-12">Active</span>
+                                    </td>
+                                </div>
+                                <div th:unless="${account.enabled}">
+                                    <td>
+                                        <span class="badge rounded-lg rounded-pill alert py-3 px-4 mb-0 alert-danger border-0 text-capitalize fs-12">Inactive</span>
+                                    </td>
+                                </div>
+                            </div>
+
+                            <td th:text="${account.createDate}"></td>
+
+                            <div th:if="${account.role == T(com.fashionweb.Enum.Role).USER}">
+                                <td class="text-center">
+                                    <form action="/home/deladdr/${address.id}" method="POST"
+                                          onsubmit="return confirm('Bạn có chắc chắn chuyển người này lên làm quản lý không?')">
+                                        <input type="submit" href="order-detail.html"
+                                           class="btn btn-primary fs-13px btn-xs py-4" value="Add Manager"></input>
+                                    </form>
+                                </td>
+                            </div>
+
+                            <div th:if="${account.role == T(com.fashionweb.Enum.Role).MANAGER}">
+                                <form action="/home/deladdr/${address.id}" method="POST"
+                                      onsubmit="return confirm('Bạn có chắc chắn muốn loại bỏ quản lý này không?')">
+                                    <input type="submit" href="order-detail.html"
+                                           class="btn btn-primary fs-13px btn-xs py-4" value="Remove Manager"></input>
+                                </form>
+                            </div>
+
+                        </tr>
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <nav aria-label="Page navigation example" class="mt-6 mb-4">
+            <ul class="pagination justify-content-start">
+                <!-- Trang trước -->
+                <li class="page-item" th:classappend="${currentPage == 0 ? 'disabled' : ''}">
+                    <a class="page-link" th:href="@{/admin/userlist(page=${currentPage - 1}, size=${size})}"
+                       aria-label="Previous">
+                        <span aria-hidden="true">&laquo;</span>
+                    </a>
+                </li>
+
+                <!-- Các trang giữa -->
+                <li th:each="i : ${#numbers.sequence(0, totalPages - 1)}"
+                    class="page-item"
+                    th:classappend="${i == currentPage ? 'active' : ''}">
+                    <a class="page-link" th:href="@{/admin/userlist(page=${i}, size=${size})}" th:text="${i + 1}">1</a>
+                </li>
+
+                <!-- Trang tiếp theo -->
+                <li class="page-item" th:classappend="${currentPage == totalPages - 1 ? 'disabled' : ''}">
+                    <a class="page-link" th:href="@{/admin/userlist(page=${currentPage + 1}, size=${size})}"
+                       aria-label="Next">
+                        <span aria-hidden="true">&raquo;</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+
+    </div>
+    <footer class="pt-6 pb-10 footer-dashboard mt-auto">
+        <div class="row">
+            <div class="col-sm-6 text-sm-start text-center">
+                <script>
+                    document.write(new Date().getFullYear());
+                </script>
+                © Glowing - Beauty & Cosmetics Shop HTML Template .
+            </div>
+            <div class="col-sm-6 text-sm-end text-center">
+                All rights reserved
+            </div>
+        </div>
+    </footer>
+
+</main>

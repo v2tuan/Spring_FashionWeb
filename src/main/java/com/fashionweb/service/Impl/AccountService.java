@@ -4,12 +4,16 @@ import com.fashionweb.Entity.Account;
 import com.fashionweb.Entity.CartItem;
 import com.fashionweb.Enum.Role;
 import com.fashionweb.dto.request.accounts.AccountDTO;
+import com.fashionweb.dto.response.AccountResponse;
 import com.fashionweb.mapper.IAccountMapper;
 import com.fashionweb.repository.IAccountRepository;
 import com.fashionweb.repository.ICartItemRepository;
 import com.fashionweb.service.IAccountService;
 import com.fashionweb.util.JwtTokenUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.repository.query.Param;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -142,5 +146,10 @@ public class AccountService implements IAccountService {
         String email = userDetailsService.retrieveUserEmail();
         return getAccounts(email).orElseThrow(
                     () -> new RuntimeException("Không tìm thấy người dùng"));
+    }
+
+    @Override
+    public Page<AccountResponse> findAllAccounts(String fullname, Boolean enabled, String role, Pageable pageable) {
+        return iAccountRepository.findAllAccount(fullname, enabled, role,pageable);
     }
 }
