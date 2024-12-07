@@ -22,7 +22,7 @@ public class Product {
     private String description;
     private Double regular;
     private Double promo;
-    private Boolean status;
+    private Boolean status = false;
     private Integer totalQuantity;  // null, chưa dùng
 
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
@@ -31,11 +31,11 @@ public class Product {
     private Date createDate;
 
     @ManyToOne
-    @JoinColumn(name = "brandId", nullable = false)
+    @JoinColumn(name = "brandId")
     private Brand brand;
 
     @ManyToOne
-    @JoinColumn(name = "subCateId", nullable = false)
+    @JoinColumn(name = "subCateId")
     private Subcategory subcategory;
 
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
