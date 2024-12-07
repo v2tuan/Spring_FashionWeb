@@ -872,6 +872,32 @@ th:fragment="header">
             });
         }
 
+        document.addEventListener('DOMContentLoaded', function () {
+            $.ajax({
+                type: 'GET', // HTTP method
+                url: '/api/me', // API endpoint
+                dataType: 'json', // Expected response data type
+                contentType: 'application/json; charset=utf-8', // Content type
+                beforeSend: function (xhr) {
+                    // Add authorization header if token exists in localStorage
+                    if (localStorage.token) {
+                        xhr.setRequestHeader('Authorization', 'Bearer ' + localStorage.token);
+                    }
+                },
+                success: function (data) {
+                    if (data.avatar) {
+                        // Thay đổi thuộc tính src của thẻ img
+                        $('#avatar_small').attr('src', `/home/files/${data.avatar}`);
+                    }
+                },
+                error: function (e) {
+                    // Handle errors
+                    const json = e.responseText;
+                    console.error(json);
+                }
+            });
+        });
+
 
     </script>
 
