@@ -30,9 +30,10 @@ public class WebSecurityConfig {
                             .requestMatchers("/assets/**", "/cdn.jsdelivr.net/**", "/cdnjs.cloudflare.com/**").permitAll()
                             .requestMatchers("/register", "/login/**").permitAll()
                             .requestMatchers("/api/**").permitAll() // Cho phép tất cả truy cập vào các API
-                            .requestMatchers("/home/**").hasAnyRole(Role.USER.name(), Role.ADMIN.name())
+                            .requestMatchers("/home/**").permitAll()
                             .requestMatchers("/forgotpassword/**").permitAll()
-                            .requestMatchers("/403").permitAll()
+                            .requestMatchers("/error/**").permitAll()
+                            .requestMatchers("/account/**").hasAnyRole(Role.USER.name(), Role.ADMIN.name())
                             .anyRequest().hasAnyRole(Role.USER.name(), Role.ADMIN.name());
                 });
         return http.build();

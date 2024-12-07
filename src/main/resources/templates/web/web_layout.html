@@ -35,8 +35,29 @@
 
 <body>
 
-<!-- header -->
-<div th:replace="~{/web/fragments/header :: header}"></div>
+<!-- Kiểm tra nếu người dùng đã đăng nhập và có vai trò ADMIN -->
+<div th:if="${#authentication != null and #authentication.principal != 'anonymousUser'}">
+    <div th:if="${#authentication.principal?.authorities?.contains('ADMIN')}">
+        <!-- header -->
+        <div th:replace="~{/web/fragments/header :: header}"></div>
+    </div>
+</div>
+
+<!-- Kiểm tra nếu người dùng đã đăng nhập và có vai trò ADMIN -->
+<div th:if="${#authentication != null}">
+    <div th:if="${#authorization.expression('hasAuthority(''ROLE_ADMIN'')')}">
+        <!-- Nội dung chỉ hiển thị khi người dùng có vai trò ADMIN -->
+        <div th:replace="~{/admin/fragments/header_admin_hasDasboard :: header}"></div>
+
+    </div>
+    <div th:if="${!#authorization.expression('hasAuthority(''ROLE_ADMIN'')')}">
+        <!-- Nội dung chỉ hiển thị khi người dùng có vai trò ADMIN -->
+        <div th:replace="~{/web/fragments/header :: header}"></div>
+
+    </div>
+</div>
+
+
 <!-- main -->
 <div th:insert="~{::content}"></div>
 <!-- footer -->

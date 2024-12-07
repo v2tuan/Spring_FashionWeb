@@ -11,11 +11,13 @@ import com.fashionweb.mapper.IAccountMapper;
 import com.fashionweb.service.AuthenticationService;
 import com.fashionweb.service.IStorageService;
 import com.fashionweb.service.Impl.AccountService;
+import com.fashionweb.service.Impl.AddressService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -30,6 +32,8 @@ public class AccountController {
     private IStorageService storageService;
     @Autowired
     IAccountMapper accountMapper;
+    @Autowired
+    AddressService addressService;
 
 
 
@@ -78,4 +82,24 @@ public class AccountController {
         accountService.deleteAccount(id);
         return new ResponseEntity<Response>(new Response(true, "Thành công", "Xoa thanh cong"), HttpStatus.OK);
     }
+
+
+    @GetMapping("/profile")
+    String profile(){
+        return "web/my_profile";
+    }
+
+    @GetMapping("/managerAddress")
+    String managerAddress(Model model){
+        return "web/manager_address";
+    }
+
+    @PostMapping("/deladdr/{id}")
+    String deleteAccount(@PathVariable long id, Model model){
+        if (addressService.deleteAddress(id)) {
+            model.addAttribute("errorMessage", "Xóa thành công");
+        }
+        return "web/manager_address";
+    }
+
 }

@@ -38,7 +38,9 @@ public class JwtTokenFilter extends OncePerRequestFilter {
             new EndpointMethod("/cdnjs.cloudflare.com/**", "GET"),
             new EndpointMethod("/api/**", "POST"),
             new EndpointMethod("/login/**", "GET"),
-            new EndpointMethod("/forgotpassword/**", "POST")
+            new EndpointMethod("/forgotpassword/**", "POST"),
+            new EndpointMethod("/error/**", "GET")
+
     );
 
     @Override
@@ -53,12 +55,18 @@ public class JwtTokenFilter extends OncePerRequestFilter {
             }
 
             String token = extractTokenFromSession(request);
-            if (token == null) {
-                response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "No token found");
+            String requestURI = request.getRequestURI();
+
+            // Kiểm tra nếu token null và request không phải là /home
+            if (token == null && !"/home".equals(requestURI)) {
+                // Redirect đến trang lỗi
+                response.sendRedirect(request.getContextPath() + "/error/401");
                 return;
             }
+            else if (token != null) {
+                authenticateToken(request, token);
+            }
 
-            authenticateToken(request, token);
             filterChain.doFilter(request, response);
         } catch (Exception e) {
             response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Authentication failed");

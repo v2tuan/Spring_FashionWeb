@@ -50,6 +50,12 @@ public class UserAPI {
         }
     }
 
+    @PostMapping("/logout")
+    public ResponseEntity<?> logout(HttpSession session) {
+        session.removeAttribute("authToken");
+        return ResponseEntity.ok(Map.of("message", "Logged out successfully"));
+    }
+
     @PostMapping("/verify")
     public ResponseEntity<?> verifyUser(@RequestBody VerifyAccountDTO verifyAccountDTO) {
 
