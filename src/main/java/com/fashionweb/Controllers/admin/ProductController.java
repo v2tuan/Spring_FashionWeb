@@ -3,124 +3,82 @@ package com.fashionweb.Controllers.admin;
 import com.fashionweb.Entity.*;
 import com.fashionweb.Entity.Embeddable.ProductImagesId;
 import com.fashionweb.Entity.Embeddable.SizeId;
+import com.fashionweb.dto.request.category.SubcategoryListDTO;
 import com.fashionweb.dto.request.product.ProductDTO;
-import com.fashionweb.service.IStorageService;
+import com.fashionweb.dto.request.product.ProductListDTO;
 import com.fashionweb.service.Impl.*;
 import jakarta.validation.Valid;
-import org.apache.tomcat.util.http.fileupload.FileItem;
-import org.apache.tomcat.util.http.fileupload.FileItemFactory;
-import org.apache.tomcat.util.http.fileupload.disk.DiskFileItemFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
 import java.time.LocalDate;
 import java.time.ZoneId;
-import java.util.*;
+import java.util.List;
+import java.util.Optional;
 
 @Controller
 @RequestMapping("/admin")
 public class ProductController {
 
     @Autowired
-    private ProductService productService;
-
+    ProductService productService;
     @Autowired
-    private CategoryService CategoryService;
-
+    BrandService brandService;
     @Autowired
-    private BrandService BrandService;
-
-    @Autowired
-    private SubcategoryService SubcategoryService;
-
-    @Autowired
-    private BrandService brandService;
-    @Autowired
-    private SizeService sizeService;
-    @Autowired
-    private SubcategoryService subcategoryService;
+    SubcategoryService subcategoryService;
     @Autowired
     private FileSystemStorageService storageService;
     @Autowired
-    private SizeService SizeService;
+    private SizeService sizeService;
     @Autowired
     private ProdImageService prodImageService;
 
-    public List<Map<String, Object>> simplifiedImages(List<ProdImage> images) {
-        return images.stream().map(item -> {
-            Map<String, Object> items = new HashMap<>();
-            items.put("imgId", item.getProductImageId());
-            return items;
-        }).toList();
-    }
-
-    public List<Map<String, Object>> simplifiedSizes(List<Size> sizes) {
-        return sizes.stream().map(item -> {
-            Map<String, Object> items = new HashMap<>();
-            items.put("sizeId", item.getId());
-            return items;
-        }).toList();
-    }
-
-    public List<Map<String, Object>> simplifiedReviews(List<ProdReview> reviews) {
-        return reviews.stream().map(item -> {
-            Map<String, Object> items = new HashMap<>();
-            items.put("reviewId", item.getReviewId());
-            return items;
-        }).toList();
-    }
-
-    public List<Map<String, Object>> simplifiedProduct(List<Product> products) {
-        return products.stream().map(item -> {
-            Map<String, Object> items = new HashMap<>();
-            items.put("id", item.getProdId());
-            items.put("name", item.getProdName());
-            items.put("description", item.getDescription());
-            items.put("regular", item.getRegular());
-            items.put("promo", item.getPromo());
-            items.put("status", item.getStatus());
-            items.put("totalQuantity", item.getTotalQuantity());
-            items.put("imgIds", simplifiedImages(item.getImages()));
-            items.put("createDate", item.getCreateDate());
-            items.put("brandId", item.getBrand().getBrandId());
-            items.put("subCatId", item.getSubcategory().getSubCateId());
-            items.put("sizeIds", simplifiedSizes(item.getSizes()));
-            items.put("reviewIds", simplifiedReviews(item.getProductReviews()));
-            return items;
+    public List<ProductListDTO> simplifiedProduct(List<Product> products) {
+        return products.stream().map(product -> {
+            ProductListDTO productListDTO = new ProductListDTO();
+            productListDTO.setProdId(product.getProdId());
+            productListDTO.setProdName(product.getProdName());
+            productListDTO.setDescription(product.getDescription());
+            productListDTO.setRegular(product.getRegular());
+            productListDTO.setPromo(product.getPromo());
+            productListDTO.setStatus(product.getStatus() != null && product.getStatus());
+            productListDTO.setCreateDate(product.getCreateDate());
+            productListDTO.setImgURL(productService.getImgName(product.getImages()));
+            productListDTO.setBrandId(product.getBrand().getBrandId());
+            productListDTO.setSubCateId(product.getSubcategory().getSubCateId());
+            return productListDTO;
         }).toList();
     }
 
     @GetMapping("/products")
     @ResponseBody
-    ResponseEntity<?> getProducts(){
-        List<Product> products = productService.getAllProducts();
-
-        List<Map<String, Object>> validatedProducts = simplifiedProduct(products);
-
-        return ResponseEntity.ok(validatedProducts);
+    ResponseEntity<?> getProducts() {
+        List<ProductListDTO> ProductLists = productService.findAllProductList();
+        return ResponseEntity.ok(ProductLists);
     }
 
     @GetMapping("/productlist")
     String showProductList(Model model) {
-        model.addAttribute("subcategories", SubcategoryService.getAll());
+        List<SubcategoryListDTO> Subcategories = subcategoryService.findAllSubcategoryList();
+        List<ProductListDTO> ProductLists = productService.findAllProductList();
+        model.addAttribute("subcategories", Subcategories);
+        model.addAttribute("products", ProductLists);
 
         return "admin/product_list";
     }
 
     @GetMapping("/addproduct")
     public String AddProductForm(Model model) {
-        List<Category> categories = CategoryService.findAll();
+        List<Brand> Brands = brandService.getAll();
+        List<SubcategoryListDTO> Subcategories = subcategoryService.findAllSubcategoryList();
 
-        model.addAttribute("categories", categories);
-        model.addAttribute("brands", BrandService.getAll());
-        model.addAttribute("subcategories", SubcategoryService.getAll());
-
+        model.addAttribute("brands", Brands);
+        model.addAttribute("subcategories", Subcategories);
         model.addAttribute("product", new Product());
+
         return "admin/addOrEditProduct";
     }
 
@@ -131,7 +89,7 @@ public class ProductController {
 
         Optional<Brand> brnd = brandService.findById(productDto.getBrandId());
         Optional<Subcategory> subcat = subcategoryService.getById(productDto.getSubCateId());
-        if (brnd.isPresent() && subcat.isPresent()){
+        if (brnd.isPresent() && subcat.isPresent()) {
             product.setProdName(productDto.getProdName());
             product.setDescription(productDto.getDescription());
             product.setRegular(productDto.getRegular());
@@ -179,15 +137,27 @@ public class ProductController {
                     sizeId.setProdId(productadd.getProdId());
                     sizeId.setSizeName(sizeitem.getName());
                     size.setId(sizeId);
-                    SizeService.createSize(size);
+                    sizeService.createSize(size);
                 }
             }
 
             return ResponseEntity.ok("Thêm sản phẩm thành công");
-        }
-        else {
+        } else {
             return ResponseEntity.badRequest().body("Thêm sản phẩm thất bại");
         }
+    }
+
+    @GetMapping("/editproduct/id={prodId}")
+    public String EditProductForm(@PathVariable("prodId") Long prodId, Model model) {
+        List<Brand> Brands = brandService.getAll();
+        List<Subcategory> Subcategories = subcategoryService.getAll();
+        Product product = productService.getProduct(prodId).get();
+
+        model.addAttribute("brands", Brands);
+        model.addAttribute("subcategories", Subcategories);
+        model.addAttribute("product", productService.product2DTO(product));
+
+        return "admin/editProduct";
     }
 
     @PostMapping("/deleteproduct/{id}")
@@ -202,15 +172,19 @@ public class ProductController {
     }
 
     @GetMapping("/orderlist")
-    String order_list(){
+    String order_list() {
         return "admin/order_list";
     }
 
     @GetMapping("/reviews")
-    String reviews() { return "admin/reviews"; }
+    String reviews() {
+        return "admin/reviews";
+    }
 
     @GetMapping("/profile-settings")
-    String profileSettings() { return "admin/profile_settings"; }
+    String profileSettings() {
+        return "admin/profile_settings";
+    }
 
     @GetMapping("/order-detail")
     String orderDetail() {
