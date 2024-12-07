@@ -44,11 +44,13 @@ public class ProductService implements IProductService {
     }
 
     @Override
+    public List<Product> findProductByProdName(String name) {
+        return iProductRepository.findProductByProdName(name);
+    }
+
+    @Override
     public <S extends Product> S createProduct(S product) {
-        // Kiểm tra tính hợp lệ của sản phẩm trước khi lưu
-        if (product.getBrand() == null || product.getSubcategory() == null) {
-            throw new RuntimeException("Thông tin sản phẩm không hợp lệ.");
-        }
+
         return iProductRepository.save(product);
     }
 
