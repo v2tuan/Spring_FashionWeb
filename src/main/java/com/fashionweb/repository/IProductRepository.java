@@ -1,6 +1,7 @@
 package com.fashionweb.repository;
 
 import com.fashionweb.Entity.Product;
+import com.fashionweb.dto.request.product.ProductDetailDTO;
 import com.fashionweb.dto.request.product.ProductGridDTO;
 import com.fashionweb.dto.request.product.ProductListDTO;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -9,6 +10,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface IProductRepository extends JpaRepository<Product, Long> {
@@ -53,6 +55,25 @@ public interface IProductRepository extends JpaRepository<Product, Long> {
     )
     FROM Product p""")
     List<ProductListDTO> fetchProductList();
+
+    @Query("""
+    SELECT new com.fashionweb.dto.request.product.ProductDetailDTO(
+        p.prodId,
+        p.prodName,
+        p.regular,
+        p.promo,
+        p.createDate,
+        CASE WHEN p.promo < p.regular THEN true ELSE false END,
+        CASE WHEN p.promo < p.regular THEN CAST(100 * (1 - p.promo / p.regular) AS integer) ELSE 0 END,
+        p.brand.brandName,
+        p.subcategory.subCateName,
+        (SELECT AVG(pr.rating) FROM ProdReview pr WHERE pr.product.prodId = p.prodId),
+        (SELECT COUNT(pr) FROM ProdReview pr WHERE pr.product.prodId = p.prodId),
+        null,
+        null
+    )
+    FROM Product p WHERE p.prodId = :prodId""")
+    Optional<ProductDetailDTO> fetchProductDetailById(@Param("prodId") Long prodId);
 
 }
     

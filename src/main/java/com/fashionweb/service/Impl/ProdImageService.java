@@ -57,4 +57,8 @@ public class ProdImageService implements IProdImageService {
         // Trả về tất cả các hình ảnh sản phẩm của sản phẩm với prodId
         return iProdImageRepository.findByProductProdId(prodId);
     }
+
+    public List<String> findImageNamesByProdId(Long prodId) {
+        return iProdImageRepository.fetchImageNamesByProdId(prodId);
+    }
 }

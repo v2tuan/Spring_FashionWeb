@@ -4,20 +4,24 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.Date;
 import java.util.List;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Product2DTO {
+public class ProductDetailDTO {
     private Long prodId;
     private String prodName;
-    private String description;
     private Double regular;
     private Double promo;
-    private Boolean status;
-    private Long brandId;
-    private Long subCateId;
-    private List<String> imgURLs;
+    private Date createDate;
+    private Boolean isSale;
+    private Integer percent;
+    private String brandName;
+    private String subCateName;
+    private Double rating;
+    private Long reviewCount;
+    private List<String> imgURL;
     private List<SizeDTO> sizeDTOs;
 }
