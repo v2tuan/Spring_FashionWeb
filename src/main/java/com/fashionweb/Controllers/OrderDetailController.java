@@ -1,4 +1,4 @@
-package com.fashionweb.Controllers.admin;
+package com.fashionweb.Controllers;
 
 import com.fashionweb.Enum.OrderStatus;
 import com.fashionweb.dto.request.orderAdmin.ItemDetailDTO;
@@ -14,8 +14,8 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import java.util.List;
 
 @Controller
-@RequestMapping("/admin")
-public class OrderDetailAdminController {
+@RequestMapping("/user")
+public class OrderDetailController {
     @Autowired
     private OrderItemService orderItemService;
 
@@ -29,7 +29,7 @@ public class OrderDetailAdminController {
 
         model.addAttribute("orderDetail", orderDetail);
         model.addAttribute("items", items);
-        return "admin/orderDetail";
+        return "web/shop/order_detail";
     }
 
     @PostMapping("/updateorder")
@@ -45,10 +45,10 @@ public class OrderDetailAdminController {
                 redirectAttributes.addFlashAttribute("message", "Error updating order status");
             }
 
-            return "redirect:/admin/dashboard";
+            return "redirect:/account/orders";
         } catch (Exception e) {
             redirectAttributes.addFlashAttribute("message", "An error occurred: " + e.getMessage());
-            return "redirect:/admin/dashboard";
+            return "redirect:/account/orders";
         }
     }
 }
