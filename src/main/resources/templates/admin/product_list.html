@@ -23,7 +23,7 @@
                     Import
                 </a>
 
-                <a href="#" class="btn btn-primary">
+                <a href="add-product" class="btn btn-primary">
                     Create new
                 </a>
 
@@ -34,7 +34,7 @@
         <div class="card mb-4 rounded-4 p-7">
             <div class="card-header bg-transparent px-0 pt-0 pb-7">
                 <div class="row align-items-center justify-content-between">
-                    <div class="row col-md-6" style="margin-left: 0; margin-bottom: 5px">
+                    <div class="row col-md-5" style="margin-left: 0; margin-bottom: 5px">
                         <!--                        <select class="form-select" id="categorySelect">-->
                         <!--                                <option selected="" data-select2-id="3">All Categories</option>-->
                         <!--                                <th:block th:each="category : ${categories}">-->
@@ -43,33 +43,28 @@
                         <!--                            </select>-->
                         <!--                        </div>-->
                         <!--                    <div class="row col-md-3">-->
-                        <select class="form-select" id="subcategorySelect" onchange="filterProducts()">
+                        <select class="form-select" id="subcategorySelect" onchange="applyFilters()">
                             <option selected="" data-select2-id="3">All Subcategories</option>
                             <th:block th:each="subcategory : ${subcategories}">
                                 <option th:value="${subcategory.subCateId}"
-                                        th:text="${subcategory.subCateName}"></option>
+                                        th:text="${subcategory.subCateName}"
+                                        th:selected="${subcategory.subCateId == selectedSubCate}"></option>
                             </th:block>
                         </select>
-                        <script>
-                            function filterProducts() {
-                                const selectedSubcategoryId = document.getElementById('subcategorySelect').value;
-
-                                if (selectedSubcategoryId) {
-                                    window.location.href = '/products?subcategoryId=' + selectedSubcategoryId;
-                                }
-                            }
-                        </script>
                     </div>
                     <div class="col-md-6" style="margin-bottom: 5px">
                         <div class="row justify-content-end flex-nowrap d-flex">
-                            <div class="col-lg-4 col-md-6 col-6">
-                                <input type="date" class="form-control bg-input border-0" id="dateSelect">
-                            </div>
-                            <div class="col-lg-4 col-md-6 col-6">
-                                <select class="form-select" id="statusSelect">
-                                    <option>Status</option>
-                                    <option value="true">Active</option>
-                                    <option value="false">Disabled</option>
+                            <!--                            <div class="col-lg-4 col-md-6 col-6">-->
+                            <!--                                <input type="date" class="form-control bg-input border-0" id="dateSelect">-->
+                            <!--                            </div>-->
+                            <div class="col-lg-4 col-md-4 col-5">
+                                <select class="form-select" id="statusSelect" onchange="applyFilters()">
+                                    <option value=""
+                                            th:selected="${selectedStatus == null}">All Status</option>
+                                    <option value="true"
+                                            th:selected="${selectedStatus == true}">Active</option>
+                                    <option value="false"
+                                            th:selected="${selectedStatus == false}">Disabled</option>
                                 </select>
                             </div>
                         </div>
@@ -79,6 +74,31 @@
             <div class="card-body px-0 pt-7 pb-0">
                 <div class="table-responsive">
                     <table class="table table-hover align-middle table-nowrap mb-0">
+                        <thead class="table-light">
+                        <tr>
+
+                            <th scope="col" class="text-center">
+                                <div class="form-check align-middle">
+                                    <input class="form-check-input rounded-0 ms-0" type="checkbox"
+                                           id="transactionCheck01">
+                                    <label class="form-check-label"
+                                           for="transactionCheck01"></label>
+                                </div>
+                            </th>
+                            <th class="align-middle" scope="col">Product
+                            </th>
+                            <th class="align-middle" scope="col">Regular Price
+                            </th>
+                            <th class="align-middle" scope="col">Status
+                            </th>
+                            <th class="align-middle" scope="col">Create Date
+                            </th>
+                            <th class="align-middle" scope="col">
+                            </th>
+
+                        </tr>
+                        </thead>
+
                         <tbody>
 
                         <tr th:each="product : ${products}">
@@ -94,7 +114,7 @@
                                 <div class="d-flex align-items-center flex-nowrap">
                                     <a href="home/product-detail"
                                        title="Flowers cotton dress">
-                                        <img th:src="@{/files/{filename}(filename=${product.getImgURL()})}"
+                                        <img th:src="@{/home/files/{filename}(filename=${product.getImgURL()})}"
                                              th:alt="${product.getProdName()}" class="lazy-image" width="60"
                                              height="80">
                                     </a>
@@ -116,17 +136,18 @@
                                 <span th:if="${product.getStatus() == false}"
                                       class="badge rounded-lg rounded-pill alert py-3 px-4 mb-0 alert-danger border-0 text-capitalize fs-12">Disabled</span>
                                 <span th:if="${product.getStatus() == null}"
-                                      class="badge rounded-lg rounded-pill alert py-3 px-4 mb-0 alert-secondary border-0 text-capitalize fs-12">Unknown</span></td>
+                                      class="badge rounded-lg rounded-pill alert py-3 px-4 mb-0 alert-secondary border-0 text-capitalize fs-12">Unknown</span>
+                            </td>
 
 
-                            <td th:text="${product.getCreateDate()}"></td>
+                            <td th:text="${#dates.format(product.getCreateDate(), 'yyyy-MM-dd')}"></td>
 
                             <td class="text-center">
                                 <div class="d-flex flex-nowrap justify-content-center">
-                                    <a th:href="@{editproduct/id={prodId}(prodId=${product.getProdId()})}"
+                                    <a th:href="@{edit-product/id={prodId}(prodId=${product.getProdId()})}"
                                        class="btn btn-primary py-4 px-5 btn-xs fs-13px me-4"><i
                                             class="far fa-pen me-2"></i> Edit</a>
-                                    <a th:href="@{deleteproduct/id={prodId}(prodId=${product.getProdId()})}"
+                                    <a th:href="@{delete-product/id={prodId}(prodId=${product.getProdId()})}"
                                        class="btn btn-outline-primary btn-hover-bg-danger btn-hover-border-danger btn-hover-text-light py-4 px-5 fs-13px btn-xs me-4"><i
                                             class="far fa-trash me-2"></i> Delete</a>
                                 </div>
@@ -142,23 +163,32 @@
 
         <nav aria-label="Page navigation example" class="mt-6 mb-4">
             <ul class="pagination justify-content-center">
+                <!-- Previous Button -->
                 <li th:class="${currentPage == 0 ? 'page-item disabled' : 'page-item'}">
-                    <a th:href="@{/admin/productlist(page=${currentPage - 1})}" class="page-link">&lt;</a>
+                    <a th:href="@{/admin/product-list(page=${currentPage - 1}, subcategoryId=${selectedSubCate}, status=${selectedStatus})}"
+                       class="page-link"
+                       aria-label="Previous">&lt;</a>
                 </li>
 
+                <!-- Page Numbers -->
                 <th:block th:each="pageNumber : ${#numbers.sequence(0, totalPages - 1)}">
                     <li th:class="${pageNumber == currentPage ? 'page-item active' : 'page-item'}">
-                        <a th:href="@{/admin/productlist(page=${pageNumber})}" class="page-link" th:text="${pageNumber + 1}"></a>
+                        <a th:href="@{/admin/product-list(page=${pageNumber}, subcategoryId=${selectedSubCate}, status=${selectedStatus})}"
+                           class="page-link"
+                           th:text="${pageNumber + 1}"></a>
                     </li>
                 </th:block>
 
+                <!-- Next Button -->
                 <li th:class="${currentPage == totalPages - 1 ? 'page-item disabled' : 'page-item'}">
-                    <a th:href="@{/admin/productlist(page=${currentPage + 1})}" class="page-link">&gt;</a>
+                    <a th:href="@{/admin/product-list(page=${currentPage + 1}, subcategoryId=${selectedSubCate}, status=${selectedStatus})}"
+                       class="page-link"
+                       aria-label="Next">&gt;</a>
                 </li>
             </ul>
         </nav>
-
     </div>
+
     <footer class="pt-6 pb-10 footer-dashboard mt-auto">
         <div class="row">
             <div class="col-sm-6 text-sm-start text-center">
@@ -172,4 +202,23 @@
             </div>
         </div>
     </footer>
+
+    <script>
+        function applyFilters() {
+            const selectedSubcategoryId = document.getElementById('subcategorySelect').value;
+            const selectedStatus = document.getElementById('statusSelect').value;
+
+            let url = '/admin/product-list?page=0';
+
+            if (selectedSubcategoryId) {
+                url += '&subcategoryId=' + (selectedSubcategoryId !== "All Subcategories" ? selectedSubcategoryId : "");
+            }
+            if (selectedStatus && selectedStatus !== "All Status" ) {
+                url += '&status=' + (selectedStatus !== "All Status" ? selectedStatus : "");
+            }
+
+            // Redirect to the constructed URL
+            window.location.href = url;
+        }
+    </script>
 </main>

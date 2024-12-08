@@ -79,11 +79,19 @@ public class WebController {
         return "web/manager_address";
     }
 
+    @GetMapping("/files/")
+    public ResponseEntity<Resource> serveDefaultFile() {
+        return serveFile("default.jpg");
+    }
+
     @GetMapping("/files/{filename}")
     public ResponseEntity<Resource> serveFile(@PathVariable String filename) {
         try {
             Resource file = storageService.loadAsResource(filename);
             String contentType = Files.probeContentType(Paths.get(file.getURI()));
+            if (contentType == null) {
+                contentType = "image/jpeg";
+            }
 
             return ResponseEntity.ok()
                     .header("Content-Type", contentType != null ? contentType : "application/octet-stream")
@@ -92,4 +100,10 @@ public class WebController {
             return ResponseEntity.status(404).body(null); // Trả về 404 nếu không tìm thấy file
         }
     }
+
+    @GetMapping("/testhtml")
+    public String runTestHtml() {
+        return "web/testpopupreview";
+    }
+
 }

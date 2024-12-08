@@ -55,7 +55,7 @@ public class ProductController {
         return ResponseEntity.ok(brandService.getBrandDTOs());
     }
 
-    @GetMapping("/productlist")
+    //@GetMapping("/product-list")
     String showProductList(@RequestParam(value = "page", defaultValue = "0") int page,
                            @RequestParam(value = "size", defaultValue = "10") int size,
                            Model model) {
@@ -64,6 +64,27 @@ public class ProductController {
         List<SubcategoryListDTO> Subcategories = subcategoryService.findAllSubcategoryList();
         model.addAttribute("subcategories", Subcategories);
         model.addAttribute("products", ProductLists.getContent());
+        model.addAttribute("currentPage", page);
+        model.addAttribute("totalPages", ProductLists.getTotalPages());
+
+        return "admin/product_list";
+    }
+
+    @GetMapping("/product-list")
+    String showProductList(@RequestParam(value = "page", defaultValue = "0") int page,
+                           @RequestParam(value = "size", defaultValue = "10") int size,
+                           @RequestParam(value = "subcategoryId", required = false) Long subCateId,
+                           @RequestParam(value = "status", required = false) Boolean status,
+                           Model model) {
+
+        Pageable pageable = PageRequest.of(page, size);
+        List<SubcategoryListDTO> Subcategories = subcategoryService.findAllSubcategoryList();
+        Page<ProductListDTO> ProductLists = productService.findAllProductListCriteriaPageable(subCateId, status, pageable);
+
+        model.addAttribute("subcategories", Subcategories);
+        model.addAttribute("products", ProductLists.getContent());
+        model.addAttribute("selectedSubCate", subCateId);
+        model.addAttribute("selectedStatus", status);
         model.addAttribute("currentPage", page);
         model.addAttribute("totalPages", ProductLists.getTotalPages());
 
@@ -81,7 +102,7 @@ public class ProductController {
         return ResponseEntity.ok(productService.findAllProductListPageable(pageable));
     }
 
-    @GetMapping("/addproduct")
+    @GetMapping("/add-product")
     public String AddProductForm(Model model) {
         List<BrandDTO> Brands = brandService.getBrandDTOs();
         List<SubcategoryListDTO> Subcategories = subcategoryService.findAllSubcategoryList();
@@ -93,7 +114,7 @@ public class ProductController {
         return "admin/addOrEditProduct";
     }
 
-    @PostMapping("/createproduct")
+    @PostMapping("/create-product")
     @ResponseBody
     public ResponseEntity<?> createProduct(@ModelAttribute @Valid ProductDTO productDto) {
         Product product = new Product();
@@ -158,7 +179,7 @@ public class ProductController {
         }
     }
 
-    @GetMapping("/editproduct/id={prodId}")
+    @GetMapping("/edit-product/id={prodId}")
     public String EditProductForm(@PathVariable("prodId") Long prodId, Model model) {
         List<BrandDTO> Brands = brandService.getBrandDTOs();
         List<SubcategoryListDTO> Subcategories = subcategoryService.findAllSubcategoryList();
@@ -171,15 +192,15 @@ public class ProductController {
         return "admin/editProduct";
     }
 
-    @PostMapping("/deleteproduct/{id}")
-    public String deleteProduct(@PathVariable Long id, Model model) {
-        boolean isDeleted = productService.deleteProduct(id);
+    @GetMapping("/delete-product/id={prodId}")
+    String deleteProduct(@PathVariable("prodId") Long prodId, Model model) {
+        boolean isDeleted = productService.disableProduct(prodId);
         if (isDeleted) {
             model.addAttribute("message", "Đã xóa sản phẩm");
         } else {
             model.addAttribute("error", "Xóa sản phẩm thất bại");
         }
-        return "redirect:/admin/productlist";
+        return "redirect:/admin/product-list";
     }
 
     @GetMapping("/orderlist")

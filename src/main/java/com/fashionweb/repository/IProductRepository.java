@@ -61,6 +61,8 @@ public interface IProductRepository extends JpaRepository<Product, Long> {
     FROM Product p""")
     Page<ProductGridDTO> fetchProductGridPageable(@Param("status") boolean status, Pageable pageable);
 
+
+
     @Query("""
     SELECT new com.fashionweb.dto.request.product.ProductListDTO(
         p.prodId,
@@ -92,6 +94,26 @@ public interface IProductRepository extends JpaRepository<Product, Long> {
     )
     FROM Product p""")
     Page<ProductListDTO> fetchProductListPageable(Pageable pageable);
+
+    @Query("""
+    SELECT new com.fashionweb.dto.request.product.ProductListDTO(
+        p.prodId,
+        p.prodName,
+        p.description,
+        p.regular,
+        p.promo,
+        p.status,
+        p.createDate,
+        p.brand.brandId,
+        p.subcategory.subCateId,
+        (SELECT pi.imgURL FROM ProdImage pi WHERE pi.product.prodId = p.prodId ORDER BY pi.productImageId.stt ASC LIMIT 1)
+    )
+    FROM Product p WHERE
+        ( :subcategoryId IS NULL OR p.subcategory.subCateId = :subcategoryId ) AND
+        ( :status IS NULL OR p.status = :status )""")
+    Page<ProductListDTO> fetchProductListByCriteria(@Param("subcategoryId") Long subCateId,
+                                                    @Param("status") Boolean status,
+                                                    Pageable pageable);
 
     @Query("""
     SELECT new com.fashionweb.dto.request.product.ProductDetailDTO(
@@ -128,5 +150,6 @@ public interface IProductRepository extends JpaRepository<Product, Long> {
     )
     FROM Product p WHERE p.prodId = :prodId""")
     Optional<Product2DTO> fetchProduct2DTOById(@Param("prodId") Long prodId);
+
 }
     

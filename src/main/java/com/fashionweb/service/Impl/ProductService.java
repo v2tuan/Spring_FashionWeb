@@ -172,6 +172,10 @@ public class ProductService implements IProductService {
         return iProductRepository.fetchProductGrid(status);
     }
 
+    public Page<ProductGridDTO> findAllProductGridPageable(boolean status, Pageable pageable) {
+        return iProductRepository.fetchProductGridPageable(status, pageable);
+    }
+
     public List<ProductListDTO> findAllProductList() {
         return iProductRepository.fetchProductList();
     }
@@ -180,8 +184,8 @@ public class ProductService implements IProductService {
         return iProductRepository.fetchProductListPageable(pageable);
     }
 
-    public Page<ProductGridDTO> findAllProductGridPageable(boolean status, Pageable pageable) {
-        return iProductRepository.fetchProductGridPageable(status, pageable);
+    public Page<ProductListDTO> findAllProductListCriteriaPageable(Long subCateId, Boolean status, Pageable pageable) {
+        return iProductRepository.fetchProductListByCriteria(subCateId, status, pageable);
     }
 
     public Optional<ProductDetailDTO> findProductDetailByProdId(Long prodId) {
@@ -204,5 +208,16 @@ public class ProductService implements IProductService {
         }
 
         return Optional.empty();
+    }
+
+    public boolean disableProduct(Long prodId) {
+        try {
+            Product product = this.getProduct(prodId).get();
+            product.setStatus(false);
+            this.updateProduct(product);
+            return true;
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 }
