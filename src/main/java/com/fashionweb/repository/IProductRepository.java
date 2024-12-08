@@ -5,6 +5,7 @@ import com.fashionweb.dto.request.product.Product2DTO;
 import com.fashionweb.dto.request.product.ProductDetailDTO;
 import com.fashionweb.dto.request.product.ProductGridDTO;
 import com.fashionweb.dto.request.product.ProductListDTO;
+import com.fashionweb.dto.response.ProductResponeDTO;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -24,6 +25,27 @@ public interface IProductRepository extends JpaRepository<Product, Long> {
 
     List<Product> findAllByBrandBrandId(Long id);
     List<Product> findAllBySubcategoryCategoryCategoryId(Long categoryId);
+
+    @Query("""
+        SELECT new com.fashionweb.dto.response.ProductResponeDTO(
+            p.prodName, 
+            p.regular, 
+            p.promo, 
+            (SELECT pi.imgURL 
+             FROM ProdImage pi 
+             WHERE pi.product.prodId = p.prodId 
+             ORDER BY pi.productImageId.stt ASC 
+             LIMIT 1)
+        )
+        FROM Product p 
+        JOIN p.sizes s 
+        JOIN OrderItem oi ON s.id.sizeName = oi.size.id.sizeName AND s.id.prodId = oi.size.id.prodId
+        GROUP BY p.prodId, p.prodName, p.regular, p.promo
+        HAVING SUM(oi.quantity) > 10
+        ORDER BY SUM(oi.quantity) DESC
+        """)
+    List<ProductResponeDTO> findTopSellingProductSummaries();
+
 
     @Query("""
     SELECT new com.fashionweb.dto.request.product.ProductGridDTO(

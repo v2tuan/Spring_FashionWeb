@@ -1,6 +1,8 @@
 package com.fashionweb.Controllers.web;
 
 import com.fashionweb.Entity.Account;
+import com.fashionweb.dto.response.ProductResponeDTO;
+import com.fashionweb.repository.IProductRepository;
 import com.fashionweb.service.IStorageService;
 import com.fashionweb.service.Impl.AccountService;
 import com.fashionweb.service.Impl.AddressService;
@@ -17,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.List;
 import java.util.Optional;
 
 @Controller
@@ -28,6 +31,8 @@ public class WebController {
     AddressService addressService;
     @Autowired
     private IStorageService storageService;
+    @Autowired
+    IProductRepository productRepository;
 
     @GetMapping
     String home(Model model) {
@@ -41,6 +46,8 @@ public class WebController {
             model.addAttribute("avatar", account.get().getAvatar());
         }
 
+        List<ProductResponeDTO> listProduct = productRepository.findTopSellingProductSummaries();
+        model.addAttribute("products", listProduct);
         return "web/home";
     }
 

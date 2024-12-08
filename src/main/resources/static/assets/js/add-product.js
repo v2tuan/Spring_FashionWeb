@@ -106,7 +106,6 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     $('#productForm').on('submit', function (e) {
-        alert("áldkgfjpaskhjgdksdf")
         // Hiển thị spinner khi bắt đầu xử lý
         const spinner = new bootstrap.Modal(document.getElementById('loadingSpinner'));
         spinner.show();
@@ -137,7 +136,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
         // Gửi request bằng AJAX
         $.ajax({
-            url: `/admin/create-product`, // URL server xử lý
+            url: `/manager/create-product`, // URL server xử lý
             type: 'POST',          // Loại request
             // dataType: "json",
             processData: false,  // Không xử lý dữ liệu

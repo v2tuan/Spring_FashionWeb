@@ -64,7 +64,7 @@
                                                     <label class="mb-4 fs-13px ls-1 fw-bold text-uppercase"
                                                            for="promotional-price">Promotional price</label>
                                                     <input name="promo" placeholder="$" type="text" class="form-control"
-                                                           id="promotional-price">
+                                                           id="promotional-price" required>
                                                 </div>
                                             </div>
 
@@ -139,7 +139,7 @@
                                             <div class="col-sm-14 mb-6 px-3">
                                                 <label class="mb-4 fs-13px ls-1 fw-bold text-uppercase"
                                                        for="brand-select">Brands</label>
-                                                <select name="brandId" class="form-select" id="brand-select">
+                                                <select name="brandId" class="form-select" id="brand-select" required>
                                                     <option value=""> Select Brand</option>
                                                     <th:block th:each="brand : ${brands}">
                                                         <option th:value="${brand.brandId}"
@@ -150,7 +150,7 @@
                                             <div class="col-sm-14 mb-6 px-3">
                                                 <label class="mb-4 fs-13px ls-1 fw-bold text-uppercase"
                                                        for="sub-category">Sub-category</label>
-                                                <select name="subCateId" class="form-select" id="sub-category">
+                                                <select name="subCateId" class="form-select" id="sub-category" required>
                                                     <option value=""> Select Subcategory</option>
                                                     <th:block th:each="subcategory : ${subcategories}">
                                                         <option th:value="${subcategory.subCateId}"
