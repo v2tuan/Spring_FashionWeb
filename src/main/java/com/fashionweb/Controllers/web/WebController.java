@@ -1,9 +1,6 @@
 package com.fashionweb.Controllers.web;
 
 import com.fashionweb.Entity.Account;
-import com.fashionweb.Entity.Address;
-import com.fashionweb.Enum.Role;
-import com.fashionweb.Model.Response;
 import com.fashionweb.service.IStorageService;
 import com.fashionweb.service.Impl.AccountService;
 import com.fashionweb.service.Impl.AddressService;
@@ -88,11 +85,19 @@ public class WebController {
         return "web/manager_address";
     }
 
+    @GetMapping("/files/")
+    public ResponseEntity<Resource> serveDefaultFile() {
+        return serveFile("default.jpg");
+    }
+
     @GetMapping("/files/{filename}")
     public ResponseEntity<Resource> serveFile(@PathVariable String filename) {
         try {
             Resource file = storageService.loadAsResource(filename);
             String contentType = Files.probeContentType(Paths.get(file.getURI()));
+            if (contentType == null) {
+                contentType = "image/jpeg";
+            }
 
             return ResponseEntity.ok()
                     .header("Content-Type", contentType != null ? contentType : "application/octet-stream")
