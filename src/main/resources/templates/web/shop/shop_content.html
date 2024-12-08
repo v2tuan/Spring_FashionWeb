@@ -296,8 +296,7 @@
                                 </li>
                                 <li class="nav-item" th:each="category : ${categories}">
                                     <a href="" th:title="${category.cateName}"
-                                       class="text-reset position-relative d-block text-decoration-none text-body-emphasis-hover d-flex align-items-center text-uppercase fs-14px fw-semibold letter-spacing-5 active"
-                                       onclick="changeSorting(event)">
+                                       class="text-reset position-relative d-block text-decoration-none text-body-emphasis-hover d-flex align-items-center text-uppercase fs-14px fw-semibold letter-spacing-5 active">
                                         <span class="text-hover-underline me-2" th:text="${category.cateName}"></span>
                                         <span data-bs-toggle="collapse" th:data-bs-target="'#cat_' + ${category.cateId}"
                                               class="caret flex-grow-1 d-flex align-items-center justify-content-end collapsed">
