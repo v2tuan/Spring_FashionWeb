@@ -88,6 +88,11 @@ public class ProductService implements IProductService {
         return iProductRepository.findAllBySubcategoryCategoryCategoryId(cateId);
     }
 
+    @Override
+    public List<Product> findProductByProdName(String name) {
+        return List.of();
+    }
+
     public String getImgName(List<ProdImage> images) {
         if (images == null || images.isEmpty()) {
             return "default";
