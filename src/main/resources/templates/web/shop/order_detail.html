@@ -102,9 +102,8 @@
                   <td th:text="${item.sizeName}"></td>
                   <td th:text="${item.unitPrice}"></td>
                   <td th:text="${item.quantity}"></td>
-                  <input type="hidden" id="productId" th:value="${item.productId}">
                   <td>
-                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#customerReviewModal">Product Review</button>
+                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#customerReviewModal" th:attr="data-product-id=${item.productId}">Product Review</button>
                   </td>
                 </tr>
                 <tr>
@@ -152,48 +151,39 @@
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
-          <form class="product-review-form" id="reviewForm">
+          <form class="product-review-form" id="reviewForm" enctype="multipart/form-data">
+            <input type="hidden" id="modalProductId" name="productId">
+            <input type="hidden" name="accId" th:value="${orderDetail.accId}">
             <div>
               <p class="mt-4 mb-5 fs-6 fw-semibold text-body-emphasis">Your Rating*</p>
               <div class="form-group mb-6 d-flex justify-content-start">
                 <div class="rate-input">
-                  <input type="radio" id="star5" name="rate" value="5">
-                  <label for="star5" title="text" class="mb-0 mr-1 lh-1">
-                    <i class="far fa-star"></i>
-                  </label>
-                  <input type="radio" id="star4" name="rate" value="4">
-                  <label for="star4" title="text" class="mb-0 mr-1 lh-1">
-                    <i class="far fa-star"></i>
-                  </label>
-                  <input type="radio" id="star3" name="rate" value="3">
-                  <label for="star3" title="text" class="mb-0 mr-1 lh-1">
-                    <i class="far fa-star"></i>
-                  </label>
-                  <input type="radio" id="star2" name="rate" value="2">
-                  <label for="star2" title="text" class="mb-0 mr-1 lh-1">
-                    <i class="far fa-star"></i>
-                  </label>
-                  <input type="radio" id="star1" name="rate" value="1">
-                  <label for="star1" title="text" class="mb-0 mr-1 lh-1">
-                    <i class="far fa-star"></i>
-                  </label>
+                  <input type="radio" id="star5" name="rating" value="5">
+                  <label for="star5" title="text"><i class="far fa-star"></i></label>
+
+                  <input type="radio" id="star4" name="rating" value="4">
+                  <label for="star4" title="text"><i class="far fa-star"></i></label>
+
+                  <input type="radio" id="star3" name="rating" value="3">
+                  <label for="star3" title="text"><i class="far fa-star"></i></label>
+
+                  <input type="radio" id="star2" name="rating" value="2">
+                  <label for="star2" title="text"><i class="far fa-star"></i></label>
+
+                  <input type="radio" id="star1" name="rating" value="1">
+                  <label for="star1" title="text"><i class="far fa-star"></i></label>
                 </div>
               </div>
             </div>
 
-            <div class="form-group mb-7">
-              <label class="mb-4 fs-6 fw-semibold text-body-emphasis" for="reviewTitle">Title of Review:</label>
-              <input id="reviewTitle" type="text" name="title" class="form-control">
-            </div>
-
             <div class="form-group mb-10">
-              <label class="mb-4 fs-6 fw-semibold text-body-emphasis" for="reviewMessage">How was your overall experience?</label>
-              <textarea id="reviewMessage" class="form-control" name="message" rows="5"></textarea>
+              <label class="mb-4 fs-6 fw-semibold text-body-emphasis" for="reviewMessage">Comment:</label>
+              <textarea id="reviewMessage" class="form-control" name="comment" rows="5"></textarea>
             </div>
 
             <div class="form-group mb-4">
-              <label class="mb-4 fs-6 fw-semibold text-body-emphasis" for="reviewImages">Upload Images (Max 5)</label>
-              <input type="file" class="form-control" id="reviewImages" name="images[]" multiple accept="image/*">
+              <label class="mb-4 fs-6 fw-semibold text-body-emphasis" for="reviewImages">Upload Image:</label>
+              <input type="file" class="form-control" id="reviewImages" name="images">
               <small id="imageError" class="text-danger d-none">You can upload a maximum of 5 images.</small>
             </div>
 
@@ -209,8 +199,56 @@
       </div>
     </div>
   </div>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
   <script>
+    $(document).on("click", "button[data-product-id]", function () {
+      const productId = $(this).data("product-id");
+      $("#modalProductId").val(productId);         // Gán giá trị cho input ẩn trong modal
+    });
+
+    $("#reviewForm").on("submit", function (event) {
+      event.preventDefault();
+
+      const formData = new FormData(this);
+      const productId = $("#modalProductId").val();
+
+      if (!productId) {
+        alert("Product ID is missing!");
+        return;
+      }
+
+      // const file = $("#reviewImages")[0].files[0]; // Chỉ lấy file đầu tiên
+      // if (file) {
+      //   formData.append("image", file); // Thêm file vào formData
+      // } else {
+      //   alert("Please select an image!");
+      //   return;
+      // }
+      //
+      // formData.append("rating", rating);
+      formData.append("prodId", productId);
+      const spinner = new bootstrap.Modal(document.getElementById('loadingSpinner'));
+      spinner.show();
+      $.ajax({
+        url: "/user/prod-reviews/createprodreview",
+        type: "POST",
+        data: formData,
+        processData: false,
+        contentType: false,
+        success: function () {
+          spinner.hide();
+          alert("Review submitted successfully!");
+        },
+        error: function (xhr, status, error) {
+          spinner.hide();
+          console.error('Error:', error);
+          console.error('Response:', xhr.responseText);  // In ra phản hồi từ server để debug
+          alert("An unexpected error occurred. Please try again.");
+        }
+      });
+    });
+
     document.getElementById("reviewImages").addEventListener("change", function(event) {
       const imagePreview = document.getElementById("imagePreview");
       const files = event.target.files;

@@ -227,12 +227,12 @@
 
                 <div class="row align-items-end">
                     <div class="form-group col-sm-4">
-                        <label class=" text-body-emphasis fw-semibold fs-15px pb-6" for="number">Quantity: </label>
+                        <label class=" text-body-emphasis fw-semibold fs-15px pb-6" for="quantity">Quantity: </label>
                         <div class="input-group position-relative w-100 input-group-lg">
                             <a href="#"
                                class="shop-down position-absolute translate-middle-y top-50 start-0 ps-7 product-info-2-minus"><i
                                     class="far fa-minus"></i></a>
-                            <input name="number" type="number" id="number"
+                            <input name="number" type="number" id="quantity"
                                    class="product-info-2-quantity form-control w-100 px-6 text-center" value="1"
                                    required="">
                             <a href="#"
@@ -243,11 +243,71 @@
                     </div>
                     <div class="col-sm-8 pt-9 mt-2 mt-sm-0 pt-sm-0">
                         <button type="submit"
-                                class="btn-hover-bg-primary btn-hover-border-primary btn btn-lg btn-dark w-100">Add To
-                            Bag
+                                class="btn-hover-bg-primary btn-hover-border-primary btn btn-lg btn-dark w-100"
+                                th:attr="onclick=|addToCart(${product.prodId})|">Add To Cart
                         </button>
                     </div>
                 </div>
+                <script>
+                    function addToCart(productId) {
+                        let price;
+
+                        const isSale = document.querySelector('.fs-18px.text-body-emphasis.ps-6.fw-bold');
+
+                        if (isSale) {
+                            // Lấy giá khi có giảm giá
+                            price = parseFloat(isSale.textContent.trim().replace(/[^0-9.]/g, ''));
+                        } else {
+                            // Lấy giá khi không có giảm giá
+                            const regularPriceElement = document.querySelector('.fs-18px.text-body-emphasis.fw-bold');
+                            if (regularPriceElement) {
+                                price = parseFloat(regularPriceElement.textContent.trim().replace(/[^0-9.]/g, ''));
+                            } else {
+                                console.error('Price element not found!');
+                                alert('Price element not found!');
+                                return; // Dừng thực thi nếu không tìm thấy giá
+                            }
+                        }
+
+                        // Lấy giá trị từ form
+                        const form = document.querySelector('.product-info-custom');
+                        const quantity = document.getElementById('quantity').value; // Lấy giá trị quantity từ input
+                        const sizeElement = form.querySelector('input[name="productSize"]:checked'); // Lấy phần tử size được chọn
+
+                        if (!sizeElement) {
+                            alert('Please select a size');
+                            return;
+                        }
+
+                        const size = form.querySelector(`label[for="${sizeElement.id}"]`).textContent.trim();
+
+                        // Lấy ngày tạo
+                        const createDate = new Date().toISOString().split('T')[0];
+
+                        // Tạo đối tượng giỏ hàng
+                        const cartItem = {
+                            prodId: productId,
+                            quantity: quantity,
+                            price: price,
+                            sizeName: size,
+                            createDate: createDate
+                        };
+
+                        $.ajax({
+                            url: '/account/cart-items/add',
+                            method: 'POST',
+                            contentType: 'application/json',
+                            data: JSON.stringify(cartItem),
+                            success: function() {
+                                alert("Item added to cart!");
+                            },
+                            error: function(xhr, status, error) {
+                                console.error('Error adding item to cart:', error);
+                                alert('An error occurred while adding the item to your cart. Please try again.');
+                            }
+                        });
+                    }
+                </script>
 
                 </form>
                 <div class="d-flex align-items-center flex-wrap" style="padding-top: 20px;">    <!--#-->
@@ -1552,6 +1612,7 @@
             </div>
         </div>
     </section>
+
 </main>
 
 </html>
