@@ -11,6 +11,8 @@ import com.fashionweb.dto.request.product.ProductListDTO;
 import com.fashionweb.repository.IProductRepository;
 import com.fashionweb.service.IProductService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -165,19 +167,52 @@ public class ProductService implements IProductService {
         return iProductRepository.fetchProductGrid(status);
     }
 
+    public Page<ProductGridDTO> findAllProductGridPageable(boolean status, Pageable pageable) {
+        return iProductRepository.fetchProductGridPageable(status, pageable);
+    }
+
     public List<ProductListDTO> findAllProductList() {
         return iProductRepository.fetchProductList();
+    }
+
+    public Page<ProductListDTO> findAllProductListPageable(Pageable pageable) {
+        return iProductRepository.fetchProductListPageable(pageable);
+    }
+
+    public Page<ProductListDTO> findAllProductListCriteriaPageable(Long subCateId, Boolean status, Pageable pageable) {
+        return iProductRepository.fetchProductListByCriteria(subCateId, status, pageable);
     }
 
     public Optional<ProductDetailDTO> findProductDetailByProdId(Long prodId) {
         Optional<ProductDetailDTO> productDetailDTO = iProductRepository.fetchProductDetailById(prodId);
         if (productDetailDTO.isPresent()) {
-            Long pId = productDetailDTO.get().getProdId();
             productDetailDTO.get().setImgURL(prodImageService.findImageNamesByProdId(prodId));
             productDetailDTO.get().setSizeDTOs(sizeService.findSizeDTOsByProdId(prodId));
             return productDetailDTO;
         }
 
         return Optional.empty();
+    }
+
+    public Optional<Product2DTO> findProduct2DTOByProdId(Long prodId) {
+        Optional<Product2DTO> product2DTO = iProductRepository.fetchProduct2DTOById(prodId);
+        if (product2DTO.isPresent()) {
+            product2DTO.get().setImgURLs(prodImageService.findImageNamesByProdId(prodId));
+            product2DTO.get().setSizeDTOs(sizeService.findSizeDTOsByProdId(prodId));
+            return product2DTO;
+        }
+
+        return Optional.empty();
+    }
+
+    public boolean disableProduct(Long prodId) {
+        try {
+            Product product = this.getProduct(prodId).get();
+            product.setStatus(false);
+            this.updateProduct(product);
+            return true;
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 }

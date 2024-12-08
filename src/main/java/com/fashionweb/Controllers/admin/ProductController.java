@@ -3,12 +3,18 @@ package com.fashionweb.Controllers.admin;
 import com.fashionweb.Entity.*;
 import com.fashionweb.Entity.Embeddable.ProductImagesId;
 import com.fashionweb.Entity.Embeddable.SizeId;
+import com.fashionweb.dto.request.BrandDTO;
 import com.fashionweb.dto.request.category.SubcategoryListDTO;
+import com.fashionweb.dto.request.product.Product2DTO;
 import com.fashionweb.dto.request.product.ProductDTO;
 import com.fashionweb.dto.request.product.ProductListDTO;
 import com.fashionweb.service.Impl.*;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -36,23 +42,6 @@ public class ProductController {
     @Autowired
     private ProdImageService prodImageService;
 
-    public List<ProductListDTO> simplifiedProduct(List<Product> products) {
-        return products.stream().map(product -> {
-            ProductListDTO productListDTO = new ProductListDTO();
-            productListDTO.setProdId(product.getProdId());
-            productListDTO.setProdName(product.getProdName());
-            productListDTO.setDescription(product.getDescription());
-            productListDTO.setRegular(product.getRegular());
-            productListDTO.setPromo(product.getPromo());
-            productListDTO.setStatus(product.getStatus() != null && product.getStatus());
-            productListDTO.setCreateDate(product.getCreateDate());
-            productListDTO.setImgURL(productService.getImgName(product.getImages()));
-            productListDTO.setBrandId(product.getBrand().getBrandId());
-            productListDTO.setSubCateId(product.getSubcategory().getSubCateId());
-            return productListDTO;
-        }).toList();
-    }
-
     @GetMapping("/products")
     @ResponseBody
     ResponseEntity<?> getProducts() {
@@ -60,19 +49,62 @@ public class ProductController {
         return ResponseEntity.ok(ProductLists);
     }
 
-    @GetMapping("/productlist")
-    String showProductList(Model model) {
+    @GetMapping("/objects")
+    @ResponseBody
+    ResponseEntity<?> getObjects() {
+        return ResponseEntity.ok(brandService.getBrandDTOs());
+    }
+
+    //@GetMapping("/product-list")
+    String showProductList(@RequestParam(value = "page", defaultValue = "0") int page,
+                           @RequestParam(value = "size", defaultValue = "10") int size,
+                           Model model) {
+        Pageable pageable = PageRequest.of(page, size);
+        Page<ProductListDTO> ProductLists = productService.findAllProductListPageable(pageable);
         List<SubcategoryListDTO> Subcategories = subcategoryService.findAllSubcategoryList();
-        List<ProductListDTO> ProductLists = productService.findAllProductList();
         model.addAttribute("subcategories", Subcategories);
-        model.addAttribute("products", ProductLists);
+        model.addAttribute("products", ProductLists.getContent());
+        model.addAttribute("currentPage", page);
+        model.addAttribute("totalPages", ProductLists.getTotalPages());
 
         return "admin/product_list";
     }
 
-    @GetMapping("/addproduct")
+    @GetMapping("/product-list")
+    String showProductList(@RequestParam(value = "page", defaultValue = "0") int page,
+                           @RequestParam(value = "size", defaultValue = "10") int size,
+                           @RequestParam(value = "subcategoryId", required = false) Long subCateId,
+                           @RequestParam(value = "status", required = false) Boolean status,
+                           Model model) {
+
+        Pageable pageable = PageRequest.of(page, size);
+        List<SubcategoryListDTO> Subcategories = subcategoryService.findAllSubcategoryList();
+        Page<ProductListDTO> ProductLists = productService.findAllProductListCriteriaPageable(subCateId, status, pageable);
+
+        model.addAttribute("subcategories", Subcategories);
+        model.addAttribute("products", ProductLists.getContent());
+        model.addAttribute("selectedSubCate", subCateId);
+        model.addAttribute("selectedStatus", status);
+        model.addAttribute("currentPage", page);
+        model.addAttribute("totalPages", ProductLists.getTotalPages());
+
+        return "admin/product_list";
+    }
+
+    @GetMapping("/paginatedproducts")
+    @ResponseBody
+    public ResponseEntity<Page<ProductListDTO>> getPaginatedProducts(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(defaultValue = "prodName") String sortBy) {
+        Pageable pageable = PageRequest.of(page, size, Sort.by(sortBy));
+
+        return ResponseEntity.ok(productService.findAllProductListPageable(pageable));
+    }
+
+    @GetMapping("/add-product")
     public String AddProductForm(Model model) {
-        List<Brand> Brands = brandService.getAll();
+        List<BrandDTO> Brands = brandService.getBrandDTOs();
         List<SubcategoryListDTO> Subcategories = subcategoryService.findAllSubcategoryList();
 
         model.addAttribute("brands", Brands);
@@ -82,7 +114,7 @@ public class ProductController {
         return "admin/addOrEditProduct";
     }
 
-    @PostMapping("/createproduct")
+    @PostMapping("/create-product")
     @ResponseBody
     public ResponseEntity<?> createProduct(@ModelAttribute @Valid ProductDTO productDto) {
         Product product = new Product();
@@ -147,28 +179,28 @@ public class ProductController {
         }
     }
 
-    @GetMapping("/editproduct/id={prodId}")
+    @GetMapping("/edit-product/id={prodId}")
     public String EditProductForm(@PathVariable("prodId") Long prodId, Model model) {
-        List<Brand> Brands = brandService.getAll();
-        List<Subcategory> Subcategories = subcategoryService.getAll();
-        Product product = productService.getProduct(prodId).get();
+        List<BrandDTO> Brands = brandService.getBrandDTOs();
+        List<SubcategoryListDTO> Subcategories = subcategoryService.findAllSubcategoryList();
+        Product2DTO product = productService.findProduct2DTOByProdId(prodId).get();
 
         model.addAttribute("brands", Brands);
         model.addAttribute("subcategories", Subcategories);
-        model.addAttribute("product", productService.product2DTO(product));
+        model.addAttribute("product", product);
 
         return "admin/editProduct";
     }
 
-    @PostMapping("/deleteproduct/{id}")
-    public String deleteProduct(@PathVariable Long id, Model model) {
-        boolean isDeleted = productService.deleteProduct(id);
+    @GetMapping("/delete-product/id={prodId}")
+    String deleteProduct(@PathVariable("prodId") Long prodId, Model model) {
+        boolean isDeleted = productService.disableProduct(prodId);
         if (isDeleted) {
             model.addAttribute("message", "Đã xóa sản phẩm");
         } else {
             model.addAttribute("error", "Xóa sản phẩm thất bại");
         }
-        return "redirect:/admin/productlist";
+        return "redirect:/admin/product-list";
     }
 
     @GetMapping("/orderlist")

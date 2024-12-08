@@ -1,17 +1,12 @@
 package com.fashionweb.Controllers.web;
 
 import com.fashionweb.Entity.Account;
-import com.fashionweb.Entity.Address;
-import com.fashionweb.Enum.Role;
-import com.fashionweb.Model.Response;
 import com.fashionweb.service.IStorageService;
 import com.fashionweb.service.Impl.AccountService;
 import com.fashionweb.service.Impl.AddressService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.scheduling.support.SimpleTriggerContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -22,7 +17,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.List;
 import java.util.Optional;
 
 @Controller
@@ -57,11 +51,6 @@ public class WebController {
     String userLogin() { return "web/user-login"; }
 
 
-    @GetMapping("/product-detail")
-    String productDetail() {
-        return "web/shop/product_detail";
-    }
-
     @GetMapping("/check-out")
     String checkOut() {
         return "web/shop/check_out";
@@ -90,11 +79,19 @@ public class WebController {
         return "web/manager_address";
     }
 
+    @GetMapping("/files/")
+    public ResponseEntity<Resource> serveDefaultFile() {
+        return serveFile("default.jpg");
+    }
+
     @GetMapping("/files/{filename}")
     public ResponseEntity<Resource> serveFile(@PathVariable String filename) {
         try {
             Resource file = storageService.loadAsResource(filename);
             String contentType = Files.probeContentType(Paths.get(file.getURI()));
+            if (contentType == null) {
+                contentType = "image/jpeg";
+            }
 
             return ResponseEntity.ok()
                     .header("Content-Type", contentType != null ? contentType : "application/octet-stream")
@@ -104,8 +101,9 @@ public class WebController {
         }
     }
 
-    @GetMapping("/prodreview")
-    String prodReview(){
+    @GetMapping("/testhtml")
+    public String runTestHtml() {
         return "web/testpopupreview";
     }
+
 }

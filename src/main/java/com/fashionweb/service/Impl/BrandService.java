@@ -2,6 +2,7 @@ package com.fashionweb.service.Impl;
 
 import com.fashionweb.Entity.Brand;
 import com.fashionweb.Entity.Product;
+import com.fashionweb.dto.request.BrandDTO;
 import com.fashionweb.repository.IBrandRepository;
 import com.fashionweb.repository.IProductRepository;
 import com.fashionweb.service.IBrandService;
@@ -69,4 +70,7 @@ public class BrandService implements IBrandService {
 
     }
 
+    public List<BrandDTO> getBrandDTOs() {
+        return brandRepos.fetchBrandDTOs();
+    }
 }

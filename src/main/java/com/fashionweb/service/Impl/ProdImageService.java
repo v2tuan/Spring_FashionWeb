@@ -61,4 +61,5 @@ public class ProdImageService implements IProdImageService {
     public List<String> findImageNamesByProdId(Long prodId) {
         return iProdImageRepository.fetchImageNamesByProdId(prodId);
     }
+
 }

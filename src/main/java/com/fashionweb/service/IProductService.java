@@ -17,6 +17,7 @@ public interface IProductService {
     List<Product> getProductsBySubcategory(Long subCateId); // Tìm sản phẩm theo subcategoryId
     List<Product> getProductsByStatus(Boolean status); // Tìm sản phẩm theo trạng thái
     List<Product> findProductsByCategoryId(Long cateId);
+    public List<Product> findProductByProdName(String name);
 
     Product2DTO product2DTO(Product product);
 
