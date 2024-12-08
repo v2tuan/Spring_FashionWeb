@@ -7,11 +7,11 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.List;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-
 public class OrderDTO {
     private Long accountId; // ID của tài khoản đặt hàng
     private Long discountId; // (Tùy chọn) ID của mã giảm giá

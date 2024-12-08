@@ -2,6 +2,8 @@ package com.fashionweb.service.Impl;
 
 import com.fashionweb.Entity.OrderItem;
 import com.fashionweb.Entity.Embeddable.OrderItemsId;
+import com.fashionweb.dto.request.orderAdmin.ItemDetailDTO;
+import com.fashionweb.dto.request.orderAdmin.OrderDetailAdminDTO;
 import com.fashionweb.repository.IOrderItemRepository;
 import com.fashionweb.service.IOrderItemService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,21 +18,7 @@ public class OrderItemService implements IOrderItemService {
     private IOrderItemRepository orderItemRepository;
     @Override
     public <S extends OrderItem> S save(S orderDetail) {
-        // Kiểm tra nếu ID bị null
-        if (orderDetail.getId() == null) {
-            throw new IllegalArgumentException("OrderDetailsId must not be null.");
-        }
-
-        // Kiểm tra sự tồn tại của OrderDetail theo khóa chính
-        Optional<OrderItem> existingOrderDetail = orderItemRepository.findById(orderDetail.getId());
-
-        if (existingOrderDetail.isPresent()) {
-            // Nếu đã tồn tại, cập nhật bản ghi
-            return orderItemRepository.save(orderDetail);
-        } else {
-            // Nếu chưa tồn tại, lưu bản ghi mới
-            return orderItemRepository.save(orderDetail);
-        }
+        return orderItemRepository.save(orderDetail);
     }
 
     @Override
@@ -46,5 +34,10 @@ public class OrderItemService implements IOrderItemService {
     @Override
     public void deleteById(OrderItemsId orderDetailId) {
         orderItemRepository.deleteById(orderDetailId);
+    }
+
+    @Override
+    public List<ItemDetailDTO> fetchOrderItems(Long orderId) {
+        return orderItemRepository.fetchOrderItems(orderId);
     }
 }

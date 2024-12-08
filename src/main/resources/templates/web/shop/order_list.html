@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{web/web_layout.html}">
+
+<div class="dashboard-page-content" th:fragment="content">
+    <div th:if="${message}" class="alert alert-info" role="alert">
+        <span th:text="${message}"></span>
+    </div>
+    <div class="card mb-4 rounded-4 p-7">
+        <div class="card-header bg-transparent px-0 pt-0 pb-7">
+            <div class="row align-items-center">
+                <div class="col-md-6 col-12 mb-6">
+                    <h4 class="card-title fs-24px mb-0">My orders</h4>
+                </div>
+
+                <div class="col-md-6 col-12 d-flex justify-content-end">
+                    <form action="/account/orders" method="get" class="d-flex align-items-center">
+                        <input type="date" class="form-control bg-input border-0" name="orderDate" style="width: 200px;">
+
+                        <select class="form-select ms-6" name="orderStatus" style="width: 150px;">
+                            <option value="">All</option>
+                            <option value="NEW">New</option>
+                            <option value="CONFIRMED">Confirmed</option>
+                            <option value="DELIVERING">Delivering</option>
+                            <option value="DELIVERED">Delivered</option>
+                            <option value="CANCEL">Cancel</option>
+                            <option value="RETURNED">Returned</option>
+                        </select>
+
+                        <!-- Submit button -->
+                        <button type="submit" class="btn btn-primary ms-6">Filter</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div class="card-body px-0 pt-7 pb-0">
+            <div class="table-responsive">
+                <table class="table table-hover align-middle table-nowrap mb-0 table-borderless">
+                    <thead class="table-light">
+                        <tr>
+                            <th></th>
+                            <th class="align-middle" scope="col">Order ID
+                            </th>
+                            <th class="align-middle" scope="col">Address ID
+                            </th>
+                            <th class="align-middle" scope="col">Discount ID
+                            </th>
+                            <th class="align-middle" scope="col">Total
+                            </th>
+                            <th class="align-middle" scope="col">Date
+                            </th>
+                            <th class="align-middle" scope="col">Status
+                            </th>
+                            <th class="align-middle text-center" scope="col">View Details
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="order : ${orders}">
+                        <td></td>
+                        <td th:text="${order.getOrderId()}"></td>
+                        <td th:text="${order.getAddressId()}"></td>
+                        <td th:text="${order.getDiscountId()}"></td>
+                        <td th:text="${order.getTotal()}"></td>
+                        <td th:text="${order.getCreateDate()}"></td>
+                        <td>
+                            <span th:class="'badge rounded-lg ' + (order.status == 'paid' ? 'badge-soft-success' : 'badge-soft-warning')"
+                                  th:text="${order.getStatus()}"></span>
+                        </td>
+                        <td class="text-center">
+                            <a th:href="@{/admin/order-detail/{id}(id=${order.getOrderId()})}"
+                               class="btn btn-primary fs-13px btn-xs py-4">View details</a>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <nav aria-label="Page navigation example" class="mt-6 mb-4">
+        <ul class="pagination justify-content-start">
+            <li th:class="${currentPage == 0 ? 'page-item disabled' : 'page-item'}">
+                <a th:href="@{/account/orders(page=${currentPage - 1})}" class="page-link">&lt;</a>
+            </li>
+
+            <th:block th:each="pageNumber : ${#numbers.sequence(0, totalPages - 1)}">
+                <li th:class="${pageNumber == currentPage ? 'page-item active' : 'page-item'}">
+                    <a th:href="@{/account/orders(page=${pageNumber})}" class="page-link" th:text="${pageNumber + 1}"></a>
+                </li>
+            </th:block>
+
+            <li th:class="${currentPage == totalPages - 1 ? 'page-item disabled' : 'page-item'}">
+                <a th:href="@{/account/orders(page=${currentPage + 1})}" class="page-link">&gt;</a>
+            </li>
+        </ul>
+    </nav>
+</div>
