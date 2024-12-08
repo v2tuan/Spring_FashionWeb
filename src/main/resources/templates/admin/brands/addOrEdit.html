@@ -60,37 +60,37 @@
                         </div>
                     </div>
 
-<!--                    <script>-->
-<!--                        document.getElementById('images').addEventListener('change', function(event) {-->
-<!--                            const uploadPlaceholder = document.getElementById('uploadPlaceholder');-->
-<!--                            uploadPlaceholder.innerHTML = ''; // Clear the placeholder content-->
+                    <script>
+                        document.getElementById('images').addEventListener('change', function(event) {
+                            const uploadPlaceholder = document.getElementById('uploadPlaceholder');
+                            uploadPlaceholder.innerHTML = ''; // Clear the placeholder content
 
-<!--                            const files = event.target.files;-->
-<!--                            for (let i = 0; i < files.length; i++) {-->
-<!--                                const file = files[i];-->
-<!--                                if (file && file.type.startsWith('image/')) {-->
-<!--                                    const reader = new FileReader();-->
-<!--                                    reader.onload = function(e) {-->
-<!--                                        const img = document.createElement('img');-->
-<!--                                        img.src = e.target.result;-->
-<!--                                        img.width = 100; // Set width or style as needed-->
-<!--                                        img.classList.add('d-block', 'mx-auto', 'mb-2');-->
-<!--                                        uploadPlaceholder.appendChild(img);-->
-<!--                                    };-->
-<!--                                    reader.readAsDataURL(file);-->
-<!--                                }-->
-<!--                            }-->
-<!--                        });-->
+                            const files = event.target.files;
+                            for (let i = 0; i < files.length; i++) {
+                                const file = files[i];
+                                if (file && file.type.startsWith('image/')) {
+                                    const reader = new FileReader();
+                                    reader.onload = function(e) {
+                                        const img = document.createElement('img');
+                                        img.src = e.target.result;
+                                        img.width = 100; // Set width or style as needed
+                                        img.classList.add('d-block', 'mx-auto', 'mb-2');
+                                        uploadPlaceholder.appendChild(img);
+                                    };
+                                    reader.readAsDataURL(file);
+                                }
+                            }
+                        });
 
-<!--                        // // Clear uploaded images and reset the upload icon when modal is closed-->
-<!--                        // const modal = document.getElementById('addBrandModal');-->
-<!--                        // modal.addEventListener('hidden.bs.modal', function () {-->
-<!--                        //     const uploadPlaceholder = document.getElementById('uploadPlaceholder');-->
-<!--                        //     document.getElementById('brandName').value = '';-->
-<!--                        //     uploadPlaceholder.innerHTML = '<img src="/assets/images/dashboard/upload.svg" width="102" class="d-block mx-auto" alt="Upload Icon">';-->
-<!--                        //     document.getElementById('images').value = '';-->
-<!--                        // });-->
-<!--                    </script>-->
+                        // Clear uploaded images and reset the upload icon when modal is closed
+                        const modal = document.getElementById('addBrandModal');
+                        modal.addEventListener('hidden.bs.modal', function () {
+                            const uploadPlaceholder = document.getElementById('uploadPlaceholder');
+                            document.getElementById('brandName').value = '';
+                            uploadPlaceholder.innerHTML = '<img src="/assets/images/dashboard/upload.svg" width="102" class="d-block mx-auto" alt="Upload Icon">';
+                            document.getElementById('images').value = '';
+                        });
+                    </script>
                 </div>
             </div>
 
@@ -99,27 +99,29 @@
                 <div class="card-header bg-transparent px-0 pt-0 pb-7">
                     <div class="row align-items-center justify-content-between">
                         <div class="col-md-3 col-12 mr-auto mb-md-0 mb-6">
-                            <input type="text" placeholder="Search." class="form-control bg-input border-0">
+                            <form action="/admin/brands/search" method="GET">
+                                <input type="text" name="brandName" placeholder="Search" class="form-control bg-input border-0">
+                            </form>
                         </div>
                         <div class="col-md-8">
                             <div class="row justify-content-end flex-nowrap d-flex">
                                 <div class="col-lg-3 col-md-6 col-6">
-                                    <select class="form-select">
-                                        <option selected="" data-select2-id="3">All Categories</option>
-                                        <option>Women's Clothing</option>
-                                        <option>Men's Clothing</option>
-                                        <option>Cellphones</option>
-                                        <option>Computer &amp; Office</option>
-                                        <option>Consumer Electronics</option>
-                                        <option>Jewelry &amp; Accessories</option>
-                                        <option>Home &amp; Garden</option>
-                                        <option>Luggage &amp; Bags</option>
-                                        <option>Shoes</option>
-                                        <option>Mother &amp; Kids</option>
-                                    </select>
+<!--                                    <select class="form-select">-->
+<!--                                        <option selected="" data-select2-id="3">All Categories</option>-->
+<!--                                        <option>Women's Clothing</option>-->
+<!--                                        <option>Men's Clothing</option>-->
+<!--                                        <option>Cellphones</option>-->
+<!--                                        <option>Computer &amp; Office</option>-->
+<!--                                        <option>Consumer Electronics</option>-->
+<!--                                        <option>Jewelry &amp; Accessories</option>-->
+<!--                                        <option>Home &amp; Garden</option>-->
+<!--                                        <option>Luggage &amp; Bags</option>-->
+<!--                                        <option>Shoes</option>-->
+<!--                                        <option>Mother &amp; Kids</option>-->
+<!--                                    </select>-->
                                 </div>
                                 <div class="col-lg-3 col-md-6 col-6">
-                                    <input type="date"  class="form-control bg-input border-0">
+<!--                                    <input type="date"  class="form-control bg-input border-0">-->
                                 </div>
                             </div>
                         </div>

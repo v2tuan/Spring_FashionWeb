@@ -63,4 +63,10 @@ public class BrandService implements IBrandService {
         return productRepos.findAllByBrandBrandId(id);
     }
 
+    @Override
+    public Optional<Brand> findByBrandName(String brandName) {
+        return brandRepos.findByBrandName(brandName);
+
+    }
+
 }

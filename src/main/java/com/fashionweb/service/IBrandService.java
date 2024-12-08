@@ -16,4 +16,5 @@ public interface IBrandService {
     void deleteBrand(Long id);
     List<Product> getProductsByBrandId(Long id);
 
+    Optional<Brand> findByBrandName(String brandName);
 }
