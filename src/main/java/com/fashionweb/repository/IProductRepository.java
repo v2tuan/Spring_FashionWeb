@@ -51,16 +51,16 @@ public interface IProductRepository extends JpaRepository<Product, Long> {
     SELECT new com.fashionweb.dto.request.product.ProductGridDTO(
         p.prodId,
         p.prodName,
-        p.regular,
-        p.promo,
+        COALESCE(p.regular, 0),
+        COALESCE(p.promo, 0),
         p.createDate,
-        (CASE WHEN p.promo < p.regular THEN TRUE ELSE FALSE END),
-        (CASE WHEN p.promo < p.regular THEN CAST(100 * (1 - p.promo / p.regular) AS integer) ELSE 0 END),
-        null,
+        (CASE WHEN COALESCE(p.promo, 0) < COALESCE(p.regular, 0) THEN TRUE ELSE FALSE END),
+        (CASE WHEN COALESCE(p.promo, 0) < COALESCE(p.regular, 0) THEN CAST(100 * (1 - COALESCE(p.promo, 0) / p.regular) AS integer) ELSE 0 END),
+        false,
         p.brand.brandId,
         p.subcategory.subCateId,
         (SELECT pi.imgURL FROM ProdImage pi WHERE pi.product.prodId = p.prodId ORDER BY pi.productImageId.stt ASC LIMIT 1),
-        (SELECT COALESCE(AVG(pr.rating), 0) FROM ProdReview pr WHERE pr.product.prodId = p.prodId),
+        (SELECT COALESCE(AVG(pr.rating), 0)*20 FROM ProdReview pr WHERE pr.product.prodId = p.prodId),
         (SELECT COUNT(pr) FROM ProdReview pr WHERE pr.product.prodId = p.prodId)
     )
     FROM Product p""")
@@ -70,16 +70,16 @@ public interface IProductRepository extends JpaRepository<Product, Long> {
     SELECT new com.fashionweb.dto.request.product.ProductGridDTO(
         p.prodId,
         p.prodName,
-        p.regular,
-        p.promo,
+        COALESCE(p.regular, 0),
+        COALESCE(p.promo, 0),
         p.createDate,
-        (CASE WHEN p.promo < p.regular THEN TRUE ELSE FALSE END),
-        (CASE WHEN p.promo < p.regular THEN CAST(100 * (1 - p.promo / p.regular) AS integer) ELSE 0 END),
-        null,
+        (CASE WHEN COALESCE(p.promo, 0) < COALESCE(p.regular, 0) THEN TRUE ELSE FALSE END),
+        (CASE WHEN COALESCE(p.promo, 0) < COALESCE(p.regular, 0) THEN CAST(100 * (1 - COALESCE(p.promo, 0) / p.regular) AS integer) ELSE 0 END),
+        false,
         p.brand.brandId,
         p.subcategory.subCateId,
         (SELECT pi.imgURL FROM ProdImage pi WHERE pi.product.prodId = p.prodId ORDER BY pi.productImageId.stt ASC LIMIT 1),
-        (SELECT COALESCE(AVG(pr.rating), 0) FROM ProdReview pr WHERE pr.product.prodId = p.prodId),
+        (SELECT COALESCE(AVG(pr.rating), 0)*20 FROM ProdReview pr WHERE pr.product.prodId = p.prodId),
         (SELECT COUNT(pr) FROM ProdReview pr WHERE pr.product.prodId = p.prodId)
     )
     FROM Product p WHERE ( :status IS NULL OR p.status = :status )""")
@@ -98,7 +98,7 @@ public interface IProductRepository extends JpaRepository<Product, Long> {
         p.brand.brandId,
         p.subcategory.subCateId,
         (SELECT pi.imgURL FROM ProdImage pi WHERE pi.product.prodId = p.prodId ORDER BY pi.productImageId.stt ASC LIMIT 1),
-        (SELECT COALESCE(AVG(pr.rating), 0) FROM ProdReview pr WHERE pr.product.prodId = p.prodId),
+        (SELECT COALESCE(AVG(pr.rating), 0)*20 FROM ProdReview pr WHERE pr.product.prodId = p.prodId),
         (SELECT COUNT(pr) FROM ProdReview pr WHERE pr.product.prodId = p.prodId)
     )
     FROM Product p WHERE
@@ -107,6 +107,30 @@ public interface IProductRepository extends JpaRepository<Product, Long> {
     Page<ProductGridDTO> fetchProductGridPageableByCriteria(@Param("subCateId") Long subCateId,
                                                             @Param("status") boolean status,
                                                             Pageable pageable);
+
+    @Query("""
+    SELECT new com.fashionweb.dto.request.product.ProductGridDTO(
+        p.prodId,
+        p.prodName,
+        COALESCE(p.regular, 0),
+        COALESCE(p.promo, 0),
+        p.createDate,
+        (CASE WHEN COALESCE(p.promo, 0) < COALESCE(p.regular, 0) THEN TRUE ELSE FALSE END),
+        (CASE WHEN COALESCE(p.promo, 0) < COALESCE(p.regular, 0) THEN CAST(100 * (1 - COALESCE(p.promo, 0) / p.regular) AS integer) ELSE 0 END),
+        false,
+        p.brand.brandId,
+        p.subcategory.subCateId,
+        (SELECT pi.imgURL FROM ProdImage pi WHERE pi.product.prodId = p.prodId ORDER BY pi.productImageId.stt ASC LIMIT 1),
+        (SELECT COALESCE(AVG(pr.rating), 0)*20 FROM ProdReview pr WHERE pr.product.prodId = p.prodId),
+        (SELECT COUNT(pr) FROM ProdReview pr WHERE pr.product.prodId = p.prodId)
+    )
+    FROM Product p WHERE ( :status IS NULL OR p.status = :status ) AND
+        ( p.prodName LIKE CONCAT('%', :keyword, '%') OR (:keyword IS NULL) ) AND
+        ( :subCateId IS NULL OR p.subcategory.subCateId = :subCateId  )""")
+    Page<ProductGridDTO> searchProductGridPageable(@Param("keyword") String keyword,
+                                                   @Param("subCateId") Long subCateId,
+                                                   @Param("status") boolean status,
+                                                   Pageable pageable);
 
     @Query("""
     SELECT new com.fashionweb.dto.request.product.ProductListDTO(
@@ -196,6 +220,5 @@ public interface IProductRepository extends JpaRepository<Product, Long> {
     FROM Product p WHERE p.prodId = :prodId""")
     Optional<Product2DTO> fetchProduct2DTOById(@Param("prodId") Long prodId);
 
-    //void searchProduct();
 }
     

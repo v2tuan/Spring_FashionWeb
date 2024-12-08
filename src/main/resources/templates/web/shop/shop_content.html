@@ -50,6 +50,11 @@
         <div class="row">
             <div class="col-lg-9 order-lg-1">
                 <div class="row gy-11">
+                    <style>
+                        .bg-primary2 {
+                            background-color: #D30B0B;
+                        }
+                    </style>
                     <th:block th:each="product : ${products}">
                         <div class="col-sm-6 col-lg-4 col-xl-3" th:if="${product.isSale}">
                             <div class="card card-product grid-2 bg-transparent border-0" data-animate="fadeInUp">
@@ -64,8 +69,8 @@
                                     <div class="position-absolute product-flash z-index-2 "><span
                                             class="position-absolute badge badge-product-flash on-sale bg-primary"
                                             th:text="'-' + ${product.percent} + '%'"></span></div>
-                                    <div class="product-flash z-index-2 "><span
-                                            class="badge badge-product-flash on-best" th:if="${product.isBest}"
+                                    <div class="mt-10 position-absolute product-flash z-index-2 "><span
+                                            class="badge badge-product-flash on-best bg-primary2" th:if="${product.isBest}"
                                             th:text="Best"></span></div>
                                 </figure>
                                 <div class="card-body text-center p-0">
@@ -152,8 +157,8 @@
                                              class="img-fluid lazy-image w-100" alt="Perfecting Facial Oil" width="330"
                                              height="440">
                                     </a>
-                                    <div class="product-flash z-index-2 "><span
-                                            class="badge badge-product-flash on-best" th:if="${product.isBest}"
+                                    <div class="position-absolute product-flash z-index-2 "><span
+                                            class="badge badge-product-flash on-best bg-primary2" th:if="${product.isBest}"
                                             th:text="Best"></span></div>
                                 </figure>
                                 <div class="card-body text-center p-0">
@@ -285,8 +290,7 @@
                                 </li>
                                 <li class="nav-item" th:each="category : ${categories}">
                                     <a href="" th:title="${category.cateName}"
-                                       class="text-reset position-relative d-block text-decoration-none text-body-emphasis-hover d-flex align-items-center text-uppercase fs-14px fw-semibold letter-spacing-5 active"
-                                       onclick="changeSorting(event)">
+                                       class="text-reset position-relative d-block text-decoration-none text-body-emphasis-hover d-flex align-items-center text-uppercase fs-14px fw-semibold letter-spacing-5 active">
                                         <span class="text-hover-underline me-2" th:text="${category.cateName}"></span>
                                         <span data-bs-toggle="collapse" th:data-bs-target="'#cat_' + ${category.cateId}"
                                               class="caret flex-grow-1 d-flex align-items-center justify-content-end collapsed">
