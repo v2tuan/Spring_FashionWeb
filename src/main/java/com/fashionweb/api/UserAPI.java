@@ -12,9 +12,8 @@ import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
@@ -38,16 +37,10 @@ public class UserAPI {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<?> login(@Valid @RequestBody AccountLoginDTO accountLoginDTO, HttpSession session){
-        try{
-
+    public ResponseEntity<?> login(@Valid @RequestBody AccountLoginDTO accountLoginDTO, HttpSession session, BindingResult result){
             String token = accountService.login(accountLoginDTO.getEmail(), accountLoginDTO.getPassword());
             session.setAttribute("authToken", token);
             return ResponseEntity.ok(Map.of("token", token));
-
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
-        }
     }
 
     @PostMapping("/logout")
@@ -75,11 +68,7 @@ public class UserAPI {
 
     @GetMapping("/me")
     AccountDTO getMyInfo() {
-
         Account account = accountService.getAccountFromToken();
-
         return accountMapper.toAccountDTO(account);
-
-//        return "web/my_profile";
     }
 }

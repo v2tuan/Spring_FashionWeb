@@ -101,6 +101,7 @@
                     </div>
                 </form>
                 <ul class="list-group list-group-flush list-group-no-border w-100 p-6">
+
                     <li class="list-group-item px-0 py-0 sidebar-item mb-3 border-0">
                         <a href="/admin/dashboard"
                            class="text-heading text-decoration-none lh-1 sidebar-link py-5 px-6 d-flex align-items-center"
@@ -112,16 +113,19 @@
                         </a>
                     </li>
 
-                    <li class="list-group-item px-0 py-0 sidebar-item mb-3 has-children border-0">
-                        <a href="/admin/userlist"
-                           class="text-heading text-decoration-none lh-1 sidebar-link py-5 px-6 d-flex align-items-center"
-                           title="User List">
+                    <div th:if="${#authorization.expression('hasAuthority(''ROLE_ADMIN'')')}">
+                        <!-- Nội dung chỉ hiển thị khi người dùng có vai trò ADMIN -->
+                        <li class="list-group-item px-0 py-0 sidebar-item mb-3 has-children border-0">
+                            <a href="/admin/userlist"
+                               class="text-heading text-decoration-none lh-1 sidebar-link py-5 px-6 d-flex align-items-center"
+                               title="User List">
                                         <span class="sidebar-item-icon d-inline-block w-40px text-muted">
                                             <i class="fas fa-users"></i>
                                         </span>
-                            <span class="sidebar-item-text fs-14px fw-semibold">User List</span>
-                        </a>
-                    </li>
+                                <span class="sidebar-item-text fs-14px fw-semibold">User List</span>
+                            </a>
+                        </li>
+                    </div>
 
                     <li class="list-group-item px-0 py-0 sidebar-item mb-3 has-children border-0">
                         <a href="#product"
@@ -226,33 +230,6 @@
                     </li>
 
 
-<!--                    <li class="list-group-item px-0 py-0 sidebar-item mb-3 has-children border-0">-->
-<!--                        <a href="#account"-->
-<!--                           class="text-heading text-decoration-none lh-1 d-flex sidebar-link align-items-center py-5 px-6 position-relative"-->
-<!--                           data-bs-toggle="collapse" aria-expanded="false" title="Account">-->
-<!--										<span class="sidebar-item-icon d-inline-block w-40px text-muted">-->
-<!--											<i class="fas fa-user"></i>-->
-<!--										</span>-->
-<!--                            <span class="sidebar-item-text fs-14px fw-semibold">Account</span>-->
-<!--                            <span class="position-absolute top-50 end-5 translate-middle-y"><i-->
-<!--                                    class="far fa-angle-down"></i></span>-->
-<!--                        </a>-->
-<!--                        <div class="collapse menu-collapse" id="account">-->
-<!--                            <ul class="sub-menu list-unstyled">-->
-<!--                                <li class="sidebar-item">-->
-<!--                                    <a class="sidebar-link pe-5 ps-8 py-5 lh-1 text-decoration-none fs-14px fw-semibold"-->
-<!--                                       href="/user-login.html" title="User login">User login</a>-->
-<!--                                </li>-->
-<!--                                <li class="sidebar-item">-->
-<!--                                    <a class="sidebar-link pe-5 ps-8 py-5 lh-1 text-decoration-none fs-14px fw-semibold"-->
-<!--                                       href="/user-registration.html" title="User registration">User-->
-<!--                                        registration</a>-->
-<!--                                </li>-->
-<!--                            </ul>-->
-<!--                        </div>-->
-<!--                    </li>-->
-
-
                     <li class="list-group-item px-0 py-0 sidebar-item mb-3 border-0">
                         <a href="/admin/reviews"
                            class="text-heading text-decoration-none lh-1 sidebar-link py-5 px-6 d-flex align-items-center"
@@ -264,16 +241,19 @@
                         </a>
                     </li>
 
-                    <li class="list-group-item px-0 py-0 sidebar-item mb-3 border-0">
-                        <a href="brands.html"
-                           class="text-heading text-decoration-none lh-1 sidebar-link py-5 px-6 d-flex align-items-center"
-                           title="Brand">
+                    <div th:if="${#authorization.expression('hasAuthority(''ROLE_ADMIN'')')}">
+                        <!-- Nội dung chỉ hiển thị khi người dùng có vai trò ADMIN -->
+                        <li class="list-group-item px-0 py-0 sidebar-item mb-3 border-0">
+                            <a href="brands.html"
+                               class="text-heading text-decoration-none lh-1 sidebar-link py-5 px-6 d-flex align-items-center"
+                               title="Brand">
 										<span class="sidebar-item-icon w-40px d-inline-block text-muted">
 											<i class="fas fa-certificate"></i>
 										</span>
-                            <span class="sidebar-item-text fs-14px fw-semibold">Brand</span>
-                        </a>
-                    </li>
+                                <span class="sidebar-item-text fs-14px fw-semibold">Brand</span>
+                            </a>
+                        </li>
+                    </div>
 
                 </ul>
             </div>

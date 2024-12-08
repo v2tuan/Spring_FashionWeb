@@ -133,16 +133,6 @@ public class ProductController {
             product.setSubcategory(subcat.get());
             Product productadd = productService.createProduct(product);
 
-//            for (int i = 0; i < productDto.getImages().size(); i++) {
-////                throw new RuntimeException(productDto.getImages().get(i));
-//                System.out.println(productDto.getImages().get(i));
-//                String imageBase64 = productDto.getImages().get(i);
-//
-//                String base64Image = "data:image/png;base64,iVBORw0K..."; // Chuỗi Base64 của ảnh
-//                String fileName = String.valueOf(System.currentTimeMillis()) + ".png"; // Tên file muốn lưu
-//                storageService.storeBase64Image(base64Image, fileName);
-//            }
-
             if(productDto.getFiles()!=null) {
                 int i = 0;
                 for (var image : productDto.getFiles()) {

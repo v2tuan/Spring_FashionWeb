@@ -1,6 +1,7 @@
 package com.fashionweb.dto.request.accounts;
 
 import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -13,8 +14,8 @@ import org.springframework.web.multipart.MultipartFile;
 @NoArgsConstructor
 @Builder
 public class AccountDTO {
-    @Email
     private String email;
+
     private String avatar;
     private String fullname;
     private String address;

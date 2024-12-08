@@ -33,9 +33,9 @@ public class WebSecurityConfig {
                             .requestMatchers("/home/**").permitAll()
                             .requestMatchers("/forgotpassword/**").permitAll()
                             .requestMatchers("/error/**").permitAll()
-                            .requestMatchers("/admin/**").hasRole(Role.ADMIN.name())
-                            .requestMatchers("/account/**").hasAnyRole(Role.USER.name(), Role.ADMIN.name())
-                            .anyRequest().hasAnyRole(Role.USER.name(), Role.ADMIN.name());
+                            .requestMatchers("/admin/**").hasAnyRole(Role.ADMIN.name(), Role.MANAGER.name())
+                            .requestMatchers("/account/**").hasAnyRole(Role.USER.name(), Role.ADMIN.name(), Role.MANAGER.name())
+                            .anyRequest().hasAnyRole(Role.ADMIN.name(), Role.MANAGER.name());
                 });
         return http.build();
     }

@@ -35,21 +35,6 @@ public class AccountController {
     @Autowired
     AddressService addressService;
 
-
-
-
-//    @PostMapping("/signup")
-//    public ResponseEntity<Account> register(@RequestBody RegisterAccountDTO registerAccountDTO) {
-//        Account account = authenticationService.signup(registerAccountDTO);
-//        return ResponseEntity.ok(account);
-//    }
-//
-//    @PostMapping("/login")
-//    public ResponseEntity<AuthenticationResponse> authenticate(@RequestBody AuthenticationRequestDTO authenticationRequestDTO){
-//        AuthenticationResponse authenticationResponse = authenticationService.authenticate(authenticationRequestDTO);
-//        return ResponseEntity.ok(authenticationResponse);
-//    }
-
     @GetMapping
     ResponseEntity<?> getAllAccount(){
         return new ResponseEntity<Response>(new Response(true, "Thành công", accountService.getAllAccounts()), HttpStatus.OK);

@@ -1,19 +1,14 @@
 package com.fashionweb.Controllers.admin;
 
 import com.fashionweb.Entity.Brand;
-import com.fashionweb.Entity.Discount;
 import com.fashionweb.dto.request.brand.BrandDTO2;
-import com.fashionweb.dto.request.discount.DiscountDTO;
 import com.fashionweb.service.IBrandService;
-import com.fashionweb.service.IStorageService;
 import com.fashionweb.service.Impl.BrandService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;

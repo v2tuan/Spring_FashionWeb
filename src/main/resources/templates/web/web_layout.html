@@ -35,22 +35,15 @@
 
 <body>
 
-<!-- Kiểm tra nếu người dùng đã đăng nhập và có vai trò ADMIN -->
-<div th:if="${#authentication != null and #authentication.principal != 'anonymousUser'}">
-    <div th:if="${#authentication.principal?.authorities?.contains('ADMIN')}">
-        <!-- header -->
-        <div th:replace="~{/web/fragments/header :: header}"></div>
-    </div>
-</div>
 
 <!-- Kiểm tra nếu người dùng đã đăng nhập và có vai trò ADMIN -->
 <div th:if="${#authentication != null}">
-    <div th:if="${#authorization.expression('hasAuthority(''ROLE_ADMIN'')')}">
-        <!-- Nội dung chỉ hiển thị khi người dùng có vai trò ADMIN -->
+    <div th:if="${#authorization.expression('hasAuthority(''ROLE_ADMIN'') or hasAuthority(''ROLE_MANAGER'')')}">
+        <!-- Nội dung chỉ hiển thị khi người dùng có vai trò ADMIN hoặc MANAGER -->
         <div th:replace="~{/admin/fragments/header_admin_hasDasboard :: header}"></div>
-
     </div>
-    <div th:if="${!#authorization.expression('hasAuthority(''ROLE_ADMIN'')')}">
+
+    <div th:if="${!#authorization.expression('hasAuthority(''ROLE_ADMIN'') or hasAuthority(''ROLE_MANAGER'')')}">
         <!-- Nội dung chỉ hiển thị khi người dùng có vai trò ADMIN -->
         <div th:replace="~{/web/fragments/header :: header}"></div>
 
@@ -1067,7 +1060,9 @@
                                                                                  data-bs-target="#signUpModal" class="text-black">Sign up</a> for free</p>
                 <form action="#">
                     <input id="user_login_email" name="email" type="email" class="form-control mb-5" placeholder="Your email" required>
+                    <span class="text-danger mb-3" id="emailError"></span>
                     <input id="user_login_password" name="pass word" type="password" class="form-control" placeholder="Password" required>
+                    <span class="text-danger mb-3" id="passwordError"></span>
                     <div class="d-flex align-items-center justify-content-between mt-8 mb-7">
                         <div class="custom-control d-flex form-check">
                             <input name="stay-signed-in" type="checkbox" class="form-check-input rounded-0 me-3"

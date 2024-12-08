@@ -1,10 +1,8 @@
 package com.fashionweb.api;
 
 import com.fashionweb.Entity.Account;
-import com.fashionweb.dto.request.accounts.AccountLoginDTO;
 import com.fashionweb.dto.request.accounts.ChangePasswordDTO;
 import com.fashionweb.service.AuthenticationService;
-import com.fashionweb.service.Impl.AccountService;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;

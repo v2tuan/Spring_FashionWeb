@@ -113,7 +113,7 @@ public class AccountService implements IAccountService {
     }
 
     @Override
-    public String login(String identifier, String password) throws Exception {
+    public String login(String identifier, String password){
         Optional<Account> optionalUserEntity = iAccountRepository.findAccountByEmail(identifier);
 
         if (optionalUserEntity.isEmpty()) {

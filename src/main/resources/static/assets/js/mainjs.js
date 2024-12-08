@@ -20,9 +20,36 @@ $(document).ready(function () {
                 alert('Đăng nhập thành công')
                 window.location.href = "/home";
             },
-            error: function () {
-                alert("Failed to log in");
+            error: function(xhr) {
+                // Đảm bảo lấy đúng dữ liệu lỗi từ backend
+                var errorMessages = xhr.responseJSON ? xhr.responseJSON.body : [];
+
+// Xóa các lỗi cũ
+                $('#emailError').text('');
+                $('#passwordError').text('');
+
+// Kiểm tra nếu body là một mảng và có lỗi nào không
+                if (Array.isArray(errorMessages) && errorMessages.length > 0) {
+                    // Hiển thị lỗi mới
+                    errorMessages.forEach(function (error) {
+                        var field = error.field;
+                        var message = error.message;
+
+                        // Hiển thị lỗi tại trường tương ứng
+                        if (field === 'email') {
+                            $('#emailError').text(message);
+                        } else if (field === 'password') {
+                            $('#passwordError').text(message);
+                        }
+                    });
+                } else {
+                    // Nếu danh sách lỗi rỗng hoặc không có lỗi cụ thể, hiển thị thông báo lỗi chung
+                    alert("Sai email hoặc mật khẩu");
+                }
             }
+            // error: function () {
+            //     alert("Failed to log in");
+            // }
         });
 
     });

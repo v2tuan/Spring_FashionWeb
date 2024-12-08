@@ -25,7 +25,7 @@ public class JwtTokenUtil {
     @Value("${jwt.secretKey}")
     private String secretKey;
 
-    public String generateToken(Account account) throws Exception {
+    public String generateToken(Account account){
         Map<String , Object> claims = new HashMap<>();
         claims.put("email", account.getUsername());
         try{

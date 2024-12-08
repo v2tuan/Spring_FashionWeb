@@ -1,6 +1,8 @@
 package com.fashionweb.dto.request.accounts;
 
+import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotEmpty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -10,7 +12,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class AccountLoginDTO {
 
-    @NotBlank(message = "Username/Phone/Email is required")
+    @Email(message = "Email không hợp lệ")
+    @NotEmpty(message = "Email không được để trống")
     private String email;
 
     @NotBlank(message = "Password is required")
