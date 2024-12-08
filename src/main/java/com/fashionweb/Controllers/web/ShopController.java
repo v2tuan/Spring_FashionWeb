@@ -136,19 +136,14 @@ public class ShopController {
         model.addAttribute("product", productService.findProductDetailByProdId(prodId).get());
         List<ProdReview> reviews = prodReviewService.getAllProdReviews();
         List<ReviewSummaryDTO> reviewSummaries = reviews.stream()
-                .map(review -> {
-                    Long accId = review.getReviewId().getAccId();
-                    String fullname = accountRepository.findById(accId)
-                            .map(Account::getFullname)
-                            .orElse("Anonymous");
-                    return new ReviewSummaryDTO(
-                            accId,
-                            fullname,
+                .map(review ->
+                    new ReviewSummaryDTO(
+                            review.getAccount().getAccId(),
+                            review.getAccount().getFullname(),
+                            review.getAccount().getAvatar(),
                             review.getComment(),
-                            review.getRating()
-                    );
-                })
-                .collect(Collectors.toList());
+                            review.getRating())
+                ).collect(Collectors.toList());
 
         model.addAttribute("reviews", reviewSummaries);
         return "web/shop/product_detail";
