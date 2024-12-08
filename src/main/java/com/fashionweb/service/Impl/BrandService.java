@@ -64,13 +64,13 @@ public class BrandService implements IBrandService {
         return productRepos.findAllByBrandBrandId(id);
     }
 
-    public List<BrandDTO> getBrandDTOs() {
-        return brandRepos.fetchBrandDTOs();
-    }
     @Override
     public Optional<Brand> findByBrandName(String brandName) {
         return brandRepos.findByBrandName(brandName);
 
     }
 
+    public List<BrandDTO> getBrandDTOs() {
+        return brandRepos.fetchBrandDTOs();
+    }
 }

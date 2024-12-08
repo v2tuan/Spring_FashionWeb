@@ -81,7 +81,7 @@ public class ShopController {
 
         Set<String> validSortOptions = Set.of("latest", "rating", "rating-asc", "price", "price-desc");
         if (sort == null || !validSortOptions.contains(sort)) {
-            sort = "latest"; // Default sort
+            sort = ""; // Default sort
         }
 
         Sort sorting = switch (sort) {

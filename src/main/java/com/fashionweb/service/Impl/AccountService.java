@@ -125,7 +125,7 @@ public class AccountService implements IAccountService {
 
         // Bước 4: Kiểm tra mật khẩu người dùng nhập vào có khớp với mật khẩu đã được mã hóa trong cơ sở dữ liệu hay không.
         if (!passwordEncoder.matches(password, account.getPassword())) {
-            throw new BadCredentialsException("Wrong Password"); // Nếu không khớp, ném ngoại lệ "Mật khẩu sai".
+            throw new RuntimeException("Wrong Password"); // Nếu không khớp, ném ngoại lệ "Mật khẩu sai".
         }
 
         // Bước 5: Tạo đối tượng authenticationToken để chứa thông tin xác thực, bao gồm identifier (email/username) và các quyền của người dùng.

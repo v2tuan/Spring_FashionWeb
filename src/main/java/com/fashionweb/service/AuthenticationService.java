@@ -5,11 +5,13 @@ import com.fashionweb.Enum.Role;
 import com.fashionweb.dto.request.AuthenticationRequestDTO;
 import com.fashionweb.dto.request.IntrospectRequest;
 import com.fashionweb.dto.request.VerifyAccountDTO;
+import com.fashionweb.dto.request.accounts.ChangePasswordDTO;
 import com.fashionweb.dto.request.accounts.RegisterAccountDTO;
 import com.fashionweb.dto.response.AuthenticationResponse;
 import com.fashionweb.dto.response.IntrospectResponse;
 import com.fashionweb.mapper.IAccountMapper;
 import com.fashionweb.repository.IAccountRepository;
+import com.fashionweb.service.Impl.AccountService;
 import com.nimbusds.jose.*;
 import com.nimbusds.jose.crypto.MACSigner;
 import com.nimbusds.jose.crypto.MACVerifier;
@@ -22,6 +24,7 @@ import lombok.experimental.FieldDefaults;
 import lombok.experimental.NonFinal;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -46,6 +49,8 @@ public class AuthenticationService {
 
     @Autowired
     private final EmailService emailService;
+    @Autowired
+    private AccountService accountService;
 
 //    @NonFinal
 ////    @Value("${jwt.signerKey}")
@@ -131,6 +136,37 @@ public class AuthenticationService {
         return accountRepository.save(account);
     }
 
+    public Account sendCodechangePassword() {
+        var context = SecurityContextHolder.getContext();
+        String email = context.getAuthentication().getName();
+        Account account = accountService.getAccounts(email).orElseThrow(
+                () -> new RuntimeException("Không tìm thấy người dùng"));
+
+        account.setVerificationCode(generateVerificationCode());
+        account.setVerificationCodeExpiresAt(LocalDateTime.now().plusMinutes(15));
+        sendVerificationEmail(account);
+        return accountRepository.save(account);
+    }
+
+    public Account changePassword(ChangePasswordDTO changePasswordDTO) {
+        var context = SecurityContextHolder.getContext();
+        String email = context.getAuthentication().getName();
+        Account account = accountService.getAccounts(email).orElseThrow(
+                () -> new RuntimeException("Không tìm thấy người dùng"));
+
+        // Tài khoản tồn tại
+        PasswordEncoder passwordEncoder = new BCryptPasswordEncoder(10);
+
+        // Bước 4: Kiểm tra mật khẩu người dùng nhập vào có khớp với mật khẩu đã được mã hóa trong cơ sở dữ liệu hay không.
+        if (!passwordEncoder.matches(changePasswordDTO.getPassword(), account.getPassword())) {
+            throw new RuntimeException("Wrong Password"); // Nếu không khớp, ném ngoại lệ "Mật khẩu sai".
+        }
+
+        account.setPassword(passwordEncoder.encode(changePasswordDTO.getPassword_new()));
+        sendVerificationEmail(account);
+        return accountRepository.save(account);
+    }
+
     public Account sendcodeforgotpassword(String email) {
         Optional<Account> optionalAccount = accountRepository.findAccountByEmail(email);
         if (optionalAccount.isPresent()) {
@@ -212,12 +248,7 @@ public class AuthenticationService {
                 + "</body>"
                 + "</html>";
 
-        try {
             emailService.sendVerificationEmail(account.getEmail(), subject, htmlMessage);
-        } catch (MessagingException e) {
-            // Handle email sending exception
-            e.printStackTrace();
-        }
     }
     private String generateVerificationCode() {
         Random random = new Random();

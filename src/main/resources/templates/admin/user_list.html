@@ -19,32 +19,32 @@
 
         <div class="card mb-4 rounded-4 p-7">
             <div class="card-header bg-transparent px-0 pt-0 pb-7">
-                    <form class="row align-items-center justify-content-between">
-                        <div class="col-md-4 col-12 mr-auto mb-md-0 mb-6">
-                            <input id="searchQuery" type="text" placeholder="Search..."
-                                   class="form-control bg-input border-0">
-                        </div>
-                        <div class="col-md-8">
-                            <div class="row justify-content-end flex-nowrap d-flex">
-                                <div class="col-lg-3 col-md-6 col-6">
-                                    <select id="role" class="form-select">
-                                        <option value="">Role: all</option>
-                                        <option value="Admin">Admin</option>
-                                        <option value="Manager">Manager</option>
-                                        <option value="User">User</option>
-                                    </select>
-                                </div>
+                <form class="row align-items-center justify-content-between">
+                    <div class="col-md-4 col-12 mr-auto mb-md-0 mb-6">
+                        <input id="searchQuery" type="text" placeholder="Search..."
+                               class="form-control bg-input border-0">
+                    </div>
+                    <div class="col-md-8">
+                        <div class="row justify-content-end flex-nowrap d-flex">
+                            <div class="col-lg-3 col-md-6 col-6">
+                                <select id="role" class="form-select">
+                                    <option value="">Role: all</option>
+                                    <option value="Admin">Admin</option>
+                                    <option value="Manager">Manager</option>
+                                    <option value="User">User</option>
+                                </select>
+                            </div>
 
-                                <div class="col-lg-3 col-md-6 col-6">
-                                    <select id="status" class="form-select">
-                                        <option value="">Status: all</option>
-                                        <option value="1">Active</option>
-                                        <option value="0">Disabled</option>
-                                    </select>
-                                </div>
+                            <div class="col-lg-3 col-md-6 col-6">
+                                <select id="status" class="form-select">
+                                    <option value="">Status: all</option>
+                                    <option value="1">Active</option>
+                                    <option value="0">Disabled</option>
+                                </select>
                             </div>
                         </div>
-                    </form>
+                    </div>
+                </form>
             </div>
             <div class="card-body px-0 pt-7 pb-0">
                 <div class="table-responsive">
@@ -89,17 +89,17 @@
                                 <div th:if="${account.role == T(com.fashionweb.Enum.Role).ADMIN}">
 
                                     <td>
-                                        <span class="badge rounded-lg rounded-pill alert py-3 px-4 mb-0 alert-primary border-0 text-capitalize fs-12">ADMIN</span>
+                                        <span class="badge rounded-lg badge-soft-danger border-0 text-capitalize fs-12">ADMIN</span>
                                     </td>
                                 </div>
                                 <div th:if="${account.role == T(com.fashionweb.Enum.Role).MANAGER}">
                                     <td>
-                                        <span class="badge rounded-lg rounded-pill alert py-3 px-4 mb-0 alert-dark border-0 text-capitalize fs-12">MANAGER</span>
+                                        <span class="badge rounded-lg badge-soft-success border-0 text-capitalize fs-12">MANAGER</span>
                                     </td>
                                 </div>
                                 <div th:if="${account.role == T(com.fashionweb.Enum.Role).USER}">
                                     <td>
-                                        <span class="badge rounded-lg rounded-pill alert py-3 px-4 mb-0 alert-info border-0 text-capitalize fs-12">USER</span>
+                                        <span class="badge rounded-lg badge-soft-warning border-0 text-capitalize fs-12">USER</span>
                                     </td>
                                 </div>
                             </div>
@@ -265,38 +265,38 @@
     </script>
 
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-        $('#searchQuery').on('keypress', function (e) {
-            if (e.which == 13) {  // Khi nhấn Enter
-                e.preventDefault(); // Ngăn chặn hành động mặc định (gửi form)
-                var searchQuery = $('#searchQuery').val();
-                var role = $('#role').val() || null; // Chuyển giá trị rỗng thành null
-                var status = $('#status').val() || null; // Chuyển giá trị rỗng thành null
+        document.addEventListener('DOMContentLoaded', function () {
+            $('#searchQuery').on('keypress', function (e) {
+                if (e.which == 13) {  // Khi nhấn Enter
+                    e.preventDefault(); // Ngăn chặn hành động mặc định (gửi form)
+                    var searchQuery = $('#searchQuery').val();
+                    var role = $('#role').val() || null; // Chuyển giá trị rỗng thành null
+                    var status = $('#status').val() || null; // Chuyển giá trị rỗng thành null
 
-                // Gửi dữ liệu bằng AJAX
-                $.ajax({
-                    url: '/admin/userlist_api', // Thay thế với URL controller của bạn
-                    method: 'GET',
-                    data: {
-                        fullname: searchQuery,
-                        enabled: status,
-                        role: role
-                    },
-                    success: function (data) {
-                        // // Xử lý phản hồi từ server (nếu cần)
-                        // alert(response)
-                        // console.log(response);
-                        // $('html').html(response); // Thay đổi toàn bộ nội dung HTML
-                        // $('#role').val(role);
+                    // Gửi dữ liệu bằng AJAX
+                    $.ajax({
+                        url: '/admin/userlist_api', // Thay thế với URL controller của bạn
+                        method: 'GET',
+                        data: {
+                            fullname: searchQuery,
+                            enabled: status,
+                            role: role
+                        },
+                        success: function (data) {
+                            // // Xử lý phản hồi từ server (nếu cần)
+                            // alert(response)
+                            // console.log(response);
+                            // $('html').html(response); // Thay đổi toàn bộ nội dung HTML
+                            // $('#role').val(role);
 
-                        // Xóa nội dung cũ trong tbody
-                        $("tbody").empty();
+                            // Xóa nội dung cũ trong tbody
+                            $("tbody").empty();
 
-                        // Duyệt qua danh sách tài khoản và tạo các hàng trong bảng
-                        $.each(data.content, function (index, account) {
-                            var tr = $("<tr></tr>");
+                            // Duyệt qua danh sách tài khoản và tạo các hàng trong bảng
+                            $.each(data.content, function (index, account) {
+                                var tr = $("<tr></tr>");
 
-                            tr.append(`
+                                tr.append(`
                             <td>
                                 <div class="d-flex align-items-center flex-nowrap">
                                     <img src="/home/files/${account.avatar ? account.avatar : 'default-avatar.jpg'}"
@@ -313,7 +313,8 @@
                                 </div>
                             </td>
                             <td>
-                                <span class="badge rounded-lg rounded-pill alert py-3 px-4 mb-0 alert-${getRoleBadge(account.role)} border-0 text-capitalize fs-12">
+
+                                <span class="badge rounded-lg badge-soft-${getRoleBadge(account.role)} border-0 text-capitalize fs-12">
                                     ${account.role}
                                 </span>
                             </td>
@@ -329,21 +330,25 @@
                             </td>
                         `);
 
-                            // Thêm tr vào tbody
-                            $("tbody").append(tr);
-                        });
-                    }
-                });
-            }
-        });
+                                // Thêm tr vào tbody
+                                $("tbody").append(tr);
+                            });
+                        }
+                    });
+                }
+            });
 
             // Hàm xác định màu badge dựa trên vai trò
             function getRoleBadge(role) {
                 switch (role) {
-                    case "ADMIN": return "primary";
-                    case "MANAGER": return "dark";
-                    case "USER": return "info";
-                    default: return "secondary";
+                    case "ADMIN":
+                        return "danger";
+                    case "MANAGER":
+                        return "success";
+                    case "USER":
+                        return "warning";
+                    default:
+                        return "secondary";
                 }
             }
 
