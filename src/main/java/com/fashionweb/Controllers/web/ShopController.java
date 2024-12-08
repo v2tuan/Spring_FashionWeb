@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 @Controller
 @RequestMapping("/home/shop")
@@ -42,7 +43,8 @@ public class ShopController {
     @GetMapping("/products")
     @ResponseBody
     ResponseEntity<?> getProducts() {
-        return ResponseEntity.ok(productService.findAllProductGrid(true));
+        Pageable pageable = PageRequest.of(0,16);
+        return ResponseEntity.ok(productService.findAllProductGridPageable(true, pageable));
     }
 
     @GetMapping("/productDetail")
@@ -73,14 +75,33 @@ public class ShopController {
     @GetMapping
     String shop(@RequestParam(value = "page", defaultValue = "0") int page,
                 @RequestParam(value = "size", defaultValue = "16") int size,
+                @RequestParam(value = "subCateId", required = false) Long subCateId,
+                @RequestParam(value = "sort", required = false) String sort,
                 Model model) {
+
+        Set<String> validSortOptions = Set.of("latest", "rating", "rating-asc", "price", "price-desc");
+        if (sort == null || !validSortOptions.contains(sort)) {
+            sort = "latest"; // Default sort
+        }
+
+        Sort sorting = switch (sort) {
+            case "latest" -> Sort.by(Sort.Direction.DESC, "createDate");
+            case "rating" -> Sort.by(Sort.Direction.DESC, "rating");
+            case "rating-asc" -> Sort.by(Sort.Direction.ASC, "rating");
+            case "price" -> Sort.by(Sort.Direction.ASC, "promo");
+            case "price-desc" -> Sort.by(Sort.Direction.DESC, "promo");
+            default -> Sort.unsorted();
+        };
+
+        Pageable pageable = PageRequest.of(page, size, sorting);
         List<CategoryGridDTO> categoryGridDTOs = categoryService.categoryGridDTOs(categoryService.findAll());
-        Pageable pageable = PageRequest.of(page, size);
-        Page<ProductGridDTO> productGridDTOs = productService.findAllProductGridPageable(true, pageable);
+        Page<ProductGridDTO> productGridDTOs = productService.findAllProductGridCriteriaPageable(subCateId, true, pageable);
 
         model.addAttribute("categories", categoryGridDTOs);
         model.addAttribute("products", productGridDTOs.getContent());
         model.addAttribute("prodCount", productGridDTOs.getTotalElements());
+        model.addAttribute("selectedSubCateId", subCateId);
+        model.addAttribute("selectedSorting", sort);
         model.addAttribute("currentPage", page);
         model.addAttribute("totalPages", productGridDTOs.getTotalPages());
 

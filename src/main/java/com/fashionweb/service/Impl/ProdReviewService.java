@@ -66,7 +66,7 @@ public class ProdReviewService implements IProdReviewService {
 
     public Double averageRatingByProdId(Long prodId) {
         Double averageRating = iProdReviewRepository.averageRatingByProdId(prodId);
-        return (averageRating == null) ? 0.0 : averageRating;
+        return (averageRating == null) ? 0.0 : averageRating*20;
     }
 
     public Long reviewCountByProdId(Long prodId) {

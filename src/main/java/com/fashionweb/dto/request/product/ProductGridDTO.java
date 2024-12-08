@@ -17,6 +17,7 @@ public class ProductGridDTO {
     private Date createDate;
     private Boolean isSale;
     private Integer percent;
+    private Boolean isBest;
     private Long brandId;
     private Long subCateId;
     private String imgURL;

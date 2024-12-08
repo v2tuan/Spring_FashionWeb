@@ -31237,6 +31237,10 @@ ul.single-product-meta li span:first-child {
   background-color: #D3BF0B;
 }
 
+.badge-product-flash.on-best {
+  background-color: #D30B0B;
+}
+
 .badge-product-flash:last-child {
   margin-bottom: 0;
 }

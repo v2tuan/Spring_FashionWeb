@@ -148,6 +148,8 @@ public class ProductService implements IProductService {
             percent = (int) ((1 - product.getPromo()/product.getRegular())*100);
         }
 
+        Double avgRating = prodReviewService.averageRatingByProdId(product.getProdId());
+
         return new ProductGridDTO(
                 product.getProdId(),
                 product.getProdName(),
@@ -156,10 +158,11 @@ public class ProductService implements IProductService {
                 (product.getCreateDate()),
                 isSale,
                 percent,
+                avgRating >= 86,
                 product.getBrand().getBrandId(),
                 product.getSubcategory().getSubCateId(),
                 this.getImgName(product.getImages()),
-                prodReviewService.averageRatingByProdId(product.getProdId()),
+                avgRating,
                 prodReviewService.reviewCountByProdId(product.getProdId())
         );
     }
@@ -174,6 +177,17 @@ public class ProductService implements IProductService {
 
     public Page<ProductGridDTO> findAllProductGridPageable(boolean status, Pageable pageable) {
         return iProductRepository.fetchProductGridPageable(status, pageable);
+    }
+
+    public Page<ProductGridDTO> findAllProductGridCriteriaPageable(Long subCateId, boolean status, Pageable pageable) {
+        Page<ProductGridDTO> products = iProductRepository.fetchProductGridPageableByCriteria(subCateId, status, pageable);
+
+        products.getContent().forEach(product -> {
+
+            product.setIsBest(product.getRating() >= 86);
+        });
+
+        return products;
     }
 
     public List<ProductListDTO> findAllProductList() {
