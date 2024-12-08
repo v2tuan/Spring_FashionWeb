@@ -44,11 +44,6 @@ public class ProductService implements IProductService {
     }
 
     @Override
-    public List<Product> findProductByProdName(String name) {
-        return iProductRepository.findProductByProdName(name);
-    }
-
-    @Override
     public <S extends Product> S createProduct(S product) {
 
         return iProductRepository.save(product);

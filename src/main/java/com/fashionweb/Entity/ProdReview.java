@@ -23,10 +23,10 @@ public class ProdReview {
     private String images;
 
     @ManyToOne
-    @JoinColumn(name = "prodId", insertable=false, updatable=false)
+    @JoinColumn(name = "prodId", insertable = false, updatable = false)
     private Product product;
 
     @ManyToOne
-    @JoinColumn(name = "accId", insertable=false, updatable=false)
+    @JoinColumn(name = "accId", insertable = false, updatable = false)
     private Account account;
 }

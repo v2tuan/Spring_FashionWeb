@@ -9,6 +9,7 @@ import com.fashionweb.service.Impl.AccountService;
 import com.fashionweb.service.Impl.AddressService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -54,6 +55,11 @@ public class WebController {
     String userLogin() { return "web/user-login"; }
 
 
+    @GetMapping("/product-detail")
+    String productDetail() {
+        return "web/shop/product_detail";
+    }
+
     @GetMapping("/check-out")
     String checkOut() {
         return "web/shop/check_out";
@@ -94,5 +100,10 @@ public class WebController {
         } catch (Exception e) {
             return ResponseEntity.status(404).body(null); // Trả về 404 nếu không tìm thấy file
         }
+    }
+
+    @GetMapping("/prodreview")
+    String prodReview(){
+        return "web/testpopupreview";
     }
 }

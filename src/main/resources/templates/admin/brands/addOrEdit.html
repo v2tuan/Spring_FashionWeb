@@ -35,24 +35,27 @@
                                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                 </div>
                                 <div class="modal-body">
-                                    <form class="form-border-1">
+                                    <form class="form-border-1" th:action="@{/admin/brands/createbrand}" method="post">
                                         <div class="mb-8">
                                             <label for="brandName" class="mb-4 fs-13px ls-1 fw-bold text-uppercase">Brand Name</label>
-                                            <input type="text" placeholder="Type here" class="form-control" id="brandName">
+                                            <input type="text" placeholder="Type here" class="form-control" id="brandName" name="brandName">
                                         </div>
                                         <div class="input-upload">
-                                            <label for="uploadPlaceholder" class="mb-4 fs-13px ls-1 fw-bold text-uppercase">Brand Images</label>
-                                            <div class="mb-7 text-center" id="uploadPlaceholder">
+                                            <label class="mb-4 fs-13px ls-1 fw-bold text-uppercase">Brand Images</label>
+                                            <div class="mb-7 text-center">
                                                 <img src="/assets/images/dashboard/upload.svg" width="102" class="d-block mx-auto" alt="Upload Icon">
                                             </div>
-                                            <input type="file" class="form-control" id="images" name="images" accept="image/*">
+                                            <input type="file" class="form-control" id="images"  accept="image/*" name="images">
                                         </div>
+
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                            <button type="submit" class="btn btn-primary">Add Brand</button>
+                                        </div>
+
                                     </form>
                                 </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                    <button type="submit" class="btn btn-primary">Add Brand</button>
-                                </div>
+
                             </div>
                         </div>
                     </div>
@@ -96,27 +99,29 @@
                 <div class="card-header bg-transparent px-0 pt-0 pb-7">
                     <div class="row align-items-center justify-content-between">
                         <div class="col-md-3 col-12 mr-auto mb-md-0 mb-6">
-                            <input type="text" placeholder="Search." class="form-control bg-input border-0">
+                            <form action="/admin/brands/search" method="GET">
+                                <input type="text" name="brandName" placeholder="Search" class="form-control bg-input border-0">
+                            </form>
                         </div>
                         <div class="col-md-8">
                             <div class="row justify-content-end flex-nowrap d-flex">
                                 <div class="col-lg-3 col-md-6 col-6">
-                                    <select class="form-select">
-                                        <option selected="" data-select2-id="3">All Categories</option>
-                                        <option>Women's Clothing</option>
-                                        <option>Men's Clothing</option>
-                                        <option>Cellphones</option>
-                                        <option>Computer &amp; Office</option>
-                                        <option>Consumer Electronics</option>
-                                        <option>Jewelry &amp; Accessories</option>
-                                        <option>Home &amp; Garden</option>
-                                        <option>Luggage &amp; Bags</option>
-                                        <option>Shoes</option>
-                                        <option>Mother &amp; Kids</option>
-                                    </select>
+<!--                                    <select class="form-select">-->
+<!--                                        <option selected="" data-select2-id="3">All Categories</option>-->
+<!--                                        <option>Women's Clothing</option>-->
+<!--                                        <option>Men's Clothing</option>-->
+<!--                                        <option>Cellphones</option>-->
+<!--                                        <option>Computer &amp; Office</option>-->
+<!--                                        <option>Consumer Electronics</option>-->
+<!--                                        <option>Jewelry &amp; Accessories</option>-->
+<!--                                        <option>Home &amp; Garden</option>-->
+<!--                                        <option>Luggage &amp; Bags</option>-->
+<!--                                        <option>Shoes</option>-->
+<!--                                        <option>Mother &amp; Kids</option>-->
+<!--                                    </select>-->
                                 </div>
                                 <div class="col-lg-3 col-md-6 col-6">
-                                    <input type="date"  class="form-control bg-input border-0">
+<!--                                    <input type="date"  class="form-control bg-input border-0">-->
                                 </div>
                             </div>
                         </div>

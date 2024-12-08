@@ -14,5 +14,4 @@ import java.util.Objects;
 public class ProdReviewsId {
     private Long prodId;
     private Long accId;
-
 }

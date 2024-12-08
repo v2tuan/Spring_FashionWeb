@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import java.util.List;
 
 @Controller
-@RequestMapping("/user")
+@RequestMapping("/account")
 public class DiscountUserController {
     @Autowired
     private IDiscountService discountService;
@@ -40,7 +40,7 @@ public class DiscountUserController {
     @GetMapping("/discountlist")
     String showAllDiscount(Model model) {
         model.addAttribute("discounts", discountDTOS(discountService.findAll()));
-        return "admin/discountforuser_list";
+        return "web/discountforuser_list";
     }
 
 }

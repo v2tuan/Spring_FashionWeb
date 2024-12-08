@@ -36,8 +36,9 @@ public class BrandService implements IBrandService {
     }
 
     @Override
-    public void createBrand(Brand brand) {
+    public Brand createBrand(Brand brand) {
         brandRepos.save(brand);
+        return brand;
     }
 
     @Override
@@ -66,4 +67,10 @@ public class BrandService implements IBrandService {
     public List<BrandDTO> getBrandDTOs() {
         return brandRepos.fetchBrandDTOs();
     }
+    @Override
+    public Optional<Brand> findByBrandName(String brandName) {
+        return brandRepos.findByBrandName(brandName);
+
+    }
+
 }
