@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.scheduling.support.SimpleTriggerContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -101,5 +102,10 @@ public class WebController {
         } catch (Exception e) {
             return ResponseEntity.status(404).body(null); // Trả về 404 nếu không tìm thấy file
         }
+    }
+
+    @GetMapping("/prodreview")
+    String prodReview(){
+        return "web/testpopupreview";
     }
 }

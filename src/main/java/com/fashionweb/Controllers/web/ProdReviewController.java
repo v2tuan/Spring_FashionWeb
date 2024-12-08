@@ -31,6 +31,7 @@ public class ProdReviewController {
                 .map(review -> new ProdReviewDTO(
                         review.getReviewId().getProdId(),
                         review.getReviewId().getAccId(),
+                        review.getRating(),
                         review.getComment(),
                         review.getImages()
                 ))
@@ -38,10 +39,10 @@ public class ProdReviewController {
         return ResponseEntity.ok(reviewDTOs);
     }
 
-    @GetMapping("/add")
-    String addProdReview() {
-        return "web/proreviewtest";
-    }
+//    @GetMapping("/add")
+//    String addProdReview() {
+//        return "web/testpopupreview";
+//    }
 
     @PostMapping("/createprodreview")
     @ResponseBody
@@ -70,6 +71,7 @@ public class ProdReviewController {
         ProdReviewDTO response = new ProdReviewDTO(
                 savedReview.getReviewId().getProdId(),
                 savedReview.getReviewId().getAccId(),
+                savedReview.getRating(),
                 savedReview.getComment(),
                 savedReview.getImages()
         );
