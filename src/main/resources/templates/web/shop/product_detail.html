@@ -170,30 +170,28 @@
                     <div class="form-group shop-swatch mb-7 d-flex align-items-center">
                         <span class="fw-semibold text-body-emphasis me-7">Size: </span>
                         <ul class="list-inline d-flex justify-content-start mb-0" style="color:#777">
-                            <li class="list-inline-item me-4 fw-semibold">
-                                <input type="radio" id="radio1" name="productSize" class="product-info-size d-none">
-                                <!--                                       th:disabled="${sizeAvailability['S'] == 0}">-->
-                                <label for="radio1" class="fs-14px p-4 d-block rounded text-decoration-none border"
-                                       data-var="full size">S</label>
-                            </li>
-                            <li class="list-inline-item me-4 fw-semibold">
-                                <input type="radio" id="radio2" name="productSize" class="product-info-size d-none">
-                                <!--                                       th:disabled="${sizeAvailability['M'] == 0}">-->
-                                <label for="radio2" class="fs-14px p-4 d-block rounded text-decoration-none border"
-                                       data-var="full size">M</label>
-                            </li>
-                            <li class="list-inline-item me-4 fw-semibold">
-                                <input type="radio" id="radio3" name="productSize" class="product-info-size d-none">
-                                <!--                                       th:disabled="${sizeAvailability['L'] == 0}">-->
-                                <label for="radio3" class="fs-14px p-4 d-block rounded text-decoration-none border"
-                                       data-var="full size">L</label>
-                            </li>
-                            <li class="list-inline-item me-4 fw-semibold">
-                                <input type="radio" id="radio4" name="productSize" class="product-info-size d-none">
-                                <!--                                       th:disabled="${sizeAvailability['XL'] == 0}">-->
-                                <label for="radio4" class="fs-14px p-4 d-block rounded text-decoration-none border"
-                                       data-var="full size">XL</label>
-                            </li>
+                            <th:block th:each="size : ${product.sizeDTOs}">
+                                <li class="list-inline-item me-4 fw-semibold">
+                                    <input type="radio" th:id="'radio_' + ${size.name}" name="productSize" th:disabled="${size.quantity <= 0}" class="product-info-size d-none">
+                                    <label th:for="'radio_' + ${size.name}" class="fs-14px p-4 d-block rounded text-decoration-none border"
+                                           data-var="full size" th:text="${size.name}"></label>
+                                </li>
+                            </th:block>
+<!--                            <li class="list-inline-item me-4 fw-semibold">-->
+<!--                                <input type="radio" id="radio2" name="productSize" class="product-info-size d-none">-->
+<!--                                <label for="radio2" class="fs-14px p-4 d-block rounded text-decoration-none border"-->
+<!--                                       data-var="full size">M</label>-->
+<!--                            </li>-->
+<!--                            <li class="list-inline-item me-4 fw-semibold">-->
+<!--                                <input type="radio" id="radio3" name="productSize" class="product-info-size d-none">-->
+<!--                                <label for="radio3" class="fs-14px p-4 d-block rounded text-decoration-none border"-->
+<!--                                       data-var="full size">L</label>-->
+<!--                            </li>-->
+<!--                            <li class="list-inline-item me-4 fw-semibold">-->
+<!--                                <input type="radio" id="radio4" name="productSize" class="product-info-size d-none">-->
+<!--                                <label for="radio4" class="fs-14px p-4 d-block rounded text-decoration-none border"-->
+<!--                                       data-var="full size">XL</label>-->
+<!--                            </li>-->
                         </ul>
                     </div>
                 </form>
