@@ -8,6 +8,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class BrandDTO2 {
+    private Long brandId;
     private String brandName;
     private String images;
+    private Long prodCount;
 }

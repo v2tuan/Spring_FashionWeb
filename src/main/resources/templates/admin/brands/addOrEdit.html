@@ -128,187 +128,32 @@
                     </div>
                 </div>
                 <div class="card-body pt-7 pb-0 px-0">
-                    <div class="row mx-n5"><div class="col-6 col-sm-4 col-lg-3 col-xl-2 px-5 mb-8">
-                        <div class="card rounded-4">
-                            <div class="card-header p-7 bg-transparent">
-                                <img src="#" data-src="/assets/images/dashboard/brand-1.jpg" class="lazy-image" alt="Cardinal" width="166" height="84">
-                            </div>
-                            <div class="card-body text-center p-7">
-                                <h6 class="card-title m-0 fs-15px fw-600">Cardinal</h6>
-                                <a href="#" title="Cardinal" class="text-primary text-decoration-none fs-14px"> 398 items</a>
-                            </div>
-                        </div>
-                    </div><div class="col-6 col-sm-4 col-lg-3 col-xl-2 px-5 mb-8">
-                        <div class="card rounded-4">
-                            <div class="card-header p-7 bg-transparent">
-                                <img src="#" data-src="/assets/images/dashboard/brand-2.jpg" class="lazy-image" alt="BirdFly" width="166" height="84">
-                            </div>
-                            <div class="card-body text-center p-7">
-                                <h6 class="card-title m-0 fs-15px fw-600">BirdFly</h6>
-                                <a href="#" title="BirdFly" class="text-primary text-decoration-none fs-14px"> 13 items</a>
-                            </div>
-                        </div>
-                    </div><div class="col-6 col-sm-4 col-lg-3 col-xl-2 px-5 mb-8">
-                        <div class="card rounded-4">
-                            <div class="card-header p-7 bg-transparent">
-                                <img src="#" data-src="/assets/images/dashboard/brand-3.jpg" class="lazy-image" alt="Cocorico" width="166" height="84">
-                            </div>
-                            <div class="card-body text-center p-7">
-                                <h6 class="card-title m-0 fs-15px fw-600">Cocorico</h6>
-                                <a href="#" title="Cocorico" class="text-primary text-decoration-none fs-14px"> 25 items</a>
+                    <div class="row mx-n5">
+                        <div class="col-6 col-sm-4 col-lg-3 col-xl-2 px-5 mb-8" th:each="brand : ${brands}">
+                            <div class="card rounded-4">
+                                <div class="card-header p-7 bg-transparent">
+                                    <img src="#" th:data-src="@{/home/files/{filename}(filename=${brand.images})}" class="lazy-image" alt="Cardinal" width="166" height="84">
+                                </div>
+                                <div class="card-body text-center p-7">
+                                    <h6 class="card-title m-0 fs-15px fw-600" th:text="${brand.brandName}"></h6>
+                                    <a href="#" th:title="${brand.brandName}" class="text-primary text-decoration-none fs-14px" th:text="${brand.prodCount} + ' items'"></a>
+
+                                    <div class="mt-3">
+                                        <!-- Nút Update -->
+                                        <a href="#" th:href="@{/admin/brands/edit/{id}(id=${brand.brandId})}" class="btn btn-warning w-100 mb-2">
+                                            Update
+                                        </a>
+
+                                        <!-- Nút Delete -->
+                                        <form th:action="@{/admin/brands/delete/{id}(id=${brand.brandId})}" method="post" style="display:inline;">
+                                            <button type="submit" class="btn btn-danger w-100">Delete</button>
+                                        </form>
+                                    </div>
+
+                                </div>
                             </div>
                         </div>
-                    </div><div class="col-6 col-sm-4 col-lg-3 col-xl-2 px-5 mb-8">
-                        <div class="card rounded-4">
-                            <div class="card-header p-7 bg-transparent">
-                                <img src="#" data-src="/assets/images/dashboard/brand-4.jpg" class="lazy-image" alt="Yogilist" width="166" height="84">
-                            </div>
-                            <div class="card-body text-center p-7">
-                                <h6 class="card-title m-0 fs-15px fw-600">Yogilist</h6>
-                                <a href="#" title="Yogilist" class="text-primary text-decoration-none fs-14px"> 56 items</a>
-                            </div>
-                        </div>
-                    </div><div class="col-6 col-sm-4 col-lg-3 col-xl-2 px-5 mb-8">
-                        <div class="card rounded-4">
-                            <div class="card-header p-7 bg-transparent">
-                                <img src="#" data-src="/assets/images/dashboard/brand-5.jpg" class="lazy-image" alt="Acerie" width="166" height="84">
-                            </div>
-                            <div class="card-body text-center p-7">
-                                <h6 class="card-title m-0 fs-15px fw-600">Acerie</h6>
-                                <a href="#" title="Acerie" class="text-primary text-decoration-none fs-14px"> 90 items</a>
-                            </div>
-                        </div>
-                    </div><div class="col-6 col-sm-4 col-lg-3 col-xl-2 px-5 mb-8">
-                        <div class="card rounded-4">
-                            <div class="card-header p-7 bg-transparent">
-                                <img src="#" data-src="/assets/images/dashboard/brand-6.jpg" class="lazy-image" alt="Shivakin" width="166" height="84">
-                            </div>
-                            <div class="card-body text-center p-7">
-                                <h6 class="card-title m-0 fs-15px fw-600">Shivakin</h6>
-                                <a href="#" title="Shivakin" class="text-primary text-decoration-none fs-14px"> 66 items</a>
-                            </div>
-                        </div>
-                    </div><div class="col-6 col-sm-4 col-lg-3 col-xl-2 px-5 mb-8">
-                        <div class="card rounded-4">
-                            <div class="card-header p-7 bg-transparent">
-                                <img src="#" data-src="/assets/images/dashboard/brand-7.jpg" class="lazy-image" alt="Acera" width="166" height="84">
-                            </div>
-                            <div class="card-body text-center p-7">
-                                <h6 class="card-title m-0 fs-15px fw-600">Acera</h6>
-                                <a href="#" title="Acera" class="text-primary text-decoration-none fs-14px"> 44 items</a>
-                            </div>
-                        </div>
-                    </div><div class="col-6 col-sm-4 col-lg-3 col-xl-2 px-5 mb-8">
-                        <div class="card rounded-4">
-                            <div class="card-header p-7 bg-transparent">
-                                <img src="#" data-src="/assets/images/dashboard/brand-8.jpg" class="lazy-image" alt="Lion electronics" width="166" height="84">
-                            </div>
-                            <div class="card-body text-center p-7">
-                                <h6 class="card-title m-0 fs-15px fw-600">Lion electronics</h6>
-                                <a href="#" title="Lion electronics" class="text-primary text-decoration-none fs-14px"> 75 items</a>
-                            </div>
-                        </div>
-                    </div><div class="col-6 col-sm-4 col-lg-3 col-xl-2 px-5 mb-8">
-                        <div class="card rounded-4">
-                            <div class="card-header p-7 bg-transparent">
-                                <img src="#" data-src="/assets/images/dashboard/brand-9.jpg" class="lazy-image" alt="TwoHand" width="166" height="84">
-                            </div>
-                            <div class="card-body text-center p-7">
-                                <h6 class="card-title m-0 fs-15px fw-600">TwoHand</h6>
-                                <a href="#" title="TwoHand" class="text-primary text-decoration-none fs-14px"> 93 items</a>
-                            </div>
-                        </div>
-                    </div><div class="col-6 col-sm-4 col-lg-3 col-xl-2 px-5 mb-8">
-                        <div class="card rounded-4">
-                            <div class="card-header p-7 bg-transparent">
-                                <img src="#" data-src="/assets/images/dashboard/brand-10.jpg" class="lazy-image" alt="Kiaomin" width="166" height="84">
-                            </div>
-                            <div class="card-body text-center p-7">
-                                <h6 class="card-title m-0 fs-15px fw-600">Kiaomin</h6>
-                                <a href="#" title="Kiaomin" class="text-primary text-decoration-none fs-14px"> 15 items</a>
-                            </div>
-                        </div>
-                    </div><div class="col-6 col-sm-4 col-lg-3 col-xl-2 px-5 mb-8">
-                        <div class="card rounded-4">
-                            <div class="card-header p-7 bg-transparent">
-                                <img src="#" data-src="/assets/images/dashboard/brand-11.jpg" class="lazy-image" alt="Nokine" width="166" height="84">
-                            </div>
-                            <div class="card-body text-center p-7">
-                                <h6 class="card-title m-0 fs-15px fw-600">Nokine</h6>
-                                <a href="#" title="Nokine" class="text-primary text-decoration-none fs-14px"> 26 items</a>
-                            </div>
-                        </div>
-                    </div><div class="col-6 col-sm-4 col-lg-3 col-xl-2 px-5 mb-8">
-                        <div class="card rounded-4">
-                            <div class="card-header p-7 bg-transparent">
-                                <img src="#" data-src="/assets/images/dashboard/brand-12.jpg" class="lazy-image" alt="Doblet" width="166" height="84">
-                            </div>
-                            <div class="card-body text-center p-7">
-                                <h6 class="card-title m-0 fs-15px fw-600">Doblet</h6>
-                                <a href="#" title="Doblet" class="text-primary text-decoration-none fs-14px"> 87 items</a>
-                            </div>
-                        </div>
-                    </div><div class="col-6 col-sm-4 col-lg-3 col-xl-2 px-5 mb-8">
-                        <div class="card rounded-4">
-                            <div class="card-header p-7 bg-transparent">
-                                <img src="#" data-src="/assets/images/dashboard/brand-13.jpg" class="lazy-image" alt="Company name" width="166" height="84">
-                            </div>
-                            <div class="card-body text-center p-7">
-                                <h6 class="card-title m-0 fs-15px fw-600">Company name</h6>
-                                <a href="#" title="Company name" class="text-primary text-decoration-none fs-14px"> 79 items</a>
-                            </div>
-                        </div>
-                    </div><div class="col-6 col-sm-4 col-lg-3 col-xl-2 px-5 mb-8">
-                        <div class="card rounded-4">
-                            <div class="card-header p-7 bg-transparent">
-                                <img src="#" data-src="/assets/images/dashboard/brand-14.jpg" class="lazy-image" alt="Talius" width="166" height="84">
-                            </div>
-                            <div class="card-body text-center p-7">
-                                <h6 class="card-title m-0 fs-15px fw-600">Talius</h6>
-                                <a href="#" title="Talius" class="text-primary text-decoration-none fs-14px"> 39 items</a>
-                            </div>
-                        </div>
-                    </div><div class="col-6 col-sm-4 col-lg-3 col-xl-2 px-5 mb-8">
-                        <div class="card rounded-4">
-                            <div class="card-header p-7 bg-transparent">
-                                <img src="#" data-src="/assets/images/dashboard/brand-15.jpg" class="lazy-image" alt="Bitmule" width="166" height="84">
-                            </div>
-                            <div class="card-body text-center p-7">
-                                <h6 class="card-title m-0 fs-15px fw-600">Bitmule</h6>
-                                <a href="#" title="Bitmule" class="text-primary text-decoration-none fs-14px"> 111 items</a>
-                            </div>
-                        </div>
-                    </div><div class="col-6 col-sm-4 col-lg-3 col-xl-2 px-5 mb-8">
-                        <div class="card rounded-4">
-                            <div class="card-header p-7 bg-transparent">
-                                <img src="#" data-src="/assets/images/dashboard/brand-16.jpg" class="lazy-image" alt="Zeleny Kocur" width="166" height="84">
-                            </div>
-                            <div class="card-body text-center p-7">
-                                <h6 class="card-title m-0 fs-15px fw-600">Zeleny Kocur</h6>
-                                <a href="#" title="Zeleny Kocur" class="text-primary text-decoration-none fs-14px"> 234 items</a>
-                            </div>
-                        </div>
-                    </div><div class="col-6 col-sm-4 col-lg-3 col-xl-2 px-5 mb-8">
-                        <div class="card rounded-4">
-                            <div class="card-header p-7 bg-transparent">
-                                <img src="#" data-src="/assets/images/dashboard/brand-17.jpg" class="lazy-image" alt="LifeSpan" width="166" height="84">
-                            </div>
-                            <div class="card-body text-center p-7">
-                                <h6 class="card-title m-0 fs-15px fw-600">LifeSpan</h6>
-                                <a href="#" title="LifeSpan" class="text-primary text-decoration-none fs-14px"> 14 items</a>
-                            </div>
-                        </div>
-                    </div><div class="col-6 col-sm-4 col-lg-3 col-xl-2 px-5 mb-8">
-                        <div class="card rounded-4">
-                            <div class="card-header p-7 bg-transparent">
-                                <img src="#" data-src="/assets/images/dashboard/brand-18.jpg" class="lazy-image" alt="Shark Attach" width="166" height="84">
-                            </div>
-                            <div class="card-body text-center p-7">
-                                <h6 class="card-title m-0 fs-15px fw-600">Shark Attach</h6>
-                                <a href="#" title="Shark Attach" class="text-primary text-decoration-none fs-14px"> 16 items</a>
-                            </div>
-                        </div>
-                    </div></div>
+                    </div>
                 </div>
             </div>
         </div>

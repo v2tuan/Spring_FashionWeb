@@ -2,6 +2,7 @@ package com.fashionweb.repository;
 
 import com.fashionweb.Entity.Brand;
 import com.fashionweb.dto.request.BrandDTO;
+import com.fashionweb.dto.request.brand.BrandDTO2;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
@@ -16,6 +17,10 @@ public interface IBrandRepository extends JpaRepository<Brand, Long> {
     Optional<Brand> findByEmail(String email);
     Optional<Brand> findByPhone(String phone);
 
-    @Query("SELECT new com.fashionweb.dto.request.BrandDTO(b.brandId, b.brandName) FROM Brand b")
+    @Query("""
+    SELECT new com.fashionweb.dto.request.BrandDTO(
+        b.brandId,
+        b.brandName) FROM Brand b""")
     List<BrandDTO> fetchBrandDTOs();
+
 }
