@@ -34,10 +34,11 @@ public interface IProductRepository extends JpaRepository<Product, Long> {
         p.createDate,
         (CASE WHEN p.promo < p.regular THEN TRUE ELSE FALSE END),
         (CASE WHEN p.promo < p.regular THEN CAST(100 * (1 - p.promo / p.regular) AS integer) ELSE 0 END),
+        null,
         p.brand.brandId,
         p.subcategory.subCateId,
         (SELECT pi.imgURL FROM ProdImage pi WHERE pi.product.prodId = p.prodId ORDER BY pi.productImageId.stt ASC LIMIT 1),
-        (SELECT AVG(pr.rating) FROM ProdReview pr WHERE pr.product.prodId = p.prodId),
+        (SELECT COALESCE(AVG(pr.rating), 0) FROM ProdReview pr WHERE pr.product.prodId = p.prodId),
         (SELECT COUNT(pr) FROM ProdReview pr WHERE pr.product.prodId = p.prodId)
     )
     FROM Product p""")
@@ -52,16 +53,38 @@ public interface IProductRepository extends JpaRepository<Product, Long> {
         p.createDate,
         (CASE WHEN p.promo < p.regular THEN TRUE ELSE FALSE END),
         (CASE WHEN p.promo < p.regular THEN CAST(100 * (1 - p.promo / p.regular) AS integer) ELSE 0 END),
+        null,
         p.brand.brandId,
         p.subcategory.subCateId,
         (SELECT pi.imgURL FROM ProdImage pi WHERE pi.product.prodId = p.prodId ORDER BY pi.productImageId.stt ASC LIMIT 1),
-        (SELECT AVG(pr.rating) FROM ProdReview pr WHERE pr.product.prodId = p.prodId),
+        (SELECT COALESCE(AVG(pr.rating), 0) FROM ProdReview pr WHERE pr.product.prodId = p.prodId),
         (SELECT COUNT(pr) FROM ProdReview pr WHERE pr.product.prodId = p.prodId)
     )
-    FROM Product p""")
+    FROM Product p WHERE ( :status IS NULL OR p.status = :status )""")
     Page<ProductGridDTO> fetchProductGridPageable(@Param("status") boolean status, Pageable pageable);
 
-
+    @Query("""
+    SELECT new com.fashionweb.dto.request.product.ProductGridDTO(
+        p.prodId,
+        p.prodName,
+        p.regular,
+        p.promo,
+        p.createDate,
+        (CASE WHEN p.promo < p.regular THEN TRUE ELSE FALSE END),
+        (CASE WHEN p.promo < p.regular THEN CAST(100 * (1 - p.promo / p.regular) AS integer) ELSE 0 END),
+        false,
+        p.brand.brandId,
+        p.subcategory.subCateId,
+        (SELECT pi.imgURL FROM ProdImage pi WHERE pi.product.prodId = p.prodId ORDER BY pi.productImageId.stt ASC LIMIT 1),
+        (SELECT COALESCE(AVG(pr.rating), 0) FROM ProdReview pr WHERE pr.product.prodId = p.prodId),
+        (SELECT COUNT(pr) FROM ProdReview pr WHERE pr.product.prodId = p.prodId)
+    )
+    FROM Product p WHERE
+        ( :status IS NULL OR p.status = :status ) AND
+        ( :subCateId IS NULL OR p.subcategory.subCateId = :subCateId )""")
+    Page<ProductGridDTO> fetchProductGridPageableByCriteria(@Param("subCateId") Long subCateId,
+                                                            @Param("status") boolean status,
+                                                            Pageable pageable);
 
     @Query("""
     SELECT new com.fashionweb.dto.request.product.ProductListDTO(
@@ -127,7 +150,7 @@ public interface IProductRepository extends JpaRepository<Product, Long> {
         CASE WHEN p.promo < p.regular THEN CAST(100 * (1 - p.promo / p.regular) AS integer) ELSE 0 END,
         p.brand.brandName,
         p.subcategory.subCateName,
-        (SELECT AVG(pr.rating) FROM ProdReview pr WHERE pr.product.prodId = p.prodId),
+        (SELECT COALESCE(AVG(pr.rating), 0) FROM ProdReview pr WHERE pr.product.prodId = p.prodId),
         (SELECT COUNT(pr) FROM ProdReview pr WHERE pr.product.prodId = p.prodId),
         null,
         null
@@ -151,5 +174,6 @@ public interface IProductRepository extends JpaRepository<Product, Long> {
     FROM Product p WHERE p.prodId = :prodId""")
     Optional<Product2DTO> fetchProduct2DTOById(@Param("prodId") Long prodId);
 
+    //void searchProduct();
 }
     
