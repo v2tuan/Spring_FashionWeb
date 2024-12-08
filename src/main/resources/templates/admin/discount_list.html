@@ -36,6 +36,7 @@
             <tr>
               <th>Voucher</th>
               <th>Description</th>
+              <th>Discount Percentage</th>
               <th>Start Date</th>
               <th>End Date</th>
               <th>Created Date</th>
@@ -52,6 +53,7 @@
                 </div>
               </td>
               <td th:text="${discount.getDescription()}"></td>
+              <td th:text="${discount.getDiscountPercentage()}"></td>
               <td th:text="${discount.getStartDate()}"></td>
               <td th:text="${discount.getEndDate()}"></td>
               <td th:text="${discount.getCreateDate()}"></td>
@@ -67,19 +69,6 @@
         </div>
       </div>
     </div>
-
-    <nav aria-label="Page navigation example" class="mt-6 mb-4">
-      <ul class="pagination justify-content-start">
-        <li class="page-item active mx-3"><a class="page-link" href="#">01</a></li>
-        <li class="page-item mx-3"><a class="page-link" href="#">02</a></li>
-        <li class="page-item mx-3"><a class="page-link" href="#">03</a></li>
-        <li class="page-item mx-3"><a class="page-link dot" href="#">...</a></li>
-        <li class="page-item mx-3"><a class="page-link" href="#">16</a></li>
-        <li class="page-item mx-3">
-          <a class="page-link" href="#"><i class="far fa-chevron-right"></i></a>
-        </li>
-      </ul>
-    </nav>
   </div>
   <footer class="pt-6 pb-10 footer-dashboard mt-auto">
     <div class="row">

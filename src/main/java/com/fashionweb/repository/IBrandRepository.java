@@ -23,4 +23,12 @@ public interface IBrandRepository extends JpaRepository<Brand, Long> {
         b.brandName) FROM Brand b""")
     List<BrandDTO> fetchBrandDTOs();
 
+    @Query("""
+    SELECT new com.fashionweb.dto.request.brand.BrandDTO2(
+        b.brandId,
+        b.brandName,
+        b.images,
+        (SELECT COUNT(p.prodId) FROM Product p WHERE p.brand.brandId = b.brandId)
+    ) FROM Brand b""")
+    List<BrandDTO2> fetchBrandDTO2s();
 }
