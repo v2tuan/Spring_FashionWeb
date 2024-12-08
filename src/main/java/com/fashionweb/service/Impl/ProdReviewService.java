@@ -30,10 +30,6 @@ public class ProdReviewService implements IProdReviewService {
 
     @Override
     public <S extends ProdReview> S createProdReview(S prodReview) {
-        // Kiểm tra tính hợp lệ của thông tin sản phẩm và khách hàng trước khi lưu
-        if (prodReview.getProduct() == null ) {
-            throw new RuntimeException("Thông tin sản phẩm hoặc khách hàng không hợp lệ.");
-        }
         return iProdReviewRepository.save(prodReview);
     }
 

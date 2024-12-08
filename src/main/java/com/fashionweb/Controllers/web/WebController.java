@@ -55,10 +55,6 @@ public class WebController {
     @GetMapping("/user-login")
     String userLogin() { return "web/user-login"; }
 
-    @GetMapping("/shop")
-    String shop() {
-        return "web/shop/shop_content";
-    }
 
     @GetMapping("/product-detail")
     String productDetail() {

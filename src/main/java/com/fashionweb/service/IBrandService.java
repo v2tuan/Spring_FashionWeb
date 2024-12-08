@@ -11,7 +11,7 @@ public interface IBrandService {
     List<Brand> getAll();
     Optional<Brand> findById(Long id);
     Optional<Brand> findByNameOrEmailOrPhone(String keyword);
-    void createBrand(Brand brand);
+    Brand createBrand(Brand brand);
     void updateBrand(Brand brand);
     void deleteBrand(Long id);
     List<Product> getProductsByBrandId(Long id);

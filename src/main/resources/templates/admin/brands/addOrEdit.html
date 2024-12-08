@@ -35,59 +35,62 @@
                                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                 </div>
                                 <div class="modal-body">
-                                    <form class="form-border-1">
+                                    <form class="form-border-1" th:action="@{/admin/brands/createbrand}" method="post">
                                         <div class="mb-8">
                                             <label for="brandName" class="mb-4 fs-13px ls-1 fw-bold text-uppercase">Brand Name</label>
-                                            <input type="text" placeholder="Type here" class="form-control" id="brandName">
+                                            <input type="text" placeholder="Type here" class="form-control" id="brandName" name="brandName">
                                         </div>
                                         <div class="input-upload">
-                                            <label for="uploadPlaceholder" class="mb-4 fs-13px ls-1 fw-bold text-uppercase">Brand Images</label>
-                                            <div class="mb-7 text-center" id="uploadPlaceholder">
+                                            <label class="mb-4 fs-13px ls-1 fw-bold text-uppercase">Brand Images</label>
+                                            <div class="mb-7 text-center">
                                                 <img src="/assets/images/dashboard/upload.svg" width="102" class="d-block mx-auto" alt="Upload Icon">
                                             </div>
-                                            <input type="file" class="form-control" id="images" name="images" accept="image/*">
+                                            <input type="file" class="form-control" id="images"  accept="image/*" name="images">
                                         </div>
+
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                            <button type="submit" class="btn btn-primary">Add Brand</button>
+                                        </div>
+
                                     </form>
                                 </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                    <button type="submit" class="btn btn-primary">Add Brand</button>
-                                </div>
+
                             </div>
                         </div>
                     </div>
 
-                    <script>
-                        document.getElementById('images').addEventListener('change', function(event) {
-                            const uploadPlaceholder = document.getElementById('uploadPlaceholder');
-                            uploadPlaceholder.innerHTML = ''; // Clear the placeholder content
+<!--                    <script>-->
+<!--                        document.getElementById('images').addEventListener('change', function(event) {-->
+<!--                            const uploadPlaceholder = document.getElementById('uploadPlaceholder');-->
+<!--                            uploadPlaceholder.innerHTML = ''; // Clear the placeholder content-->
 
-                            const files = event.target.files;
-                            for (let i = 0; i < files.length; i++) {
-                                const file = files[i];
-                                if (file && file.type.startsWith('image/')) {
-                                    const reader = new FileReader();
-                                    reader.onload = function(e) {
-                                        const img = document.createElement('img');
-                                        img.src = e.target.result;
-                                        img.width = 100; // Set width or style as needed
-                                        img.classList.add('d-block', 'mx-auto', 'mb-2');
-                                        uploadPlaceholder.appendChild(img);
-                                    };
-                                    reader.readAsDataURL(file);
-                                }
-                            }
-                        });
+<!--                            const files = event.target.files;-->
+<!--                            for (let i = 0; i < files.length; i++) {-->
+<!--                                const file = files[i];-->
+<!--                                if (file && file.type.startsWith('image/')) {-->
+<!--                                    const reader = new FileReader();-->
+<!--                                    reader.onload = function(e) {-->
+<!--                                        const img = document.createElement('img');-->
+<!--                                        img.src = e.target.result;-->
+<!--                                        img.width = 100; // Set width or style as needed-->
+<!--                                        img.classList.add('d-block', 'mx-auto', 'mb-2');-->
+<!--                                        uploadPlaceholder.appendChild(img);-->
+<!--                                    };-->
+<!--                                    reader.readAsDataURL(file);-->
+<!--                                }-->
+<!--                            }-->
+<!--                        });-->
 
-                        // Clear uploaded images and reset the upload icon when modal is closed
-                        const modal = document.getElementById('addBrandModal');
-                        modal.addEventListener('hidden.bs.modal', function () {
-                            const uploadPlaceholder = document.getElementById('uploadPlaceholder');
-                            document.getElementById('brandName').value = '';
-                            uploadPlaceholder.innerHTML = '<img src="/assets/images/dashboard/upload.svg" width="102" class="d-block mx-auto" alt="Upload Icon">';
-                            document.getElementById('images').value = '';
-                        });
-                    </script>
+<!--                        // // Clear uploaded images and reset the upload icon when modal is closed-->
+<!--                        // const modal = document.getElementById('addBrandModal');-->
+<!--                        // modal.addEventListener('hidden.bs.modal', function () {-->
+<!--                        //     const uploadPlaceholder = document.getElementById('uploadPlaceholder');-->
+<!--                        //     document.getElementById('brandName').value = '';-->
+<!--                        //     uploadPlaceholder.innerHTML = '<img src="/assets/images/dashboard/upload.svg" width="102" class="d-block mx-auto" alt="Upload Icon">';-->
+<!--                        //     document.getElementById('images').value = '';-->
+<!--                        // });-->
+<!--                    </script>-->
                 </div>
             </div>
 

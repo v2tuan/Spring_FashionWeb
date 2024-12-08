@@ -35,8 +35,9 @@ public class BrandService implements IBrandService {
     }
 
     @Override
-    public void createBrand(Brand brand) {
+    public Brand createBrand(Brand brand) {
         brandRepos.save(brand);
+        return brand;
     }
 
     @Override
