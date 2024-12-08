@@ -1,6 +1,5 @@
 package com.fashionweb.Controllers.web;
 
-import com.fashionweb.Entity.Account;
 import com.fashionweb.Entity.ProdReview;
 import com.fashionweb.dto.request.category.CategoryGridDTO;
 import com.fashionweb.dto.request.product.ProductGridDTO;
@@ -87,13 +86,14 @@ public class ShopController {
     @GetMapping
     String shop(@RequestParam(value = "page", defaultValue = "0") int page,
                 @RequestParam(value = "size", defaultValue = "16") int size,
+                @RequestParam(value = "keyword", required = false, defaultValue = "") String keyword,
                 @RequestParam(value = "subCateId", required = false) Long subCateId,
                 @RequestParam(value = "sort", required = false) String sort,
                 Model model) {
 
         Set<String> validSortOptions = Set.of("latest", "rating", "rating-asc", "price", "price-desc");
         if (sort == null || !validSortOptions.contains(sort)) {
-            sort = ""; // Default sort
+            sort = "";
         }
 
         Sort sorting = switch (sort) {
@@ -107,7 +107,7 @@ public class ShopController {
 
         Pageable pageable = PageRequest.of(page, size, sorting);
         List<CategoryGridDTO> categoryGridDTOs = categoryService.categoryGridDTOs(categoryService.findAll());
-        Page<ProductGridDTO> productGridDTOs = productService.findAllProductGridCriteriaPageable(subCateId, true, pageable);
+        Page<ProductGridDTO> productGridDTOs = productService.searchProductGridCriteriaPageable(keyword, subCateId, true, pageable);
 
         model.addAttribute("categories", categoryGridDTOs);
         model.addAttribute("products", productGridDTOs.getContent());

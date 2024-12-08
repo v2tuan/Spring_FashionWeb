@@ -167,12 +167,16 @@ public class ProductService implements IProductService {
         );
     }
 
-    public List<ProductGridDTO> productGridDTOs(List<Product> products) {
-        return products.stream().filter(product -> Boolean.TRUE.equals(product.getStatus())).map(this::productGridDTO).toList();
-    }
+//    public List<ProductGridDTO> productGridDTOs(List<Product> products) {
+//        return products.stream().filter(product -> Boolean.TRUE.equals(product.getStatus())).map(this::productGridDTO).toList();
+//    }
 
     public List<ProductGridDTO> findAllProductGrid(boolean status) {
-        return iProductRepository.fetchProductGrid(status);
+        List<ProductGridDTO> products = iProductRepository.fetchProductGrid(status);
+
+        products.forEach(product -> product.setIsBest(product.getRating() >= 86));
+
+        return products;
     }
 
     public Page<ProductGridDTO> findAllProductGridPageable(boolean status, Pageable pageable) {
@@ -181,6 +185,14 @@ public class ProductService implements IProductService {
 
     public Page<ProductGridDTO> findAllProductGridCriteriaPageable(Long subCateId, boolean status, Pageable pageable) {
         Page<ProductGridDTO> products = iProductRepository.fetchProductGridPageableByCriteria(subCateId, status, pageable);
+
+        products.getContent().forEach(product -> product.setIsBest(product.getRating() >= 86));
+
+        return products;
+    }
+
+    public Page<ProductGridDTO> searchProductGridCriteriaPageable(String keyword, Long subCateId, boolean status, Pageable pageable) {
+        Page<ProductGridDTO> products = iProductRepository.searchProductGridPageable(keyword, subCateId, status, pageable);
 
         products.getContent().forEach(product -> product.setIsBest(product.getRating() >= 86));
 
