@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 public class ReviewSummaryDTO {
     private Long accId;
     private String fullname;
+    private String avatar;
     private String comment;
     private Integer rating;
 

@@ -4,9 +4,11 @@ import com.fashionweb.Entity.Brand;
 import com.fashionweb.dto.request.brand.BrandDTO2;
 import com.fashionweb.service.IBrandService;
 import com.fashionweb.service.IStorageService;
+import com.fashionweb.service.Impl.BrandService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -18,43 +20,38 @@ import java.util.Optional;
 public class BrandController {
     @Autowired
     private IBrandService brandService;
-
-    @GetMapping("/add")
-    public String add() {
-        return "admin/brands/addOrEdit";
-    }
+    @Autowired
+    private BrandService bService;
 
     @GetMapping("/all")
-    @ResponseBody
-    public ResponseEntity<List<BrandDTO2>> getAllBrands() {
-        List<Brand> brands = brandService.getAll();
-        List<BrandDTO2> brandDTOList = brands.stream().map(brand ->
-                new BrandDTO2(
-                        brand.getBrandName(),
-                        brand.getImages()
-                )
-        ).toList();
-        return ResponseEntity.ok(brandDTOList);
+    public String getAllBrands(Model model) {
+        List<BrandDTO2> brandDTO2s =  bService.getBrandDTO2s();
+
+        model.addAttribute("brands", brandDTO2s);
+
+        return "admin/brands/addOrEdit";
     }
 
 
     @GetMapping("/search")
-    @ResponseBody
-    public ResponseEntity<BrandDTO2> searchBrandByName(@RequestParam String brandName) {
+    public String searchBrandByName(@RequestParam String brandName, Model model) {
         Optional<Brand> brandOptional = brandService.findByBrandName(brandName);
-
-        if (brandOptional.isEmpty()) {
-            return ResponseEntity.notFound().build();
-        }
 
         Brand brand = brandOptional.get();
         BrandDTO2 response = new BrandDTO2(
+                brand.getBrandId(),
                 brand.getBrandName(),
-                brand.getImages()
+                brand.getImages(),
+                0L
         );
 
-        return ResponseEntity.ok(response);
+        model.addAttribute("brand", response);
+
+        return "admin/brands/addOrEdit";
     }
+
+
+
 
     @PostMapping("/createbrand")
     @ResponseBody
@@ -62,7 +59,6 @@ public class BrandController {
             @ModelAttribute BrandDTO2 brandDTO) {
 
         String images = brandDTO.getImages();
-
         Brand brand = new Brand();
         brand.setBrandName(brandDTO.getBrandName());
         brand.setImages(images);
@@ -70,10 +66,29 @@ public class BrandController {
         Brand savedBrand = brandService.createBrand(brand);
 
         BrandDTO2 response = new BrandDTO2(
+                savedBrand.getBrandId(),
                 savedBrand.getBrandName(),
-                savedBrand.getImages()
+                savedBrand.getImages(),
+                0L
         );
 
         return ResponseEntity.ok(response);
     }
+
+    // Cập nhật brand
+    @GetMapping("/edit/{id}")
+    public String editBrand(@PathVariable("id") Long brandId, Model model) {
+        Optional<Brand> brandOptional = brandService.findById(brandId);
+
+        model.addAttribute("brand", brandOptional.get());
+
+        return "/admin/brands";
+    }
+
+    @PostMapping("/delete/{id}")
+    public String deleteBrand(@PathVariable("id") Long brandId) {
+        brandService.deleteBrand(brandId);
+        return "/admin/brands";
+    }
+
 }
