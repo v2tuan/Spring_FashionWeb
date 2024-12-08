@@ -37,7 +37,7 @@ $(document).ready(function () {
 //     startCountdown();
 // });
 
-// Auto-move between input fields
+    // Auto-move between input fields
     const codeInputs = document.querySelectorAll('.code-input');
     codeInputs.forEach((input, index) => {
         input.addEventListener('input', (e) => {
@@ -65,6 +65,43 @@ $(document).ready(function () {
         });
     });
 
+    function handlePaste(event) {
+        const input = event.target;
+        const pastedData = event.clipboardData.getData('text'); // Lấy dữ liệu đã dán
+        const inputs = Array.from(document.querySelectorAll('.code-input')); // Lấy tất cả các ô nhập liệu
+        const characters = pastedData.split(''); // Chia chuỗi dán thành các ký tự
+
+        // Chỉ dán nếu số ký tự không vượt quá số ô nhập liệu
+        if (characters.length <= inputs.length) {
+            // Dán từng ký tự vào các ô tương ứng
+            inputs.forEach((input, index) => {
+                if (characters[index]) {
+                    input.value = characters[index]; // Điền ký tự vào ô
+                }
+            });
+
+            // Tự động focus ô kế tiếp sau khi dán xong
+            const lastInput = inputs[characters.length - 1];
+            if (lastInput && lastInput.nextElementSibling) {
+                lastInput.nextElementSibling.focus();
+            }
+        } else {
+            // Nếu số ký tự quá nhiều, chỉ dán phần đầu
+            inputs.forEach((input, index) => {
+                if (characters[index]) {
+                    input.value = characters[index];
+                }
+            });
+        }
+
+        // Ngừng hành động mặc định của sự kiện dán
+        event.preventDefault();
+    }
+
+    // Thêm sự kiện `onpaste` vào từng ô nhập liệu
+    document.querySelectorAll('.code-input').forEach(input => {
+        input.addEventListener('paste', handlePaste);
+    });
 });
 
 const startCountdown = (expiryDate) => {
@@ -97,7 +134,7 @@ const startCountdown = (expiryDate) => {
     }, 1000);
 };
 
-function verificationCode(){
+function verificationCode() {
     const email = document.getElementById("email").value;
     const codeInputs = $(".code-input");
 
@@ -129,7 +166,7 @@ function verificationCode(){
         type: 'POST',  // Phương thức HTTP (POST)
         contentType: 'application/json',  // Định dạng dữ liệu là JSON
         data: JSON.stringify(data),  // Chuyển đổi dữ liệu thành chuỗi JSON
-        success: function(response) {
+        success: function (response) {
             // Additional logic on success (e.g., close modal)
             const modal = bootstrap.Modal.getInstance(
                 document.getElementById("verificationModal")
@@ -139,13 +176,14 @@ function verificationCode(){
             alert(response);
             window.location.href = "/login";
         },
-        error: function(xhr, status, error) {
+        error: function (xhr, status, error) {
             spinner.hide(); // Ẩn spinner sau khi xử lý thành công
             // Nếu có lỗi, thông báo cho người dùng
             alert(xhr.responseJSON.body);
         }
     });
 }
+
 // Nhan nut xac nhan code
 document.getElementById('btn-verificationCode').addEventListener('click', function () {
 
@@ -186,7 +224,7 @@ document.getElementById('btn-verificationCode').addEventListener('click', functi
         type: 'POST',  // Phương thức HTTP (POST)
         contentType: 'application/json',  // Định dạng dữ liệu là JSON
         data: JSON.stringify(data),  // Chuyển đổi dữ liệu thành chuỗi JSON
-        success: function(response) {
+        success: function (response) {
             // Additional logic on success (e.g., close modal)
             const modal = bootstrap.Modal.getInstance(
                 document.getElementById("verificationModal")
@@ -196,7 +234,7 @@ document.getElementById('btn-verificationCode').addEventListener('click', functi
             alert(response);
             window.location.href = "/login";
         },
-        error: function(xhr, status, error) {
+        error: function (xhr, status, error) {
             spinner.hide(); // Ẩn spinner sau khi xử lý thành công
             // Nếu có lỗi, thông báo cho người dùng
             alert(xhr.responseJSON.body);
@@ -204,7 +242,7 @@ document.getElementById('btn-verificationCode').addEventListener('click', functi
     });
 });
 
-function register(){
+function register() {
     const email = document.getElementById("email").value;
     const password = document.getElementById("password").value;
     // Dữ liệu cần gửi
@@ -223,14 +261,14 @@ function register(){
         type: 'POST',  // Phương thức HTTP (POST)
         contentType: 'application/json',  // Định dạng dữ liệu là JSON
         data: JSON.stringify(data),  // Chuyển đổi dữ liệu thành chuỗi JSON
-        success: function(response) {
+        success: function (response) {
             spinner.hide(); // Ẩn spinner sau khi xử lý thành công
             // Nếu thành công, mở modal và bắt đầu đếm ngược
             const modal = new bootstrap.Modal(document.getElementById('verificationModal'));
             modal.show();
             startCountdown(response.verificationCodeExpiresAt);
         },
-        error: function(xhr, status, error) {
+        error: function (xhr, status, error) {
             spinner.hide(); // Ẩn spinner sau khi xử lý thành công
             // Nếu có lỗi, thông báo cho người dùng
             alert(xhr.responseJSON.body);
