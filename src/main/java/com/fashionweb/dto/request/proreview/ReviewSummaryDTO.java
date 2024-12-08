@@ -11,7 +11,6 @@ public class ReviewSummaryDTO {
     private Long accId;
     private String fullname;
     private String comment;
-    private String images;
     private Integer rating;
 
 }

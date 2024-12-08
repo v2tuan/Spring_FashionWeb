@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import java.util.List;
 
 @Controller
-@RequestMapping("/account")
+@RequestMapping("/user")
 public class DiscountUserController {
     @Autowired
     private IDiscountService discountService;

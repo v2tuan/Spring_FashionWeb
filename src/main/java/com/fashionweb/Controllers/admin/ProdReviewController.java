@@ -45,7 +45,6 @@ public class ProdReviewController {
                             accId,
                             fullname,
                             review.getComment(),
-                            review.getImages(),
                             review.getRating()
                     );
                 })
@@ -53,7 +52,7 @@ public class ProdReviewController {
 
         model.addAttribute("reviews", reviewSummaries);
 
-        return "web/proreviewtest"; //test
+        return "web/testpopupreview"; //test
     }
 
 
