@@ -17,11 +17,12 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.fashionweb.Entity.Account;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Controller
-@RequestMapping("/admin/prod-reviews")
+@RequestMapping("/user/prod-reviews")
 public class ProdReviewController {
     @Autowired
     private ProdReviewService prodReviewService;
@@ -59,7 +60,7 @@ public class ProdReviewController {
 
     @PostMapping("/createprodreview")
     @ResponseBody
-    public ResponseEntity<ProdReviewDTO> createProdReview(
+    public ResponseEntity<String> createProdReview(
             @ModelAttribute @Valid ProdReviewDTO prodReviewDTO,
             @RequestParam(required = false) MultipartFile file
     ) {
@@ -73,21 +74,13 @@ public class ProdReviewController {
         ProdReview prodReview = new ProdReview();
         prodReview.setReviewId(new ProdReviewsId(prodReviewDTO.getProdId(), prodReviewDTO.getAccId()));
         prodReview.setComment(prodReviewDTO.getComment());
+        prodReview.setCreateDate(LocalDate.now());
         prodReview.setImages(fileName);
         prodReview.setRating(prodReviewDTO.getRating());
 
+        prodReviewService.createProdReview(prodReview);
 
-        ProdReview savedReview = prodReviewService.createProdReview(prodReview);
-
-        ProdReviewDTO response = new ProdReviewDTO(
-                savedReview.getReviewId().getProdId(),
-                savedReview.getReviewId().getAccId(),
-                savedReview.getComment(),
-                savedReview.getImages(),
-                savedReview.getRating()
-                );
-
-        return ResponseEntity.ok(response);
+        return ResponseEntity.ok("Đánh giá sản phẩm đã được gửi thành công!");
     }
 
 
