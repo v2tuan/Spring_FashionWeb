@@ -101,9 +101,4 @@ public class WebController {
         }
     }
 
-    @GetMapping("/testhtml")
-    public String runTestHtml() {
-        return "web/testpopupreview";
-    }
-
 }
