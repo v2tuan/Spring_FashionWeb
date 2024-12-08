@@ -220,6 +220,6 @@ public class ProductController {
 
     @GetMapping("/order-detail")
     String orderDetail() {
-        return "admin/order_detail";
+        return "orderDetail";
     }
 }

@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{web/web_layout.html}">
+
+<main id="content" class="bg-body-tertiary-01 d-flex flex-column main-content" th:fragment="content">
+  <div th:if="${message}" class="alert alert-info" role="alert">
+    <span th:text="${message}"></span>
+  </div>
+  <div class="dashboard-page-content">
+    <div class="row mb-9 align-items-center justify-content-between">
+      <div class="col-sm-6 mb-8 mb-sm-0">
+        <h2 class="fs-4 mb-0">Order List</h2>
+      </div>
+    </div>
+
+    <div class="card rounded-4">
+      <header class="card-header bg-transparent p-7">
+        <div class="row align-items-center">
+          <div class="col-md-6 mb-lg-0 mb-6">
+            <span class="d-inline-block"><i class="far fa-calendar me-3" th:text="' '+${orderDetail.createDate}"></i></span>
+            <br>
+            <small class="text-muted fs-5" th:text="'Order ID: '+${orderDetail.orderId}"></small>
+          </div>
+          <div class="col-md-6 ml-auto d-flex justify-content-md-end flex-wrap">
+            <form action="#" th:action="@{/user/updateorder}" method="post">
+              <input type="hidden" name="orderId" th:value="${orderDetail.orderId}" />
+            <div class="mw-210 me-5 my-3">
+                <select class="form-select" name="status">
+                  <option value="CANCEL">Cancel</option>
+                  <option value="RETURNED">Returned</option>
+                </select>
+            </div>
+            <a class="btn btn-primary my-3" href="javascript:void(0);" onclick="this.closest('form').submit();">Save</a>
+            </form>
+          </div>
+        </div>
+      </header>
+
+      <div class="card-body p-7">
+        <div class="row mb-8 mt-4 order-info-wrap">
+          <div class="col-md-4 mb-md-0 mb-7">
+            <div class="d-flex flex-nowrap">
+              <div class="icon-wrap">
+                        <span class="rounded-circle px-6 py-5 bg-green-light me-6 text-green d-inline-block">
+                           <i class="fas fa-user px-1"></i>
+                        </span>
+              </div>
+              <div class="media-body">
+                <h6 class="mb-4">Customer</h6>
+                <p class="mb-4">
+                  <span th:text="${orderDetail.fullname}"></span><br>
+                  <span th:text="${orderDetail.email}"></span><br>
+                  <span th:text="${orderDetail.phone}"></span>
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-md-4">
+            <div class="d-flex flex-nowrap">
+              <div class="icon-wrap">
+                <span class="rounded-circle p-5 bg-green-light me-6 text-green d-inline-block">
+                   <i class="fas fa-truck px-2"></i>
+                </span>
+              </div>
+              <div class="media-body">
+                <h6 class="mb-4">Deliver to</h6>
+                <p class="mb-4">
+                  <span th:text="${orderDetail.address}"></span><br>
+                  <span th:text="${orderDetail.adrFullName}"></span><br>
+                  <span th:text="${orderDetail.adrPhone}"></span>
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="container-fluid">
+          <div class="table table-borderless w-100" width="100%">
+            <div class="table-responsive">
+              <table class="table" width="100%">
+                <thead>
+                <tr>
+                  <th class="align-middle" scope="col">Product</th>
+                  <th class="align-middle" scope="col">Size Name</th>
+                  <th class="align-middle" scope="col">Unit Price</th>
+                  <th class="align-middle" scope="col">Quantity</th>
+                  <th class="align-middle" scope="col">Action</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="item : ${items}">
+                  <td>
+                    <div class="d-flex align-items-center flex-nowrap">
+                      <a th:href="@{/home/shop/product-detail/id={prodId}(proId=${item.productId})}">
+                        <img src="#" th:data-src="@{/home/files/{filename}(filename=${item.imgURL})}" th:alt="${item.prodName}" class="lazy-image" width="80" height="100">
+                      </a>
+                      <a class="ms-6"><p class="fw-semibold text-body-emphasis mb-0" th:text="${item.prodName}"></p></a>
+                    </div>
+                  </td>
+                  <td th:text="${item.sizeName}"></td>
+                  <td th:text="${item.unitPrice}"></td>
+                  <td th:text="${item.quantity}"></td>
+                  <input type="hidden" id="productId" th:value="${item.productId}">
+                  <td>
+                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#customerReviewModal">Product Review</button>
+                  </td>
+                </tr>
+                <tr>
+                  <td colspan="4">
+                    <div class="d-flex flex-column align-items-end justify-content-end">
+                      <div class="mw-40 w-100">
+                        <div class="d-flex w-100 flex-column">
+                          <div class="d-flex justify-content-end">
+                            <span class="text-end me-15">Subtotal:</span>
+                            <span class="text-end fw-normal" th:text="${orderDetail.subTotal}"></span>
+                          </div>
+                          <div class="d-flex justify-content-end mt-2">
+                            <span class="text-muted me-15">Status:</span>
+                            <span class="text-end fs-20 fw-semibold ms-3">
+                        <span class="badge rounded-pill alert alert-success text-success fs-12px px-4 py-3" th:text="${orderDetail.status}"></span>
+                      </span>
+                          </div>
+                          <form th:action="@{/user/submitOrder}" method="post">
+                            <input hidden type="number" class="form-control" id="amount" name="amount" th:value="${orderDetail.subTotal}">
+                            <input hidden type="text" class="form-control" id="orderInfo" name="orderInfo" th:value="${orderDetail.orderId}">
+                            <div th:if="${orderDetail.status.toString() == 'NEW'}" class="text-end mt-3">
+                              <button type="submit" class="btn btn-primary">Thanh toán</button>
+                            </div>
+                          </form>
+                        </div>
+                      </div>
+                    </div>
+                  </td>
+                </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal -->
+  <div class="modal fade" id="customerReviewModal" tabindex="-1" aria-labelledby="customerReviewModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="customerReviewModalLabel">Customer Review</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form class="product-review-form" id="reviewForm">
+            <div>
+              <p class="mt-4 mb-5 fs-6 fw-semibold text-body-emphasis">Your Rating*</p>
+              <div class="form-group mb-6 d-flex justify-content-start">
+                <div class="rate-input">
+                  <input type="radio" id="star5" name="rate" value="5">
+                  <label for="star5" title="text" class="mb-0 mr-1 lh-1">
+                    <i class="far fa-star"></i>
+                  </label>
+                  <input type="radio" id="star4" name="rate" value="4">
+                  <label for="star4" title="text" class="mb-0 mr-1 lh-1">
+                    <i class="far fa-star"></i>
+                  </label>
+                  <input type="radio" id="star3" name="rate" value="3">
+                  <label for="star3" title="text" class="mb-0 mr-1 lh-1">
+                    <i class="far fa-star"></i>
+                  </label>
+                  <input type="radio" id="star2" name="rate" value="2">
+                  <label for="star2" title="text" class="mb-0 mr-1 lh-1">
+                    <i class="far fa-star"></i>
+                  </label>
+                  <input type="radio" id="star1" name="rate" value="1">
+                  <label for="star1" title="text" class="mb-0 mr-1 lh-1">
+                    <i class="far fa-star"></i>
+                  </label>
+                </div>
+              </div>
+            </div>
+
+            <div class="form-group mb-7">
+              <label class="mb-4 fs-6 fw-semibold text-body-emphasis" for="reviewTitle">Title of Review:</label>
+              <input id="reviewTitle" type="text" name="title" class="form-control">
+            </div>
+
+            <div class="form-group mb-10">
+              <label class="mb-4 fs-6 fw-semibold text-body-emphasis" for="reviewMessage">How was your overall experience?</label>
+              <textarea id="reviewMessage" class="form-control" name="message" rows="5"></textarea>
+            </div>
+
+            <div class="form-group mb-4">
+              <label class="mb-4 fs-6 fw-semibold text-body-emphasis" for="reviewImages">Upload Images (Max 5)</label>
+              <input type="file" class="form-control" id="reviewImages" name="images[]" multiple accept="image/*">
+              <small id="imageError" class="text-danger d-none">You can upload a maximum of 5 images.</small>
+            </div>
+
+            <div id="imagePreview" class="mb-4">
+              <!-- Here the uploaded images will be displayed -->
+            </div>
+
+            <div class="d-flex">
+              <button type="submit" class="btn btn-dark btn-hover-bg-primary btn-hover-border-primary fw-semibold">Submit Now</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    document.getElementById("reviewImages").addEventListener("change", function(event) {
+      const imagePreview = document.getElementById("imagePreview");
+      const files = event.target.files;
+
+      // Clear the preview
+      imagePreview.innerHTML = '';
+
+      // If more than 5 images are selected, show an error
+      if (files.length > 5) {
+        document.getElementById("imageError").classList.remove("d-none");
+      } else {
+        document.getElementById("imageError").classList.add("d-none");
+
+        // Loop through the files and display them
+        for (let i = 0; i < files.length; i++) {
+          const file = files[i];
+          const reader = new FileReader();
+
+          reader.onload = function(e) {
+            const img = document.createElement("img");
+            img.src = e.target.result;
+            img.classList.add("img-thumbnail", "me-2");
+            img.style.width = "100px";
+            img.style.height = "100px";
+            img.style.objectFit = 'cover';
+            imagePreview.appendChild(img);
+          };
+
+          reader.readAsDataURL(file);
+        }
+      }
+    });
+  </script>
+</main>
+</html>

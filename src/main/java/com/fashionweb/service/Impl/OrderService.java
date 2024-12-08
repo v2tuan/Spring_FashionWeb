@@ -4,10 +4,15 @@ import com.fashionweb.Entity.*;
 import com.fashionweb.Entity.Embeddable.OrderItemsId;
 import com.fashionweb.Enum.OrderStatus;
 import com.fashionweb.dto.request.OrderDTO;
+import com.fashionweb.dto.request.orderAdmin.OrderAdminDTO;
+import com.fashionweb.dto.request.orderAdmin.OrderDetailAdminDTO;
+import com.fashionweb.dto.request.product.ProductListDTO;
 import com.fashionweb.repository.*;
 import com.fashionweb.service.IOrderService;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -17,6 +22,11 @@ import java.util.Optional;
 
 @Service
 public class OrderService implements IOrderService {
+    @Override
+    public Page<Order> findOrdersByAccount(Account account, Pageable pageable) {
+        return null;
+    }
+
     @Autowired
     private IOrderRepository orderRepository;
 
@@ -31,6 +41,18 @@ public class OrderService implements IOrderService {
 
     @Autowired
     private IDiscountRepository discountRepository;
+
+    public Double getTotalRevenue() {
+        return orderRepository.getTotalRevenue();
+    }
+
+    public long countTotalOrders() {
+        return orderRepository.count();
+    }
+
+    public Long getTotalProductsSold() {
+        return orderItemRepository.getTotalProductsSold();
+    }
 
     @Override
     public <S extends Order> S save(S order) {
@@ -118,4 +140,40 @@ public class OrderService implements IOrderService {
 
         return savedOrder;
     }
+
+    @Override
+    public OrderDetailAdminDTO fetchOrderDetail(Long orderId) {
+        return orderRepository.fetchOrderDetail(orderId);
+    }
+
+    @Override
+    public Page<OrderAdminDTO> findAllOrderListPageableById(Long accId, LocalDate orderDate, OrderStatus orderStatus, Pageable pageable) {
+        // Assuming you have an Order repository with a method to find an order by ID
+        return orderRepository.fetchOrderListPageableById(accId, orderDate, orderStatus, pageable);  // Adjust as necessary for your repository
+    }
+
+    @Override
+    public Page<OrderAdminDTO> findAllOrderListPageable(LocalDate orderDate, OrderStatus orderStatus, Pageable pageable) {
+        return orderRepository.fetchOrderListPageable(orderDate, orderStatus, pageable);
+    }
+
+    public boolean updateOrderStatus(Long orderId, OrderStatus status) {
+        try {
+            // Tìm đơn hàng theo ID
+            Optional<Order> optionalOrder = orderRepository.findById(orderId);
+
+            if (optionalOrder.isPresent()) {
+                Order order = optionalOrder.get();
+                order.setStatus(status);  // Cập nhật trạng thái
+                orderRepository.save(order);  // Lưu thay đổi vào cơ sở dữ liệu
+                return true;
+            } else {
+                return false;  // Không tìm thấy đơn hàng
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
 }

@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{admin/admin_layout}">
+
+<main id="content" class="bg-body-tertiary-01 d-flex flex-column main-content" th:fragment="content">
+  <div class="dashboard-page-content">
+    <div class="row mb-9 align-items-center justify-content-between">
+      <div class="col-sm-6 mb-8 mb-sm-0">
+        <h2 class="fs-4 mb-0">Order List</h2>
+      </div>
+    </div>
+
+    <div class="card rounded-4">
+      <header class="card-header bg-transparent p-7">
+        <div class="row align-items-center">
+          <div class="col-md-6 mb-lg-0 mb-6">
+            <span class="d-inline-block"><i class="far fa-calendar me-3" th:text="' '+${orderDetail.createDate}"></i></span>
+            <br>
+            <small class="text-muted fs-5" th:text="'Order ID: '+${orderDetail.orderId}"></small>
+          </div>
+          <div class="col-md-6 ml-auto d-flex justify-content-md-end flex-wrap">
+            <form action="#" th:action="@{/admin/updateorder}" method="post">
+              <input type="hidden" name="orderId" th:value="${orderDetail.orderId}" />
+            <div class="mw-210 me-5 my-3">
+                <select class="form-select" name="status">
+                  <option value="NEW">New</option>
+                  <option value="PAID">Paid</option>
+                  <option value="CONFIRMED">Confirmed</option>
+                  <option value="DELIVERING">Delivering</option>
+                  <option value="DELIVERED">Delivered</option>
+                  <option value="CANCEL">Cancel</option>
+                  <option value="RETURNED">Returned</option>
+                </select>
+            </div>
+            <a class="btn btn-primary my-3" href="javascript:void(0);" onclick="this.closest('form').submit();">Save</a>
+            </form>
+          </div>
+        </div>
+      </header>
+
+      <div class="card-body p-7">
+        <div class="row mb-8 mt-4 order-info-wrap">
+          <div class="col-md-4 mb-md-0 mb-7">
+            <div class="d-flex flex-nowrap">
+              <div class="icon-wrap">
+                        <span class="rounded-circle px-6 py-5 bg-green-light me-6 text-green d-inline-block">
+                           <i class="fas fa-user px-1"></i>
+                        </span>
+              </div>
+              <div class="media-body">
+                <h6 class="mb-4">Customer</h6>
+                <p class="mb-4">
+                  <span th:text="${orderDetail.fullname}"></span><br>
+                  <span th:text="${orderDetail.email}"></span><br>
+                  <span th:text="${orderDetail.phone}"></span>
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-md-4">
+            <div class="d-flex flex-nowrap">
+              <div class="icon-wrap">
+                <span class="rounded-circle p-5 bg-green-light me-6 text-green d-inline-block">
+                   <i class="fas fa-truck px-2"></i>
+                </span>
+              </div>
+              <div class="media-body">
+                <h6 class="mb-4">Deliver to</h6>
+                <p class="mb-4">
+                  <span th:text="${orderDetail.address}"></span><br>
+                  <span th:text="${orderDetail.adrFullName}"></span><br>
+                  <span th:text="${orderDetail.adrPhone}"></span>
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-lg-12"> <!-- Ensure it spans the full row width -->
+            <div class="table-responsive">
+              <table class="table table-borderless">
+                <thead>
+                <tr>
+                  <th class="align-middle" scope="col">Product</th>
+                  <th class="align-middle" scope="col">Size Name</th>
+                  <th class="align-middle" scope="col">Unit Price</th>
+                  <th class="align-middle" scope="col">Quantity</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="item : ${items}">
+                  <td>
+                    <div class="d-flex align-items-center flex-nowrap">
+                      <a th:href="@{/home/shop/product-detail/id={prodId}(proId=${item.productId})}">
+                        <img src="#" th:data-src="@{/home/files/{filename}(filename=${item.imgURL})}"
+                             th:alt="${item.prodName}" class="lazy-image" width="80" height="100">
+                      </a>
+                      <a class="ms-6">
+                        <p class="fw-semibold text-body-emphasis mb-0" th:text="${item.prodName}"></p>
+                      </a>
+                    </div>
+                  </td>
+                  <td th:text="${item.sizeName}"></td>
+                  <td th:text="${item.unitPrice}"></td>
+                  <td th:text="${item.quantity}"></td>
+                </tr>
+                <tr>
+                  <td colspan="4">
+                    <div class="d-flex flex-column align-items-end justify-content-end">
+                      <div class="mw-40 w-100">
+                        <div class="d-flex w-100 flex-column">
+                          <div class="d-flex justify-content-end">
+                            <span class="text-end me-15">Subtotal:</span> <!-- `me-2` để giảm khoảng cách giữa các phần tử -->
+                            <span class="text-end fw-normal" th:text="${orderDetail.subTotal}"></span>
+                          </div>
+                          <div class="d-flex justify-content-end mt-2">
+                            <span class="text-muted me-15">Status:</span> <!-- `me-2` để giảm khoảng cách giữa các phần tử -->
+                            <span class="text-end fs-20 fw-semibold">
+                              <span class="badge rounded-pill alert alert-success text-success fs-12px px-4 py-3" th:text="${orderDetail.status}"></span>
+                          </span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </td>
+                </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+</html>
