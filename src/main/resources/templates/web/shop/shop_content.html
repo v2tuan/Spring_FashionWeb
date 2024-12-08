@@ -25,17 +25,26 @@
     <section class="container container-xxl">
         <div class="tool-bar mb-11 align-items-center justify-content-between d-lg-flex">
             <div class="tool-bar-left mb-6 mb-lg-0 fs-18px">We found <span
-                    class="text-body-emphasis fw-semibold" th:text="${prodCount}"></span> products available for you</div>
+                    class="text-body-emphasis fw-semibold" th:text="${prodCount}"></span> products available for you
+            </div>
             <div class="tool-bar-right align-items-center d-flex ">
                 <ul class="list-unstyled d-flex align-items-center list-inline mb-0 ms-auto">
                     <li class="list-inline-item me-0">
                         <select class="form-select" id="sortingSelect" onchange="changeSorting()">
-                            <option value="" selected>Default sorting</option>
+                            <option value="" th:selected="${selectedSorting == null}">Default sorting</option>
                             <option value="latest" th:selected="${selectedSorting == 'latest'}">Sort by latest</option>
-                            <option value="rating" th:selected="${selectedSorting == 'rating'}">Sort by rating: high to low</option>
-                            <option value="rating-asc" th:selected="${selectedSorting == 'rating-asc'}">Sort by rating: low to high</option>
-                            <option value="price" th:selected="${selectedSorting == 'latest'}">Sort by price: low to high</option>
-                            <option value="price-desc" th:selected="${selectedSorting == 'latest'}">Sort by price: high to low</option>
+                            <option value="rating" th:selected="${selectedSorting == 'rating'}">Sort by rating: high to
+                                low
+                            </option>
+                            <option value="rating-asc" th:selected="${selectedSorting == 'rating-asc'}">Sort by rating:
+                                low to high
+                            </option>
+                            <option value="price" th:selected="${selectedSorting == 'price'}">Sort by price: low to
+                                high
+                            </option>
+                            <option value="price-desc" th:selected="${selectedSorting == 'price-desc'}">Sort by price:
+                                high to low
+                            </option>
                         </select>
                     </li>
                 </ul>
@@ -51,28 +60,31 @@
                         <div class="col-sm-6 col-lg-4 col-xl-3" th:if="${product.isSale}">
                             <div class="card card-product grid-2 bg-transparent border-0" data-animate="fadeInUp">
                                 <figure class="card-img-top position-relative mb-7 overflow-hidden">
-                                    <a th:href="@{/home/shop/product-detail/id={prodId}(prodId=${product.prodId})}" class="hover-zoom-in d-block"
+                                    <a th:href="@{/home/shop/product-detail/id={prodId}(prodId=${product.prodId})}"
+                                       class="hover-zoom-in d-block"
                                        th:title="${product.prodName}">
                                         <img src="#" th:data-src="@{/home/files/{filename}(filename=${product.imgURL})}"
                                              class="img-fluid lazy-image w-100" th:alt="${product.prodName}" width="330"
                                              height="440">
                                     </a>
                                     <div class="position-absolute product-flash z-index-2 "><span
-                                            class="badge badge-product-flash on-sale bg-primary" th:text="'-' + ${product.percent} + '%'"></span></div>
-                                    <div class="position-absolute product-flash z-index-2 " style="right: 0; top: 0;"><span
-                                            class="badge badge-product-flash on-best">Best</span></div>
-                                    <a href="#"
-                                             class="btn btn-add-to-cart btn-dark btn-hover-bg-primary btn-hover-border-primary position-absolute z-index-2 text-nowrap btn-sm px-6 py-3 lh-2">Add
-                                    To Cart</a>
+                                            class="position-absolute badge badge-product-flash on-sale bg-primary"
+                                            th:text="'-' + ${product.percent} + '%'"></span></div>
+                                    <div class="product-flash z-index-2 "><span
+                                            class="badge badge-product-flash on-best" th:if="${product.isBest}"
+                                            th:text="Best"></span></div>
                                 </figure>
                                 <div class="card-body text-center p-0">
 
 									<span class="d-flex align-items-center price text-body-emphasis fw-bold justify-content-center mb-3 fs-6">
-										<del class=" text-body fw-500 me-4 fs-13px" th:text="'$'+${product.regular}"></del>
+										<del class=" text-body fw-500 me-4 fs-13px"
+                                             th:text="'$'+${product.regular}"></del>
 										<ins class="text-decoration-none" th:text="'$'+${product.promo}"></ins></span>
 
                                     <h4 class="product-title card-title text-primary-hover text-body-emphasis fs-15px fw-500 mb-3">
-                                        <a class="text-decoration-none text-reset" th:href="@{/home/shop/product-detail/id={prodId}(prodId=${product.prodId})}" th:text="${product.prodName}"></a></h4>
+                                        <a class="text-decoration-none text-reset"
+                                           th:href="@{/home/shop/product-detail/id={prodId}(prodId=${product.prodId})}"
+                                           th:text="${product.prodName}"></a></h4>
                                     <div class="d-flex align-items-center fs-12px justify-content-center">
                                         <div class="rating">
                                             <div class="empty-stars">
@@ -102,7 +114,7 @@
 													</svg>
 												</span>
                                             </div>
-                                            <div class="filled-stars" style="width: ${product.rating}%;">
+                                            <div class="filled-stars" th:style="'width: ' + ${product.rating} + '%;'">
                                             <span class="star">
 													<svg class="icon star text-primary">
 														<use xlink:href="#star"></use>
@@ -129,7 +141,9 @@
 													</svg>
 												</span>
                                             </div>
-                                        </div><span class="reviews ms-4 pt-3 fs-14px" th:text="${product.reviewCount}+' reviews'"></span>
+                                        </div>
+                                        <span class="reviews ms-4 pt-3 fs-14px"
+                                              th:text="${product.reviewCount}+' reviews'"></span>
                                     </div>
                                 </div>
                             </div>
@@ -137,24 +151,26 @@
                         <div class="col-sm-6 col-lg-4 col-xl-3" th:unless="${product.isSale}">
                             <div class="card card-product grid-2 bg-transparent border-0" data-animate="fadeInUp">
                                 <figure class="card-img-top position-relative mb-7 overflow-hidden">
-                                    <a th:href="@{/home/shop/product-detail/id={prodId}(prodId=${product.prodId})}" class="hover-zoom-in d-block"
+                                    <a th:href="@{/home/shop/product-detail/id={prodId}(prodId=${product.prodId})}"
+                                       class="hover-zoom-in d-block"
                                        th:title="${product.prodName}">
                                         <img src="#" th:data-src="@{/home/files/{filename}(filename=${product.imgURL})}"
                                              class="img-fluid lazy-image w-100" alt="Perfecting Facial Oil" width="330"
                                              height="440">
                                     </a>
-                                    <div class="position-absolute product-flash z-index-2 " style="right: 0; top: 0;"><span
-                                            class="badge badge-product-flash on-best">Best</span></div>
-                                    <a href="#"
-                                             class="btn btn-add-to-cart btn-dark btn-hover-bg-primary btn-hover-border-primary position-absolute z-index-2 text-nowrap btn-sm px-6 py-3 lh-2">Add
-                                    To Cart</a>
+                                    <div class="product-flash z-index-2 "><span
+                                            class="badge badge-product-flash on-best" th:if="${product.isBest}"
+                                            th:text="Best"></span></div>
                                 </figure>
                                 <div class="card-body text-center p-0">
 
-                                    <span class="d-flex align-items-center price text-body-emphasis fw-bold justify-content-center mb-3 fs-6" th:text="'$'+${product.regular}"></span>
+                                    <span class="d-flex align-items-center price text-body-emphasis fw-bold justify-content-center mb-3 fs-6"
+                                          th:text="'$'+${product.regular}"></span>
 
                                     <h4 class="product-title card-title text-primary-hover text-body-emphasis fs-15px fw-500 mb-3">
-                                        <a class="text-decoration-none text-reset" th:href="@{/home/shop/product-detail/id={prodId}(prodId=${product.prodId})}" th:text="${product.prodName}"></a></h4>
+                                        <a class="text-decoration-none text-reset"
+                                           th:href="@{/home/shop/product-detail/id={prodId}(prodId=${product.prodId})}"
+                                           th:text="${product.prodName}"></a></h4>
                                     <div class="d-flex align-items-center fs-12px justify-content-center">
                                         <div class="rating">
                                             <div class="empty-stars">
@@ -184,7 +200,7 @@
 													</svg>
 												</span>
                                             </div>
-                                            <div class="filled-stars" style="width: ${product.rating}%;">
+                                            <div class="filled-stars" th:style="'width: ' + ${product.rating} + '%;'">
                                             <span class="star">
 													<svg class="icon star text-primary">
 														<use xlink:href="#star"></use>
@@ -211,7 +227,9 @@
 													</svg>
 												</span>
                                             </div>
-                                        </div><span class="reviews ms-4 pt-3 fs-14px" th:text="${product.reviewCount}+' reviews'"></span>
+                                        </div>
+                                        <span class="reviews ms-4 pt-3 fs-14px"
+                                              th:text="${product.reviewCount}+' reviews'"></span>
                                     </div>
                                 </div>
                             </div>
@@ -223,7 +241,8 @@
                         <!-- Previous Page Link -->
                         <li class="page-item">
                             <a class="page-link rounded-circle d-flex align-items-center justify-content-center"
-                               th:href="@{/home/shop(page=${currentPage - 1}, subcategoryId=${selectedSubCateId}, sort=${selectedSorting})}" aria-label="Previous"
+                               th:href="@{/home/shop(page=${currentPage - 1}, subCateId=${selectedSubCateId}, sort=${selectedSorting})}"
+                               aria-label="Previous"
                                th:classappend="${currentPage == 0} ? 'disabled'">
                                 <svg class="icon">
                                     <use xlink:href="#icon-angle-double-left"></use>
@@ -234,14 +253,17 @@
                         <!-- Page Number Links -->
                         <th:block th:each="pageNum : ${#numbers.sequence(0, totalPages - 1)}">
                             <li class="page-item" th:class="${pageNum == currentPage} ? 'active'">
-                                <a class="page-link" th:href="@{/home/shop(page=${pageNum}, subcategoryId=${selectedSubCateId}, sort=${selectedSorting})}" th:text="${pageNum + 1}"></a>
+                                <a class="page-link"
+                                   th:href="@{/home/shop(page=${pageNum}, subCateId=${selectedSubCateId}, sort=${selectedSorting})}"
+                                   th:text="${pageNum + 1}"></a>
                             </li>
                         </th:block>
 
                         <!-- Next Page Link -->
                         <li class="page-item">
                             <a class="page-link rounded-circle d-flex align-items-center justify-content-center"
-                               th:href="@{/home/shop(page=${currentPage + 1}, subcategoryId=${selectedSubCateId}, sort=${selectedSorting})}" aria-label="Next"
+                               th:href="@{/home/shop(page=${currentPage + 1}, subCateId=${selectedSubCateId}, sort=${selectedSorting})}"
+                               aria-label="Next"
                                th:classappend="${currentPage == totalPages - 1} ? 'disabled'">
                                 <svg class="icon">
                                     <use xlink:href="#icon-angle-double-right"></use>
@@ -260,49 +282,42 @@
                             <h4 class="widget-title fs-5 mb-6">Category</h4>
                             <ul class="navbar-nav navbar-nav-cate" id="widget_product_category">
                                 <!-- Category -->
+                                <li class="nav-item">
+                                    <a href="" title="All"
+                                       class="text-reset position-relative d-block text-decoration-none text-body-emphasis-hover d-flex align-items-center text-uppercase fs-14px fw-semibold letter-spacing-5 active"
+                                       onclick="changeSorting(event)" data-subcate-id="0">
+                                        <span class="text-hover-underline">All</span>
+                                    </a>
+                                </li>
                                 <li class="nav-item" th:each="category : ${categories}">
-                                    <a href="#" th:title="${category.cateName}"
-                                       class="text-reset position-relative d-block text-decoration-none text-body-emphasis-hover d-flex align-items-center text-uppercase fs-14px fw-semibold letter-spacing-5 active">
+                                    <a href="" th:title="${category.cateName}"
+                                       class="text-reset position-relative d-block text-decoration-none text-body-emphasis-hover d-flex align-items-center text-uppercase fs-14px fw-semibold letter-spacing-5 active"
+                                       onclick="changeSorting(event)">
                                         <span class="text-hover-underline me-2" th:text="${category.cateName}"></span>
                                         <span data-bs-toggle="collapse" th:data-bs-target="'#cat_' + ${category.cateId}"
-                                              class="caret flex-grow-1 d-flex align-items-center justify-content-end collapsed"><svg
-                                                class="icon">
-													<use xlink:href="#icon-plus"></use>
-												</svg></span> </a>
+                                              class="caret flex-grow-1 d-flex align-items-center justify-content-end collapsed">
+                                            <svg class="icon">
+                                                <use xlink:href="#icon-plus"></use>
+                                            </svg>
+                                        </span>
+                                    </a>
                                     <div th:id="'cat_' + ${category.cateId}" class="collapse show"
                                          data-bs-parent="#widget_product_category">
                                         <ul class="navbar-nav nav-submenu ps-8">
                                             <li class="nav-item" th:each="subcategory : ${category.subcates}">
-                                                <a class="text-reset position-relative d-block text-decoration-none text-body-emphasis-hover d-flex align-items-center"
-                                                   href="#"><span class="text-hover-underline" th:text="${subcategory.subCateName}"></span></a>
+                                                <a href=""
+                                                   class="text-reset position-relative d-block text-decoration-none text-body-emphasis-hover d-flex align-items-center"
+                                                   th:data-subcate-id="${subcategory.subCateId}"
+                                                   onclick="changeSorting(event)">
+                                                    <span class="text-hover-underline"
+                                                          th:text="${subcategory.subCateName}"></span>
+                                                </a>
                                             </li>
                                         </ul>
                                     </div>
                                 </li>
-                                <input type="hidden" id="subcategorySelect" th:value="${selectedSubCateId}">
-
                             </ul>
                         </div>
-<!--                        <div class="widget widget-product-hightlight">-->
-<!--                            <h4 class="widget-title fs-5 mb-6">Hightlight</h4>-->
-<!--                            <ul class="navbar-nav navbar-nav-cate" id="widget_product_hightlight">-->
-<!--                                <li class="nav-item">-->
-<!--                                    <a th:href="@{/home/shop}" title="All"-->
-<!--                                       class="text-reset position-relative d-block text-decoration-none text-body-emphasis-hover d-flex align-items-center"><span-->
-<!--                                            class="text-hover-underline">All</span></a>-->
-<!--                                </li>-->
-<!--                                <li class="nav-item">-->
-<!--                                    <a th:href="@{/home/shop}" title="Best Seller"-->
-<!--                                       class="text-reset position-relative d-block text-decoration-none text-body-emphasis-hover d-flex align-items-center"><span-->
-<!--                                            class="text-hover-underline">Best Seller</span></a>-->
-<!--                                </li>-->
-<!--                                <li class="nav-item">-->
-<!--                                    <a th:href="@{/home/shop}" title="Sale"-->
-<!--                                       class="text-reset position-relative d-block text-decoration-none text-body-emphasis-hover d-flex align-items-center"><span-->
-<!--                                            class="text-hover-underline">Sale</span></a>-->
-<!--                                </li>-->
-<!--                            </ul>-->
-<!--                        </div>-->
                     </aside>
                 </div>
             </div>
@@ -311,12 +326,14 @@
     <script>
         function changeSorting() {
             const selectedSorting = document.getElementById('sortingSelect').value;
-            const selectedSubcategoryId = document.getElementById('subcategorySelect').value;
+
+            const clickedElement = event.target.closest('a'); // Get the closest <a> element
+            const selectedSubcategory = clickedElement ? clickedElement.getAttribute('data-subcate-id') : null;
 
             let url = '/home/shop?page=0';
 
-            if (selectedSubcategoryId) {
-                url += '&subcategoryId=' + (selectedSubcategoryId !== "All Subcategories" ? selectedSubcategoryId : "");
+            if (selectedSubcategory) {
+                url += '&subCateId=' + (selectedSubcategory !== "0" ? selectedSubcategory : "");
             }
             if (selectedSorting) {
                 url += '&sort=' + (selectedSorting !== "Default sorting" ? selectedSorting : "");

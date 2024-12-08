@@ -182,10 +182,7 @@ public class ProductService implements IProductService {
     public Page<ProductGridDTO> findAllProductGridCriteriaPageable(Long subCateId, boolean status, Pageable pageable) {
         Page<ProductGridDTO> products = iProductRepository.fetchProductGridPageableByCriteria(subCateId, status, pageable);
 
-        products.getContent().forEach(product -> {
-
-            product.setIsBest(product.getRating() >= 86);
-        });
+        products.getContent().forEach(product -> product.setIsBest(product.getRating() >= 86));
 
         return products;
     }
