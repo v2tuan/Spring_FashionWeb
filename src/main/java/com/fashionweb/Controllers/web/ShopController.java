@@ -1,8 +1,13 @@
 package com.fashionweb.Controllers.web;
 
+import com.fashionweb.Entity.Account;
+import com.fashionweb.Entity.ProdReview;
 import com.fashionweb.dto.request.category.CategoryGridDTO;
 import com.fashionweb.dto.request.product.ProductGridDTO;
+import com.fashionweb.dto.request.proreview.ReviewSummaryDTO;
+import com.fashionweb.repository.IAccountRepository;
 import com.fashionweb.service.Impl.CategoryService;
+import com.fashionweb.service.Impl.ProdReviewService;
 import com.fashionweb.service.Impl.ProductService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +23,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/home/shop")
@@ -27,6 +33,12 @@ public class ShopController {
     CategoryService categoryService;
     @Autowired
     ProductService productService;
+
+    @Autowired
+    private ProdReviewService prodReviewService;
+
+    @Autowired
+    private IAccountRepository accountRepository;
 
     @GetMapping("/categories")
     @ResponseBody
@@ -122,6 +134,18 @@ public class ShopController {
     @GetMapping("/product-detail/id={prodId}")
     String productDetail(@PathVariable Long prodId, Model model) {
         model.addAttribute("product", productService.findProductDetailByProdId(prodId).get());
+        List<ProdReview> reviews = prodReviewService.getAllProdReviews();
+        List<ReviewSummaryDTO> reviewSummaries = reviews.stream()
+                .map(review ->
+                    new ReviewSummaryDTO(
+                            review.getAccount().getAccId(),
+                            review.getAccount().getFullname(),
+                            review.getAccount().getAvatar(),
+                            review.getComment(),
+                            review.getRating())
+                ).collect(Collectors.toList());
+
+        model.addAttribute("reviews", reviewSummaries);
         return "web/shop/product_detail";
     }
 

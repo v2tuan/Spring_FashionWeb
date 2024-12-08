@@ -36,19 +36,14 @@ public class ProdReviewController {
     public String getProdReviewSummaries(Model model) {
         List<ProdReview> reviews = prodReviewService.getAllProdReviews();
         List<ReviewSummaryDTO> reviewSummaries = reviews.stream()
-                .map(review -> {
-                    Long accId = review.getReviewId().getAccId();
-                    String fullname = accountRepository.findById(accId)
-                            .map(Account::getFullname)
-                            .orElse("Anonymous");
-                    return new ReviewSummaryDTO(
-                            accId,
-                            fullname,
-                            review.getComment(),
-                            review.getRating()
-                    );
-                })
-                .collect(Collectors.toList());
+                .map(review ->
+                        new ReviewSummaryDTO(
+                                review.getAccount().getAccId(),
+                                review.getAccount().getFullname(),
+                                review.getAccount().getAvatar(),
+                                review.getComment(),
+                                review.getRating())
+                ).collect(Collectors.toList());
 
         model.addAttribute("reviews", reviewSummaries);
 
