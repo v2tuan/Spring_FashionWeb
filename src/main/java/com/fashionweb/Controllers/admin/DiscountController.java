@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Controller
-@RequestMapping("/manager")
+@RequestMapping("/admin")
 public class DiscountController {
     @Autowired
     private IDiscountService discountService;
