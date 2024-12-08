@@ -18,5 +18,4 @@ public class ProdReviewDTO {
     private String image;
     private Integer rating;
 
-    private MultipartFile file;
 }

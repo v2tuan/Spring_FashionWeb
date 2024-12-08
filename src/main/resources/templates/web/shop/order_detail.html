@@ -158,19 +158,19 @@
               <p class="mt-4 mb-5 fs-6 fw-semibold text-body-emphasis">Your Rating*</p>
               <div class="form-group mb-6 d-flex justify-content-start">
                 <div class="rate-input">
-                  <input type="radio" id="star5" name="rate" value="5">
+                  <input type="radio" id="star5" name="rating" value="5">
                   <label for="star5" title="text"><i class="far fa-star"></i></label>
 
-                  <input type="radio" id="star4" name="rate" value="4">
+                  <input type="radio" id="star4" name="rating" value="4">
                   <label for="star4" title="text"><i class="far fa-star"></i></label>
 
-                  <input type="radio" id="star3" name="rate" value="3">
+                  <input type="radio" id="star3" name="rating" value="3">
                   <label for="star3" title="text"><i class="far fa-star"></i></label>
 
-                  <input type="radio" id="star2" name="rate" value="2">
+                  <input type="radio" id="star2" name="rating" value="2">
                   <label for="star2" title="text"><i class="far fa-star"></i></label>
 
-                  <input type="radio" id="star1" name="rate" value="1">
+                  <input type="radio" id="star1" name="rating" value="1">
                   <label for="star1" title="text"><i class="far fa-star"></i></label>
                 </div>
               </div>
@@ -211,45 +211,37 @@
       event.preventDefault();
 
       const formData = new FormData(this);
-      const rating = $("input[name='rate']:checked").val();
       const productId = $("#modalProductId").val();
 
-
-      if (!rating) {
-        alert("Please select a rating!");
-        return;
-      }
       if (!productId) {
         alert("Product ID is missing!");
         return;
       }
 
-      const file = $("#reviewImages")[0].files[0]; // Chỉ lấy file đầu tiên
-      if (file) {
-        formData.append("image", file.name); // Thêm file vào formData
-      } else {
-        alert("Please select an image!");
-        return;
-      }
-
-      formData.append("rating", rating);
+      // const file = $("#reviewImages")[0].files[0]; // Chỉ lấy file đầu tiên
+      // if (file) {
+      //   formData.append("image", file); // Thêm file vào formData
+      // } else {
+      //   alert("Please select an image!");
+      //   return;
+      // }
+      //
+      // formData.append("rating", rating);
       formData.append("prodId", productId);
-
+      const spinner = new bootstrap.Modal(document.getElementById('loadingSpinner'));
+      spinner.show();
       $.ajax({
         url: "/user/prod-reviews/createprodreview",
         type: "POST",
         data: formData,
         processData: false,
         contentType: false,
-        success: function (data) {
-          if (data.success) {
-            alert("Review submitted successfully!");
-            $('#customerReviewModal').modal('hide');
-          } else {
-            alert("An error occurred. Please try again.");
-          }
+        success: function () {
+          spinner.hide();
+          alert("Review submitted successfully!");
         },
         error: function (xhr, status, error) {
+          spinner.hide();
           console.error('Error:', error);
           console.error('Response:', xhr.responseText);  // In ra phản hồi từ server để debug
           alert("An unexpected error occurred. Please try again.");

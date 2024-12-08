@@ -2,11 +2,13 @@ package com.fashionweb.Controllers.admin;
 
 import com.fashionweb.Entity.Embeddable.ProdReviewsId;
 import com.fashionweb.Entity.ProdReview;
+import com.fashionweb.Entity.Product;
 import com.fashionweb.dto.request.proreview.ProdReviewDTO;
 import com.fashionweb.dto.request.proreview.ReviewSummaryDTO;
 import com.fashionweb.repository.IAccountRepository;
 import com.fashionweb.service.IStorageService;
 import com.fashionweb.service.Impl.ProdReviewService;
+import com.fashionweb.service.Impl.ProductService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -32,6 +34,9 @@ public class ProdReviewController {
 
     @Autowired
     private IAccountRepository accountRepository;
+
+    @Autowired
+    private ProductService productService;
 
     @GetMapping("/prodreviewlist")
     public String getProdReviewSummaries(Model model) {
@@ -61,17 +66,21 @@ public class ProdReviewController {
     @ResponseBody
     public ResponseEntity<String> createProdReview(
             @ModelAttribute @Valid ProdReviewDTO prodReviewDTO,
-            @RequestParam(required = false) MultipartFile file
+            @RequestParam(required = false) MultipartFile images
     ) {
         String fileName = null;
 
-        if (file != null && !file.isEmpty()) {
-            fileName = storageService.getStorageFileName(file, String.valueOf(System.currentTimeMillis()));
-            storageService.store(file, fileName);
+        if (images != null && !images.isEmpty()) {
+            fileName = storageService.getStorageFileName(images, String.valueOf(System.currentTimeMillis()));
+            storageService.store(images, fileName);
         }
 
         ProdReview prodReview = new ProdReview();
-        prodReview.setReviewId(new ProdReviewsId(prodReviewDTO.getProdId(), prodReviewDTO.getAccId()));
+        Product prot = productService.getProduct(prodReviewDTO.getProdId()).orElseThrow();
+        Account acc = accountRepository.findById(prodReviewDTO.getAccId()).orElseThrow();
+        prodReview.setReviewId(new ProdReviewsId(prodReviewDTO.getProdId(),prodReviewDTO.getAccId()));
+        prodReview.setAccount(acc);
+        prodReview.setProduct(prot);
         prodReview.setComment(prodReviewDTO.getComment());
         prodReview.setCreateDate(LocalDate.now());
         prodReview.setImages(fileName);
