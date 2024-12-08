@@ -27,7 +27,7 @@ public class AddressController {
     private IAddressMapper addressMapper;
 
     @GetMapping
-    ResponseEntity<?> getAllAccount(){
+    ResponseEntity<?> getAllAddress(){
         var context = SecurityContextHolder.getContext();
         String email = context.getAuthentication().getName();
 
@@ -37,12 +37,12 @@ public class AddressController {
     }
 
     @PostMapping
-    Address createAccount(@RequestBody AddressRequestDTO addressRequestDTO){
+    Address createAddress(@RequestBody AddressRequestDTO addressRequestDTO){
         return addressService.createAddress(addressRequestDTO);
     }
 
     @PutMapping("/{id}")
-    ResponseEntity<?> updateAccount(@PathVariable long id, @RequestBody @Valid AddressRequestDTO addressRequestDTO){
+    ResponseEntity<?> updateAddress(@PathVariable long id, @RequestBody @Valid AddressRequestDTO addressRequestDTO){
         addressService.updateAddress(id, addressRequestDTO);
         return new ResponseEntity<Response>(new Response(true, "Thành công", "Update thanh cong"), HttpStatus.OK);
     }

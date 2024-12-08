@@ -137,7 +137,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
         // Gửi request bằng AJAX
         $.ajax({
-            url: `/admin/createproduct`, // URL server xử lý
+            url: `/admin/create-product`, // URL server xử lý
             type: 'POST',          // Loại request
             // dataType: "json",
             processData: false,  // Không xử lý dữ liệu
