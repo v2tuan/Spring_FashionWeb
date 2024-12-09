@@ -34,11 +34,14 @@ public class WebSecurityConfig {
                             .requestMatchers("/home/**").permitAll()
                             .requestMatchers("/forgotpassword/**").permitAll()
                             .requestMatchers("/error/**").permitAll()
+                            .requestMatchers("/admin/order-detail/**").hasAnyRole(Role.ADMIN.name(), Role.MANAGER.name())
+                            .requestMatchers("/admin/updateorder/**").hasAnyRole(Role.ADMIN.name(), Role.MANAGER.name())
+                            .requestMatchers("/admin/dashboard").hasAnyRole(Role.ADMIN.name(), Role.MANAGER.name())
                             .requestMatchers("/admin/**").hasAnyRole(Role.ADMIN.name())
                             .requestMatchers("/manager/**").hasAnyRole(Role.ADMIN.name(), Role.MANAGER.name())
                             .requestMatchers("/account/**").hasAnyRole(Role.USER.name(), Role.ADMIN.name(), Role.MANAGER.name())
                             .requestMatchers("/address/**").hasAnyRole(Role.USER.name(), Role.ADMIN.name(), Role.MANAGER.name())
-
+                            .requestMatchers("/user/**").hasAnyRole(Role.USER.name(), Role.ADMIN.name(), Role.MANAGER.name())
                             .anyRequest().hasAnyRole(Role.ADMIN.name(), Role.MANAGER.name());
                 });
         return http.build();
