@@ -3,12 +3,14 @@ package com.fashionweb.Controllers.admin;
 import com.fashionweb.Entity.Brand;
 import com.fashionweb.dto.request.brand.BrandDTO2;
 import com.fashionweb.service.IBrandService;
+import com.fashionweb.service.IStorageService;
 import com.fashionweb.service.Impl.BrandService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
@@ -21,6 +23,9 @@ public class BrandController {
     private IBrandService brandService;
     @Autowired
     private BrandService bService;
+    @Autowired
+    private IStorageService storageService;
+
 
 
     @GetMapping("/all")
@@ -52,21 +57,22 @@ public class BrandController {
 
 
     @PostMapping("/createbrand")
-    @ResponseBody
-    public String createBrand(@ModelAttribute BrandDTO2 brandDTO, RedirectAttributes redirectAttributes) {
-        String images = brandDTO.getImages();
+    public String createBrand(@ModelAttribute BrandDTO2 brandDTO, @RequestParam MultipartFile file, RedirectAttributes redirectAttributes) {
+        String fileName = "";
+            // Tạo tên file duy nhất hoặc từ một ID nào đó
+            fileName = storageService.getStorageFileName(file, String.valueOf(System.currentTimeMillis()));
+            // Lưu file vào hệ thống
+            storageService.store(file, fileName);
 
         Brand brand = new Brand();
         brand.setBrandName(brandDTO.getBrandName());
-        brand.setImages(images);
+        brand.setImages(fileName);
 
         Brand savedBrand = brandService.createBrand(brand);
 
         redirectAttributes.addFlashAttribute("message", "Thêm thành công!");
         return "redirect:/admin/brands/all";
     }
-
-
 
     @GetMapping("/editbrand/{id}")
     public String showEditBrand(@PathVariable Long id, Model model) {

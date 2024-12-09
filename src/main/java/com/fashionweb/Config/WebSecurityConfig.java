@@ -34,6 +34,7 @@ public class WebSecurityConfig {
                             .requestMatchers("/home/**").permitAll()
                             .requestMatchers("/forgotpassword/**").permitAll()
                             .requestMatchers("/error/**").permitAll()
+                            .requestMatchers("/account/cart-items/add").hasAnyRole(Role.USER.name(), Role.ADMIN.name(), Role.MANAGER.name())
                             .requestMatchers("/admin/order-detail/**").hasAnyRole(Role.ADMIN.name(), Role.MANAGER.name())
                             .requestMatchers("/admin/updateorder/**").hasAnyRole(Role.ADMIN.name(), Role.MANAGER.name())
                             .requestMatchers("/admin/dashboard").hasAnyRole(Role.ADMIN.name(), Role.MANAGER.name())

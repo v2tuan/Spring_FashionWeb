@@ -14,16 +14,11 @@
                     <p class="mb-0">Brand and vendor management</p>
                 </div>
                 <div class="col-sm-6 d-flex flex-wrap justify-content-sm-end">
-
-
                     <a href="#" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addBrandModal">
-
                         <svg class="icon mt-n3">
                             <use xlink:href="#file-plus"></use>
                         </svg>
-
                         <span class="d-inline-block ml-1">Add New Brand</span>
-
                     </a>
 
                     <!-- Add Brand Modal -->
@@ -35,7 +30,7 @@
                                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                 </div>
                                 <div class="modal-body">
-                                    <form class="form-border-1" th:action="@{/admin/brands/createbrand}" method="post">
+                                    <form class="form-border-1" th:action="@{/admin/brands/createbrand}" method="post" enctype="multipart/form-data">
                                         <div class="mb-8">
                                             <label for="brandName" class="mb-4 fs-13px ls-1 fw-bold text-uppercase">Brand Name</label>
                                             <input type="text" placeholder="Type here" class="form-control" id="brandName" name="brandName">
@@ -45,7 +40,7 @@
                                             <div class="mb-7 text-center">
                                                 <img src="/assets/images/dashboard/upload.svg" width="102" class="d-block mx-auto" alt="Upload Icon">
                                             </div>
-                                            <input type="file" class="form-control" id="images"  accept="image/*" name="images">
+                                            <input type="file" class="form-control" id="images"  accept="image/*" name="file">
                                         </div>
 
                                         <div class="modal-footer">
@@ -119,7 +114,7 @@
                         <div class="col-6 col-sm-4 col-lg-3 col-xl-2 px-5 mb-8" th:each="brand : ${brands}">
                             <div class="card rounded-4">
                                 <div class="card-header p-7 bg-transparent">
-                                    <img src="data:image/jpg;base64,${brand.images}" alt="images" class="lazy-image" width="166" height="84">
+                                    <img th:src="@{/home/files/{filename}(filename=${brand.getImages() != null ? brand.getImages() : 'default-avatar.jpg'})}" alt="images" class="lazy-image" width="166" height="84">
                                 </div>
                                 <div class="card-body text-center p-7">
                                     <h6 class="card-title m-0 fs-15px fw-600" th:text="${brand.brandName}"></h6>
