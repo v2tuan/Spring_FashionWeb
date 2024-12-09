@@ -105,6 +105,6 @@ Dự án này được cấp phép theo [MIT License](LICENSE).
 ## Thành Viên
   - Võ Nguyễn Hòa Lạc Dương - 22110304
   - Đỗ Văn Thường - 22110432
-  - Võ Văn Tuấn - 22110450
-  - Trần Triệu Vĩ - 2210459
+  - **Võ Văn Tuấn - 22110450**
+  - Trần Triệu Vĩ - 22110459
 
