@@ -285,9 +285,7 @@
                         'Authorization': `Bearer ${token}` // Đính kèm JWT vào header
                     },
                     success: function (response) {
-
-                        window.location.href = "/home/managerAddress";
-                        spinner.hide(); // Ẩn spinner sau khi xử lý thành công
+                        // spinner.hide(); // Ẩn spinner sau khi xử lý thành công
                         alert("Thêm thành công")
                     },
                     error: function (xhr, status, error) {
@@ -340,7 +338,7 @@
                     },
                     success: function (response) {
 
-                        window.location.href = "/home/managerAddress";
+                        window.location.href = "/address/managerAddress";
                         spinner.hide(); // Ẩn spinner sau khi xử lý thành công
                         alert("Update thành công")
                     },

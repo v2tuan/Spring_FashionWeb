@@ -73,10 +73,6 @@ public class WebController {
         return "web/my_profile";
     }
 
-    @GetMapping("/managerAddress")
-    String managerAddress(Model model){
-        return "web/manager_address";
-    }
 
     @PostMapping("/deladdr/{id}")
     String deleteAccount(@PathVariable long id, Model model){

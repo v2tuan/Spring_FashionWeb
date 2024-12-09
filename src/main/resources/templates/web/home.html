@@ -14,7 +14,8 @@
 
                     <div class="hero-content">
                         <div data-animate="fadeInDown">
-                            <h1 class="mb-7 hero-title-3 text-white fw-500 mx-auto hero-540 font-primary">Style Your Own Story</h1>
+                            <h1 class="mb-7 hero-title-3 text-white fw-500 mx-auto hero-540 font-primary">Style Your Own
+                                Story</h1>
                         </div>
                         <a href="#" data-animate="fadeInUp" class="btn btn-white btn-lg">
                             Shop Now
@@ -31,7 +32,8 @@
 
                     <div class="hero-content">
                         <div data-animate="fadeInDown">
-                            <h1 class="mb-7 hero-title-3 text-white fw-500 mx-auto hero-540 font-primary">Style Your Own Story</h1>
+                            <h1 class="mb-7 hero-title-3 text-white fw-500 mx-auto hero-540 font-primary">Style Your Own
+                                Story</h1>
                         </div>
                         <a href="#" data-animate="fadeInUp" class="btn btn-white btn-lg">
                             Shop Now
@@ -48,7 +50,8 @@
 
                     <div class="hero-content">
                         <div data-animate="fadeInDown">
-                            <h1 class="mb-7 hero-title-3 text-white fw-500 mx-auto hero-540 font-primary">Style Your Own Story</h1>
+                            <h1 class="mb-7 hero-title-3 text-white fw-500 mx-auto hero-540 font-primary">Style Your Own
+                                Story</h1>
                         </div>
                         <a href="#" data-animate="fadeInUp" class="btn btn-white btn-lg">
                             Shop Now
@@ -72,9 +75,11 @@
                 </div>
                 <div class="col-sm-4 text-sm-end" data-animate="fadeInUp"><a href="#"
                                                                              class="btn btn-link p-0 text-body-emphasis text-decoration-none fw-semibold text-primary-hover">Shop
-                    All Products <svg class="icon">
+                    All Products
+                    <svg class="icon">
                         <use xlink:href="#icon-arrow-right"></use>
-                    </svg></a></div>
+                    </svg>
+                </a></div>
             </div>
             <div class="slick-slider"
                  data-slick-options='{&#34;arrows&#34;:true,&#34;dots&#34;:false,&#34;responsive&#34;:[{&#34;breakpoint&#34;:1560,&#34;settings&#34;:{&#34;arrows&#34;:false,&#34;dots&#34;:true,&#34;slidesToShow&#34;:5}},{&#34;breakpoint&#34;:1200,&#34;settings&#34;:{&#34;arrows&#34;:false,&#34;dots&#34;:true,&#34;slidesToShow&#34;:3}},{&#34;breakpoint&#34;:992,&#34;settings&#34;:{&#34;arrows&#34;:false,&#34;dots&#34;:true,&#34;slidesToShow&#34;:2}},{&#34;breakpoint&#34;:576,&#34;settings&#34;:{&#34;arrows&#34;:false,&#34;dots&#34;:true,&#34;slidesToShow&#34;:1}}],&#34;slidesToShow&#34;:5}'
@@ -89,20 +94,27 @@
                                      height="440">
                             </a>
 
-                            <div class="position-absolute product-flash z-index-2 "><span
-                                    class="badge badge-product-flash on-sale bg-primary">-25%</span></div>
+                            <div class="position-absolute product-flash z-index-2">
+    <span class="badge badge-product-flash on-sale bg-primary"
+          th:text="${T(java.lang.Math).round((1 - product.getPromo() / product.getRegular()) * 100) + '%'}"></span>
+                            </div>
+
+
                             <div class="position-absolute d-flex z-index-2 product-actions  horizontal">
                             </div>
                         </figure>
                         <div class="card-body text-center p-0">
 								<span
                                         class="d-flex align-items-center price text-body-emphasis fw-bold justify-content-center mb-3 fs-6">
-									<del class=" text-body fw-500 me-4 fs-13px" th:text="${product.getRegular()}">$40.00</del>
-									<ins class="text-decoration-none" th:text="${product.getPromo()}">$30.00</ins></span>
+									<del class=" text-body fw-500 me-4 fs-13px"
+                                         th:text="${product.getRegular()}">$40.00</del>
+									<ins class="text-decoration-none"
+                                         th:text="${product.getPromo()}">$30.00</ins></span>
                             <h4
                                     class="product-title card-title text-primary-hover text-body-emphasis fs-15px fw-500 mb-3">
                                 <a class="text-decoration-none text-reset"
-                                   href="shop/product-details-v1.html" th:text="${product.getProdName()}">Shield Conditioner</a></h4>
+                                   href="shop/product-details-v1.html" th:text="${product.getProdName()}">Shield
+                                    Conditioner</a></h4>
                             <div class="d-flex align-items-center fs-12px justify-content-center">
                             </div>
                         </div>
@@ -167,10 +179,12 @@
                         <div class="d-flex justify-content-center">
 
 
-                            <img class="lazy-image img-fluid light-mode-img" src="/assets/images/image-box/image-box-white-03.png"
+                            <img class="lazy-image img-fluid light-mode-img"
+                                 src="/assets/images/image-box/image-box-white-03.png"
                                  data-src="./assets/images/image-box/image-box-white-03.png" width="102" height="118"
                                  alt="Ingredient Sourcing">
-                            <img class="lazy-image dark-mode-img img-fluid" src="/assets/images/image-box/image-box-white-03.png"
+                            <img class="lazy-image dark-mode-img img-fluid"
+                                 src="/assets/images/image-box/image-box-white-03.png"
                                  data-src="./assets/images/image-box/image-box-white-03.png" width="102" height="118"
                                  alt="Ingredient Sourcing">
                         </div>

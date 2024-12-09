@@ -32,14 +32,17 @@ public class JwtTokenFilter extends OncePerRequestFilter {
     private static final List<EndpointMethod> BYPASS_ENDPOINTS = List.of(
             new EndpointMethod("/login", "GET"),
             new EndpointMethod("/register", "GET"),
-//            new EndpointMethod("/home", "GET"),
+            new EndpointMethod("/home/shop", "GET"),
+            new EndpointMethod("/home/shop/**", "GET"),
             new EndpointMethod("/assets/**", "GET"),
             new EndpointMethod("/cdn.jsdelivr.net/**", "GET"),
             new EndpointMethod("/cdnjs.cloudflare.com/**", "GET"),
             new EndpointMethod("/api/**", "POST"),
             new EndpointMethod("/login/**", "GET"),
             new EndpointMethod("/forgotpassword/**", "POST"),
-            new EndpointMethod("/error/**", "GET")
+            new EndpointMethod("/error/**", "GET"),
+            new EndpointMethod("/home/files/**", "GET")
+
 
     );
 
