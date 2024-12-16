@@ -63,7 +63,8 @@ public class JwtTokenFilter extends OncePerRequestFilter {
             // Kiểm tra nếu token null và request không phải là /home
             if (token == null && !"/home".equals(requestURI)) {
                 // Redirect đến trang lỗi
-                response.sendRedirect(request.getContextPath() + "/error/401");
+                request.getRequestDispatcher("/error/401").forward(request, response);
+                response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
                 return;
             }
             else if (token != null) {
