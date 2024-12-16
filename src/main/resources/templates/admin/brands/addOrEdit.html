@@ -119,7 +119,7 @@
                         <div class="col-6 col-sm-4 col-lg-3 col-xl-2 px-5 mb-8" th:each="brand : ${brands}">
                             <div class="card rounded-4">
                                 <div class="card-header p-7 bg-transparent">
-                                    <img src="data:image/jpg;base64,${brand.images}" alt="images" class="lazy-image" width="166" height="84">
+                                    <img th:src="@{/home/files/{filename}(filename=${brand.images})}" alt="images" class="lazy-image" width="166" height="84">
                                 </div>
                                 <div class="card-body text-center p-7">
                                     <h6 class="card-title m-0 fs-15px fw-600" th:text="${brand.brandName}"></h6>
