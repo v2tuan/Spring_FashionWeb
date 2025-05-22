@@ -12,6 +12,7 @@ public class ReviewSummaryDTO {
     private String fullname;
     private String avatar;
     private String comment;
+    private String createDate;
     private Integer rating;
 
 }

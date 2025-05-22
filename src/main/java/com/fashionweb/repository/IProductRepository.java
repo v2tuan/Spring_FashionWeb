@@ -28,17 +28,18 @@ public interface IProductRepository extends JpaRepository<Product, Long> {
 
     @Query("""
         SELECT new com.fashionweb.dto.response.ProductResponeDTO(
-            p.prodName, 
-            p.regular, 
-            p.promo, 
-            (SELECT pi.imgURL 
-             FROM ProdImage pi 
-             WHERE pi.product.prodId = p.prodId 
-             ORDER BY pi.productImageId.stt ASC 
+            p.prodId,
+            p.prodName,
+            p.regular,
+            p.promo,
+            (SELECT pi.imgURL
+             FROM ProdImage pi
+             WHERE pi.product.prodId = p.prodId
+             ORDER BY pi.productImageId.stt ASC
              LIMIT 1)
         )
-        FROM Product p 
-        JOIN p.sizes s 
+        FROM Product p
+        JOIN p.sizes s
         JOIN OrderItem oi ON s.id.sizeName = oi.size.id.sizeName AND s.id.prodId = oi.size.id.prodId
         GROUP BY p.prodId, p.prodName, p.regular, p.promo
         HAVING SUM(oi.quantity) > 10

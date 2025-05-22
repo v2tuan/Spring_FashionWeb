@@ -87,7 +87,7 @@
                 <div th:each="product : ${products}">
                     <div class="card card-product grid-1 bg-transparent border-0" data-animate="fadeInUp">
                         <figure class="card-img-top position-relative mb-7 overflow-hidden ">
-                            <a href="shop/product-details-v1.html" class="hover-zoom-in d-block"
+                            <a th:href="'/home/shop/product-detail/id=' + ${product.prodId}" class="hover-zoom-in d-block"
                                title="Shield Conditioner">
                                 <img th:src="@{/home/files/{filename}(filename=${product.getImgURL() != null ? product.getImgURL() : 'default-avatar.jpg'})}"
                                      class="img-fluid lazy-image w-100" alt="Shield Conditioner" width="330"

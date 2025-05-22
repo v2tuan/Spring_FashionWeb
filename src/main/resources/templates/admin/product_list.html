@@ -156,7 +156,7 @@
             <ul class="pagination justify-content-center">
                 <!-- Previous Button -->
                 <li th:class="${currentPage == 0 ? 'page-item disabled' : 'page-item'}">
-                    <a th:href="@{/admin/product-list(page=${currentPage - 1}, subcategoryId=${selectedSubCate}, status=${selectedStatus})}"
+                    <a th:href="@{/manager/product-list(page=${currentPage - 1}, subcategoryId=${selectedSubCate}, status=${selectedStatus})}"
                        class="page-link"
                        aria-label="Previous">&lt;</a>
                 </li>
@@ -164,7 +164,7 @@
                 <!-- Page Numbers -->
                 <th:block th:each="pageNumber : ${#numbers.sequence(0, totalPages - 1)}">
                     <li th:class="${pageNumber == currentPage ? 'page-item active' : 'page-item'}">
-                        <a th:href="@{/admin/product-list(page=${pageNumber}, subcategoryId=${selectedSubCate}, status=${selectedStatus})}"
+                        <a th:href="@{/manager/product-list(page=${pageNumber}, subcategoryId=${selectedSubCate}, status=${selectedStatus})}"
                            class="page-link"
                            th:text="${pageNumber + 1}"></a>
                     </li>
@@ -172,7 +172,7 @@
 
                 <!-- Next Button -->
                 <li th:class="${currentPage == totalPages - 1 ? 'page-item disabled' : 'page-item'}">
-                    <a th:href="@{/admin/product-list(page=${currentPage + 1}, subcategoryId=${selectedSubCate}, status=${selectedStatus})}"
+                    <a th:href="@{/manager/product-list(page=${currentPage + 1}, subcategoryId=${selectedSubCate}, status=${selectedStatus})}"
                        class="page-link"
                        aria-label="Next">&gt;</a>
                 </li>
@@ -199,7 +199,7 @@
             const selectedSubcategoryId = document.getElementById('subcategorySelect').value;
             const selectedStatus = document.getElementById('statusSelect').value;
 
-            let url = '/admin/product-list?page=0';
+            let url = '/manager/product-list?page=0';
 
             if (selectedSubcategoryId) {
                 url += '&subcategoryId=' + (selectedSubcategoryId !== "All Subcategories" ? selectedSubcategoryId : "");

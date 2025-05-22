@@ -41,10 +41,8 @@ public class WebController {
 
         Optional<Account> account = accountService.getAccounts(email);
 
-        if (account.isPresent()) {
-            // Đẩy dữ liệu vào model
-            model.addAttribute("avatar", account.get().getAvatar());
-        }
+        // Đẩy dữ liệu vào model
+        account.ifPresent(value -> model.addAttribute("avatar", value.getAvatar()));
 
         List<ProductResponeDTO> listProduct = productRepository.findTopSellingProductSummaries();
         model.addAttribute("products", listProduct);

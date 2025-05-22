@@ -1,19 +1,16 @@
 package com.fashionweb.dto.response;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class ProductResponeDTO {
+    Long prodId;
     String prodName;
     Double regular;
     Double promo;
     String imgURL;
-
-    // Constructor
-    public ProductResponeDTO(String prodName, Double regular, Double promo, String imgURL) {
-        this.prodName = prodName;
-        this.regular = regular;
-        this.promo = promo;
-        this.imgURL = imgURL;
-    }
 }

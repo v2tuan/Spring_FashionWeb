@@ -134,7 +134,7 @@ public class ShopController {
     @GetMapping("/product-detail/id={prodId}")
     String productDetail(@PathVariable Long prodId, Model model) {
         model.addAttribute("product", productService.findProductDetailByProdId(prodId).get());
-        List<ProdReview> reviews = prodReviewService.getAllProdReviews();
+        List<ProdReview> reviews = prodReviewService.getReviewsByProduct(prodId);
         List<ReviewSummaryDTO> reviewSummaries = reviews.stream()
                 .map(review ->
                     new ReviewSummaryDTO(
@@ -142,6 +142,7 @@ public class ShopController {
                             review.getAccount().getFullname(),
                             review.getAccount().getAvatar(),
                             review.getComment(),
+                            review.getCreateDate().toString(),
                             review.getRating())
                 ).collect(Collectors.toList());
 

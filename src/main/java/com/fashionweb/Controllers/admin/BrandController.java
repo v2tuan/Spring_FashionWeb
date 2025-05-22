@@ -26,8 +26,6 @@ public class BrandController {
     @Autowired
     private IStorageService storageService;
 
-
-
     @GetMapping("/all")
     public String getAllBrands(Model model) {
         List<BrandDTO2> brandDTO2s =  bService.getBrandDTO2s();
@@ -75,49 +73,53 @@ public class BrandController {
     }
 
     @GetMapping("/editbrand/{id}")
-    public String showEditBrand(@PathVariable Long id, Model model) {
+    public String showEditBrand(@PathVariable Long id, Model model, RedirectAttributes redirectAttributes) {
         Optional<Brand> optionalBrand = brandService.findById(id);
-
         if (optionalBrand.isPresent()) {
             Brand brand = optionalBrand.get();
-
-            BrandDTO2 brandDTO2 = new BrandDTO2();
-            brandDTO2.setBrandId(brand.getBrandId());
-            brandDTO2.setBrandName(brand.getBrandName());
-            brandDTO2.setImages(brand.getImages());
-
-            model.addAttribute("brand", brandDTO2);
-
-            return "admin/edit_brand";
+            BrandDTO2 brandDTO2 = new BrandDTO2(
+                    brand.getBrandId(),
+                    brand.getBrandName(),
+                    brand.getImages(),
+                    0L // Giả sử prodCount không được dùng lúc này
+            );
+            model.addAttribute("brands", bService.getBrandDTO2s()); // Để hiển thị danh sách
+            model.addAttribute("selectedBrand", brandDTO2); // Để frontend biết brand đang edit
+            return "redirect:/admin/brands/all"; // Trả về cùng template, modal sẽ hiển thị
         } else {
+            redirectAttributes.addFlashAttribute("error", "Không tìm thấy thương hiệu!");
             return "redirect:/admin/brands/all";
         }
     }
 
-
-    @PostMapping("/updatebrand/{id}")
-    @ResponseBody
+    // Xử lý update brand
+    @PostMapping("/editbrand/{id}")
     public String updateBrand(@PathVariable Long id,
-                              @ModelAttribute @Valid BrandDTO2 brandDTO2,
-                              @RequestParam("images")
+                              @RequestParam("brandName") String brandName,
+                              @RequestParam(value = "file", required = false) MultipartFile file,
                               RedirectAttributes redirectAttributes) {
-        Optional<Brand> optionalBrand = brandService.findById(id);
+        try {
+            Optional<Brand> optionalBrand = brandService.findById(id);
+            if (optionalBrand.isPresent()) {
+                Brand brand = optionalBrand.get();
+                brand.setBrandName(brandName);
 
-        if (optionalBrand.isPresent()) {
-            Brand brand = optionalBrand.get();
+                if (file != null && !file.isEmpty()) {
+                    // Upload file mới
+                    String fileName = storageService.getStorageFileName(file, String.valueOf(System.currentTimeMillis()));
+                    storageService.store(file, fileName);
+                    brand.setImages(fileName);
+                }
 
-            brand.setBrandName(brandDTO2.getBrandName());
-            brand.setImages(brandDTO2.getImages());
-
-            brandService.updateBrand(brand);
-
-            redirectAttributes.addFlashAttribute("message", "Cập nhật thương hiệu thành công!");
-            return "redirect:/admin/brands/all";
-
-        } else {
-            redirectAttributes.addFlashAttribute("error", "Không tìm thấy thương hiệu cần cập nhật!");
-            return "redirect:/admin/brands/all";
+                brandService.updateBrand(brand);
+                redirectAttributes.addFlashAttribute("message", "Cập nhật thành công!");
+            } else {
+                redirectAttributes.addFlashAttribute("error", "Không tìm thấy thương hiệu!");
+            }
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("error", "Lỗi khi cập nhật: " + e.getMessage());
         }
+        return "redirect:/admin/brands/all";
     }
 
 

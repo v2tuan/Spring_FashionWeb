@@ -24,7 +24,7 @@ public class EmailService {
             emailSender.send(message);
         }
         catch (Exception  e) {
-            throw new RuntimeException("Email không đúng định dạng hoặc không thể gửi email vui lòng kiểm tra lại email của bạn!");
+            throw new RuntimeException("EmailService: " + e.getMessage());
         }
     }
 }

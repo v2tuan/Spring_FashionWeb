@@ -48,6 +48,7 @@ public class ProdReviewController {
                                 review.getAccount().getFullname(),
                                 review.getAccount().getAvatar(),
                                 review.getComment(),
+                                review.getCreateDate().toString(),
                                 review.getRating())
                 ).collect(Collectors.toList());
 
